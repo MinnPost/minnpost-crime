@@ -28,14 +28,14 @@
     So, if your links are NOT MinnPost red, then you'll probably
     have to update this.
   -->
-  <link type="text/css" rel="stylesheet" media="all" href="http://www.minnpost.com/sites/default/files/css/css_0a3256cafaacbbd745a887aea1e06065.css" />
-  <link type="text/css" rel="stylesheet" media="screen" href="http://www.minnpost.com/sites/default/files/css/css_af7ebe348633c5f1b2a0e6fb63d61db8.css" />
-  <link type="text/css" rel="stylesheet" media="print" href="http://www.minnpost.com/sites/default/files/css/css_661c24623d6669afd5ba1b24560bc9c1.css" />
+  <link type="text/css" rel="stylesheet" media="all" href="http://www.minnpost.com/sites/default/files/css/css_e1e628a1d1af71eb80119578f445aefe.css" />
+  <link type="text/css" rel="stylesheet" media="screen" href="http://www.minnpost.com/sites/default/files/css/css_7c21f8513fb5bed4b20bcdfbd3425599.css" />
+  <link type="text/css" rel="stylesheet" media="print" href="http://www.minnpost.com/sites/default/files/css/css_fcea2525eb0713a66c9fd404a556659e.css" />
   <!--[if IE]>
     <link rel="stylesheet" href="http://www.minnpost.com/sites/default/themes/derma/inc/css/ie.css?n" type="text/css">
   <![endif]-->
   
-  <script type="text/javascript" src="http://www.minnpost.com/sites/default/files/js/js_b87774ad419fc0ad9306e7988b22c562.js"></script>
+  <script type="text/javascript" src="http://www.minnpost.com/sites/default/files/js/js_9374db1ff1197a2d746a97396ed85cad.js"></script>
   <script type="text/javascript">
   <!--//--><![CDATA[//><!--
   jQuery.extend(Drupal.settings, {"basePath":"\/","combineBlocks":[["#block-views-most_viewed_by_taxonomy-block","#block-views-most_commented_articles-block_1"],["#block-views-most_viewed_by_node_type-block","#block-views-most_commented_blogs-block_1"],["#block-views-most_viewed_by_node_type-block","#block-views-most_commented_articles-block_1"]],"chartbeat":{"uid":27923,"domain":"minnpost.com","authors":"Tom Nehil,Alan Palazzolo","sections":"Data \u0026 Maps","title":"Build your own sales tax policy for Dayton\u0026#039;s new budget"},"googleanalytics":{"trackOutgoing":1,"trackMailto":1,"trackDownload":1,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls|xml|z|zip"},"addthis":{"config_default":{"services_toolbox":"facebook_like_counter, tweet, print, email","services_compact":"","services_expanded":"","ui_cobrand":"","ui_header_color":"#000000","ui_header_background":"#FFFFFF","ui_click":true,"ui_delay":"","ui_use_addressbook":0,"pubid":"xa-4e2cfd1147868c4e","data_track_clickback":0,"data_ga_tracker":0,"ui_use_css":true,"data_use_cookies":true,"ui_language":"en","data_use_flash":true},"share_default":{"templates":{"twitter":""}}}});
@@ -170,6 +170,23 @@
           This is where your main HTML should go.
         -->
         
+        <div>
+          <form>
+            <label for="neighborhood-select">Neighborhood list:</label>
+            <select name="neighborhood-select" id="neighborhood-select">
+              <option value="none">None</option>
+            </select>
+            
+            <label for="max-select">Max:</label>
+            <select name="max-select" id="max-select">
+              <option value="50">50</option>
+              <option value="100">100</option>
+              <option value="150">150</option>
+              <option value="200">200</option>
+              <option value="250">250</option>
+            </select>
+          </form>
+        </div>
         <div class="highchart-container" id="chart-example"></div>
       </div>
       
@@ -251,102 +268,105 @@
     
       (function($, w, undefined) {
         $(document).ready(function() {
-          var dataURL = '';
-          var loadData = false;
+          var neighborhoodListURL = "https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&query=SELECT%20DISTINCT%20neighborhood_key%20FROM%20swdata%20ORDER%20BY%20neighborhood_key&callback=?";
+          var neighborhoodURL = "https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&query=SELECT%20*%20FROM%20%60swdata%60%20WHERE%20neighborhood_key%20%3D%20'[[[NEIGHBORHOOD]]]'&callback=?";
           
           // Compiling templates to be efficient
           var templates = {
             loading: _.template($('#template-loading').html())
           };
           
-          // Get data with JSONP jQuery plugin if getting from
-          // a remote source
-          if (loadData) {
-            // Mark as loading while getting data
+          // Mark as loading while getting data
+          $('#chart-example').html(templates.loading({ }));
+          
+          // Handle new neighborhood
+          var updateChart = function(neighborhood, max) {
             $('#chart-example').html(templates.loading({ }));
             
-            $.jsonp(dataURL, {
+            $.jsonp({
+              url: neighborhoodURL.replace('[[[NEIGHBORHOOD]]]', neighborhood),
               success: function(data) {
-                // Make char here.
+                var larceny = _.map(data, function(d) {
+                  return [
+                    Date.UTC(d.year, d.month, 1),
+                    parseInt(d.larceny)
+                  ]
+                });
+                var burglary = _.map(data, function(d) {
+                  return [
+                    Date.UTC(d.year, d.month, 1),
+                    parseInt(d.burglary)
+                  ]
+                });
+                var agg_assault = _.map(data, function(d) {
+                  return [
+                    Date.UTC(d.year, d.month, 1),
+                    parseInt(d.agg_assault)
+                  ]
+                });
+                
+                var exampleChart = new Highcharts.Chart({
+                  chart: {
+                    renderTo: 'chart-example',
+                    type: 'spline'
+                  },
+                  title: {
+                    text: 'Neighborhood crime data'
+                  },
+                  xAxis: {
+                    type: 'datetime',
+                  },
+                  yAxis: {
+                    min: 0,
+                    max: max
+                  },
+                  plotOptions: {
+                    spline: {
+                      marker: {
+                        enabled: false
+                      },
+                    }
+                  },
+                  series: [
+                    {
+                      name: 'Larceny',
+                      data: larceny
+                    },
+                    {
+                      name: 'Burglary',
+                      data: burglary
+                    },
+                    {
+                      name: 'Assault',
+                      data: agg_assault
+                    }
+                  ]
+                });
+                
+              },
+              error: function(e) {
+                console.log('error');
               }
             });
-          }
+          };
           
-          // Make chart
-          var exampleChart = new Highcharts.Chart({
-            chart: {
-              renderTo: 'chart-example',
-              type: 'bar'
-            },
-            title: {
-              text: 'Spending changes in the 2014-15 governor\'s budget'
-            },
-            xAxis: {
-              categories: ['Current law', 'Governor\'s proposal']
-            },
-            yAxis: {
-              min: 0,
-              title: {
-                text: 'In billions of $'
-              },
-              labels: {
-                formatter: function() {
-                  return Highcharts.numberFormat((this.value / 1000000000), 1) + 'B';
-                }
-              }
-            },
-            legend: {
-              backgroundColor: '#FFFFFF',
-              reversed: true
-            },
-            tooltip: {
-              formatter: function() {
-                return '' + 
-                  this.series.name + ': <strong>$' + Highcharts.numberFormat(this.y, 0) + '</strong>' +
-                  '<br /><br />' +
-                  '<em>Total: $' + Highcharts.numberFormat(this.point.stackTotal, 0) + '</em>';
-              }
-            },
-            plotOptions: {
-              series: {
-                stacking: 'normal'
-              }
-            },
-              series: [{
-              name: 'Agriculture',
-              data: [77560000, 78230000]
-            }, {
-              name: 'Transportation',
-              data: [180050000,154434000]
-            }, {
-              name: 'Economic Development',
-              data: [165272000,235340000]
-            }, {
-              name: 'Environment, Energy & Natural Resources',
-              data: [266000000,283616000]
-            }, {
-              name: 'State Government',
-              data: [915410000,929310000]
-            }, {
-              name: 'Debt Service',
-              data: [1291446000,1319967000]
-            }, {
-              name: 'Public Safety',
-              data: [1825379000,1911509000]
-            }, {
-              name: 'Higher Ed',
-              data: [2565262000,2815626000]
-            }, {
-              name: 'Property Tax Aids & Credits',
-              data: [2728800000,2845920000]
-            }, {
-              name: 'Health & Human Services',
-              data: [11442841000,11571180000]
-            }, {
-              name: 'K-12',
-              data: [15179340000, 15523562000]
-            }]
+          // Get list
+          $.jsonp({
+            url: neighborhoodListURL,
+            success: function(data) {
+              _.each(data, function(d) {
+                $('#neighborhood-select').append($('<option value="' + d.neighborhood_key + '">' + d.neighborhood_key + '</option>'));
+              });
+              $('#chart-example').html('<p><br /><br />Select neighborhood...</p>');
+              
+              $('#neighborhood-select').on('change', function(e) {
+                updateChart($(this).val(), parseInt($('#max-select').val()) || 50);
+              });
+            }
           });
+          
+          
+          
         });
       })(jQueryCustom, window);
     </script>
