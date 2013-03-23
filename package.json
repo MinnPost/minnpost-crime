@@ -1,0 +1,35 @@
+{
+  "name": "minnpost-crime",
+  "version": "0.0.1",
+  "author": "MinnPost <support@minnpost.com>",
+  "homepage": "https://github.com/MinnPost/minnpost-template",
+  "description": "MinnPost Crime",
+  "contributors": [ 
+    {
+      "name": "Alan Palazzolo",
+      "email": "apalazzolo@minnpost.com"
+    } 
+  ],
+  "repository": {
+    // Update repository
+    "type": "git",
+    "url": "https://github.com/MinnPost/minnpost-crime.git"
+  },
+  "keywords": [
+    // Update keywords
+    "minnpost"
+  ],
+  "dependencies" : {
+    "grunt": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-s3": "*",
+    "grunt-clean": "*",
+    "grunt-contrib-jst": "*"
+  }, 
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/MinnPost/minnpost-crime/blob/master/LICENSE.txt"
+    }
+  ]
+}
