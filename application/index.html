@@ -286,23 +286,21 @@
             $.jsonp({
               url: neighborhoodURL.replace('[[[NEIGHBORHOOD]]]', neighborhood),
               success: function(data) {
-                var larceny = _.map(data, function(d) {
-                  return [
-                    Date.UTC(d.year, d.month, 1),
-                    parseInt(d.larceny)
-                  ]
-                });
-                var burglary = _.map(data, function(d) {
-                  return [
-                    Date.UTC(d.year, d.month, 1),
-                    parseInt(d.burglary)
-                  ]
-                });
-                var agg_assault = _.map(data, function(d) {
-                  return [
-                    Date.UTC(d.year, d.month, 1),
-                    parseInt(d.agg_assault)
-                  ]
+                var seriesTypes = ['homicide', 'rape', 'robbery', 'agg_assault', 
+                  'burglary', 'larceny', 'auto_theft', 'arson']
+                  
+                var series = [];
+                
+                _.each(seriesTypes, function(t) {
+                  series.push({
+                    name: t,
+                    data: _.map(data, function(d) {
+                      return [
+                        Date.UTC(d.year, d.month, 1),
+                        parseInt(d[t])
+                      ]
+                    })
+                  });
                 });
                 
                 var exampleChart = new Highcharts.Chart({
@@ -327,20 +325,7 @@
                       },
                     }
                   },
-                  series: [
-                    {
-                      name: 'Larceny',
-                      data: larceny
-                    },
-                    {
-                      name: 'Burglary',
-                      data: burglary
-                    },
-                    {
-                      name: 'Assault',
-                      data: agg_assault
-                    }
-                  ]
+                  series: series
                 });
                 
               },
