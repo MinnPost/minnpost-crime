@@ -15,6 +15,6 @@
 
 #### Neighborhoods
 
-* [Definitive list of Minneapolis Neighborhoods](http://www.minneapolismn.gov/maps/neighborhoods) last updated 2006-01-01.  A [scraper of this data](https://scraperwiki.com/scrapers/minneapolis_neighborhoods/) has been made.
+* [Definitive list of Minneapolis Neighborhoods](http://www.minneapolismn.gov/maps/neighborhoods) last updated 2006-01-01.  A [scraper of this data](https://scraperwiki.com/scrapers/minneapolis_neighborhoods/) has been made.  Downloaded locally (```data/neighborhoods/minneapolis-neighborhoods-2012.json```)
 * A geographical file of all Twin Cities neighborhoods was provided by [MN Compass](http://www.mncompass.org/) (via email).  Minneapolis wanted to charge $25 and have us sign an NDA.
 * The KMZ has been converted to a shapefile (```data/neighborhoods/twin-cities-neighborhoods-2012```) and then split into the two cities (```data/neighborhoods/minneapolis-neighborhoods-2012```) with QGIS.
