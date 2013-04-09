@@ -15,6 +15,7 @@
 
 #### Neighborhoods
 
-* [Definitive list of Minneapolis Neighborhoods](http://www.minneapolismn.gov/maps/neighborhoods) last updated 2006-01-01.  A [scraper of this data](https://scraperwiki.com/scrapers/minneapolis_neighborhoods/) has been made.  Downloaded locally (```data/neighborhoods/minneapolis-neighborhoods-2012.json```)
+* [Definitive list of Minneapolis Neighborhoods](http://www.minneapolismn.gov/maps/neighborhoods) last updated 2006-01-01.  A [scraper of this data](https://scraperwiki.com/scrapers/minneapolis_neighborhoods/) has been made.  Downloaded locally (```data/neighborhoods/minneapolis-neighborhoods-2012.json```).  These contain keys that should be used throughout the application.
+   * Download with this command, though this data should not change anytime soon: ```wget -O data/neighborhoods/minneapolis-neighborhoods-2012.json "https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=json&name=minneapolis_neighborhoods&query=select+*+from+`swdata`" ```
 * A geographical file of all Twin Cities neighborhoods was provided by [MN Compass](http://www.mncompass.org/) (via email).  Minneapolis wanted to charge $25 and have us sign an NDA.
-* The KMZ has been converted to a shapefile (```data/neighborhoods/twin-cities-neighborhoods-2012```) and then split into the two cities (```data/neighborhoods/minneapolis-neighborhoods-2012```) with QGIS.
+   * The KMZ has been converted to a shapefile (```data/neighborhoods/twin-cities-neighborhoods-2012```) and then split into the two cities (```data/neighborhoods/minneapolis-neighborhoods-2012```) with QGIS.
