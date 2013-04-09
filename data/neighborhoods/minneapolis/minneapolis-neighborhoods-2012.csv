@@ -1,0 +1,88 @@
+url,neighborhood,last_updated,neighborhood_key,shape_name
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_armatage,Armatage,2006-01-01,armatage,Armatage
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_hale,Hale,2006-01-01,hale,Hale
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_nicolletisebank,Nicollet Island - East Bank,2006-01-01,nicollet_island_east_bank,Nicollet Island - East Bank
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_audubonpark,Audubon Park,2006-01-01,audubon_park,Audubon Park
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_harrison,Harrison,2006-01-01,harrison,Harrison
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_northloop,North Loop,2006-01-01,north_loop,North Loop
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_bancroft,Bancroft,2006-01-01,bancroft,Bancroft
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_hawthorne,Hawthorne,2006-01-01,hawthorne,Hawthorne
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_northeastpark,Northeast Park,2006-01-01,northeast_park,Northeast Park
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_beltrami,Beltrami,2006-01-01,beltrami,Beltrami
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_hiawatha,Hiawatha,2006-01-01,hiawatha,Hiawatha
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_northrop,Northrop,2006-01-01,northrop,Northrop
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_bottineau,Bottineau,2006-01-01,bottineau,Bottineau
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_holland,Holland,2006-01-01,holland,Holland
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_page,Page,2006-01-01,page,Page
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_bryant,Bryant,2006-01-01,bryant,Bryant
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_howe,Howe,2006-01-01,howe,Howe
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_phillipswest,Phillips West,2006-01-01,phillips_west,Phillips West
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_brynmawr,Bryn - Mawr,2006-01-01,bryn_mawr,Bryn - Mawr
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_humboldtindustrialarea,Humboldt Industrial Area,2006-01-01,humboldt_industrial_area,Humboldt Industrial Area
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_powderhornpark,Powderhorn Park,2006-01-01,powderhorn_park,Powderhorn Park
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_camdenindustrial,Camden Industrial,2006-01-01,camden_industrial,Camden Industrial
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_jordan,Jordan,2006-01-01,jordan,Jordan
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_prospectpkeriverrd,Prospect Park - East River,2006-01-01,prospect_park_east_river,Prospect Park - East River Road
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_carag,CARAG,2006-01-01,carag,CARAG
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_keewaydin,Keewaydin,2006-01-01,keewaydin,Keewaydin
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_regina,Regina,2006-01-01,regina,Regina
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_cedarislesdean,Cedar - Isles - Dean,2006-01-01,cedar_isles_dean,Cedar - Isles - Dean
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_kenny,Kenny,2006-01-01,kenny,Kenny
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_seward,Seward,2006-01-01,seward,Seward
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_cedarriverside,Cedar Riverside,2006-01-01,cedar_riverside,Cedar Riverside
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_kenwood,Kenwood,2006-01-01,kenwood,Kenwood
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_sheridan,Sheridan,2006-01-01,sheridan,Sheridan
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_central,Central,2006-01-01,central,Central
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_kingfield,King Field,2006-01-01,king_field,King Field
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_shinglecreek,Shingle Creek,2006-01-01,shingle_creek,Shingle Creek
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_cleveland,Cleveland,2006-01-01,cleveland,Cleveland
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_lindbohanon,Lind - Bohanon,2006-01-01,lind_bohanon,Lind - Bohanon
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_stanthonye,St. Anthony East,2006-01-01,st_anthony_east,St. Anthony East
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_columbiapark,Columbia Park,2006-01-01,columbia_park,Columbia Park
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_lindenhills,Linden Hills,2006-01-01,linden_hills,Linden Hills
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_stanthonyw,St. Anthony West,2006-01-01,st_anthony_west,St. Anthony West
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_como,Como,2006-01-01,como,Como (Minneapolis)
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_loganpark,Logan Park,2006-01-01,logan_park,Logan Park
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_standish,Standish,2006-01-01,standish,Standish
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_cooper,Cooper,2006-01-01,cooper,Cooper
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_longfellow,Longfellow,2006-01-01,longfellow,Longfellow
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_stevenssquareloringheights,Stevens Square - Loring Heights,2006-01-01,stevens_square_loring_heights,Steven's Square - Loring Heights
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_corcoran,Corcoran,2006-01-01,corcoran,Corcoran
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_loringpark,Loring Park,2006-01-01,loring_park,Loring Park
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_sumnerglenwood,Sumner - Glenwood,2006-01-01,sumner_glenwood,Sumner - Glenwood
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_diamondlake,Diamond Lake,2006-01-01,diamond_lake,Diamond Lake
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_lowryhill,Lowry Hill,2006-01-01,lowry_hill,Lowry Hill
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_tangletown,Tangletown,2006-01-01,tangletown,Tangletown
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_downtowneast,Downtown East,2006-01-01,downtown_east,Downtown East
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_lowryhilleast,Lowry Hill East,2006-01-01,lowry_hill_east,Lowry Hill East
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_universityminnesota,University of Minnesota,2006-01-01,university_of_minnesota,University of Minnesota
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_downtownwest,Downtown West,2006-01-01,downtown_west,Downtown West
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_lyndale,Lyndale,2006-01-01,lyndale,Lyndale
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_venturavillage,Ventura Village,2006-01-01,ventura_village,Ventura Village
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_eastharriet,East Harriet,2006-01-01,east_harriet,East Harriet
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_lynnhurst,Lynnhurst,2006-01-01,lynnhurst,Lynnhurst
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_victory,Victory,2006-01-01,victory,Victory
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_eastisles,East Isles,2006-01-01,east_isles,East Isles
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_marcyholmes,Marcy Holmes,2006-01-01,marcy_holmes,Marcy Holmes
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_waitepark,Waite Park,2006-01-01,waite_park,Waite Park
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_eastphillips,East Phillips,2006-01-01,east_phillips,East Phillips
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_marshallterrace,Marshall Terrace,2006-01-01,marshall_terrace,Marshall Terrace
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_webbercamden,Webber - Camden,2006-01-01,webber_camden,Webber - Camden
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_ecco,ECCO,2006-01-01,ecco,ECCO
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_mckinley,McKinley,2006-01-01,mckinley,McKinley
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_wenonah,Wenonah,2006-01-01,wenonah,Wenonah
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_elliotpark,Elliot Park,2006-01-01,elliot_park,Elliot Park
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_midcityindustrial,Mid - City Industrial,2006-01-01,mid_city_industrial,Mid - City Industrial
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_westcalhoun,West Calhoun,2006-01-01,west_calhoun,West Calhoun
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_ericsson,Ericsson,2006-01-01,ericsson,Ericsson
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_midtownphillips,Midtown Phillips,2006-01-01,midtown_phillips,Midtown Phillips
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_whittier,Whittier,2006-01-01,whittier,Whittier
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_field,Field,2006-01-01,field,Field
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_minnehaha,Minnehaha,2006-01-01,minnehaha,Minnehaha
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_willardhay,Willard - Hay,2006-01-01,willard_hay,Willard - Hay
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_folwell,Folwell,2006-01-01,folwell,Folwell
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_morrispark,Morris Park,2006-01-01,morris_park,Morris Park
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_windom,Windom,2006-01-01,windom,Windom
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_fulton,Fulton,2006-01-01,fulton,Fulton
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_nearnorth,Near - North,2006-01-01,near_north,Near - North
+http://www.minneapolismn.gov/maps/about_maps_neighbohood_windompark,Windom Park,2006-01-01,windom_park,Windom Park

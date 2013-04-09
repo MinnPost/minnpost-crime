@@ -2,7 +2,7 @@
   "name": "minnpost-crime",
   "version": "0.0.1",
   "author": "MinnPost <support@minnpost.com>",
-  "homepage": "https://github.com/MinnPost/minnpost-template",
+  "homepage": "https://github.com/MinnPost/minnpost-crime",
   "description": "MinnPost Crime",
   "contributors": [ 
     {
@@ -11,16 +11,16 @@
     } 
   ],
   "repository": {
-    // Update repository
     "type": "git",
     "url": "https://github.com/MinnPost/minnpost-crime.git"
   },
   "keywords": [
-    // Update keywords
     "minnpost"
   ],
-  "dependencies" : {
-    "grunt": "*",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "grunt": "0.4.x",
     "grunt-contrib-copy": "*",
     "grunt-s3": "*",
     "grunt-clean": "*",

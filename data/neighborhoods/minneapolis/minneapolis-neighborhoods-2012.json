@@ -3,522 +3,609 @@
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_armatage",
         "last_updated": "2006-01-01",
         "neighborhood": "Armatage",
-        "neighborhood_key": "armatage"
+        "neighborhood_key": "armatage",
+        "shape_name": "Armatage"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_hale",
         "last_updated": "2006-01-01",
         "neighborhood": "Hale",
-        "neighborhood_key": "hale"
+        "neighborhood_key": "hale",
+        "shape_name": "Hale"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_nicolletisebank",
         "last_updated": "2006-01-01",
         "neighborhood": "Nicollet Island - East Bank",
-        "neighborhood_key": "nicollet_island_east_bank"
+        "neighborhood_key": "nicollet_island_east_bank",
+        "shape_name": "Nicollet Island - East Bank"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_audubonpark",
         "last_updated": "2006-01-01",
         "neighborhood": "Audubon Park",
-        "neighborhood_key": "audubon_park"
+        "neighborhood_key": "audubon_park",
+        "shape_name": "Audubon Park"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_harrison",
         "last_updated": "2006-01-01",
         "neighborhood": "Harrison",
-        "neighborhood_key": "harrison"
+        "neighborhood_key": "harrison",
+        "shape_name": "Harrison"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_northloop",
         "last_updated": "2006-01-01",
         "neighborhood": "North Loop",
-        "neighborhood_key": "north_loop"
+        "neighborhood_key": "north_loop",
+        "shape_name": "North Loop"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_bancroft",
         "last_updated": "2006-01-01",
         "neighborhood": "Bancroft",
-        "neighborhood_key": "bancroft"
+        "neighborhood_key": "bancroft",
+        "shape_name": "Bancroft"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_hawthorne",
         "last_updated": "2006-01-01",
         "neighborhood": "Hawthorne",
-        "neighborhood_key": "hawthorne"
+        "neighborhood_key": "hawthorne",
+        "shape_name": "Hawthorne"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_northeastpark",
         "last_updated": "2006-01-01",
         "neighborhood": "Northeast Park",
-        "neighborhood_key": "northeast_park"
+        "neighborhood_key": "northeast_park",
+        "shape_name": "Northeast Park"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_beltrami",
         "last_updated": "2006-01-01",
         "neighborhood": "Beltrami",
-        "neighborhood_key": "beltrami"
+        "neighborhood_key": "beltrami",
+        "shape_name": "Beltrami"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_hiawatha",
         "last_updated": "2006-01-01",
         "neighborhood": "Hiawatha",
-        "neighborhood_key": "hiawatha"
+        "neighborhood_key": "hiawatha",
+        "shape_name": "Hiawatha"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_northrop",
         "last_updated": "2006-01-01",
         "neighborhood": "Northrop",
-        "neighborhood_key": "northrop"
+        "neighborhood_key": "northrop",
+        "shape_name": "Northrop"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_bottineau",
         "last_updated": "2006-01-01",
         "neighborhood": "Bottineau",
-        "neighborhood_key": "bottineau"
+        "neighborhood_key": "bottineau",
+        "shape_name": "Bottineau"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_holland",
         "last_updated": "2006-01-01",
         "neighborhood": "Holland",
-        "neighborhood_key": "holland"
+        "neighborhood_key": "holland",
+        "shape_name": "Holland"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_page",
         "last_updated": "2006-01-01",
         "neighborhood": "Page",
-        "neighborhood_key": "page"
+        "neighborhood_key": "page",
+        "shape_name": "Page"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_bryant",
         "last_updated": "2006-01-01",
         "neighborhood": "Bryant",
-        "neighborhood_key": "bryant"
+        "neighborhood_key": "bryant",
+        "shape_name": "Bryant"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_howe",
         "last_updated": "2006-01-01",
         "neighborhood": "Howe",
-        "neighborhood_key": "howe"
+        "neighborhood_key": "howe",
+        "shape_name": "Howe"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_phillipswest",
         "last_updated": "2006-01-01",
         "neighborhood": "Phillips West",
-        "neighborhood_key": "phillips_west"
+        "neighborhood_key": "phillips_west",
+        "shape_name": "Phillips West"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_brynmawr",
         "last_updated": "2006-01-01",
         "neighborhood": "Bryn - Mawr",
-        "neighborhood_key": "bryn_mawr"
+        "neighborhood_key": "bryn_mawr",
+        "shape_name": "Bryn - Mawr"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_humboldtindustrialarea",
         "last_updated": "2006-01-01",
         "neighborhood": "Humboldt Industrial Area",
-        "neighborhood_key": "humboldt_industrial_area"
+        "neighborhood_key": "humboldt_industrial_area",
+        "shape_name": "Humboldt Industrial Area"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_powderhornpark",
         "last_updated": "2006-01-01",
         "neighborhood": "Powderhorn Park",
-        "neighborhood_key": "powderhorn_park"
+        "neighborhood_key": "powderhorn_park",
+        "shape_name": "Powderhorn Park"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_camdenindustrial",
         "last_updated": "2006-01-01",
         "neighborhood": "Camden Industrial",
-        "neighborhood_key": "camden_industrial"
+        "neighborhood_key": "camden_industrial",
+        "shape_name": "Camden Industrial"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_jordan",
         "last_updated": "2006-01-01",
         "neighborhood": "Jordan",
-        "neighborhood_key": "jordan"
+        "neighborhood_key": "jordan",
+        "shape_name": "Jordan"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_prospectpkeriverrd",
         "last_updated": "2006-01-01",
         "neighborhood": "Prospect Park - East River",
-        "neighborhood_key": "prospect_park_east_river"
+        "neighborhood_key": "prospect_park_east_river",
+        "shape_name": "Prospect Park - East River Road"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_carag",
         "last_updated": "2006-01-01",
         "neighborhood": "CARAG",
-        "neighborhood_key": "carag"
+        "neighborhood_key": "carag",
+        "shape_name": "CARAG"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_keewaydin",
         "last_updated": "2006-01-01",
         "neighborhood": "Keewaydin",
-        "neighborhood_key": "keewaydin"
+        "neighborhood_key": "keewaydin",
+        "shape_name": "Keewaydin"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_regina",
         "last_updated": "2006-01-01",
         "neighborhood": "Regina",
-        "neighborhood_key": "regina"
+        "neighborhood_key": "regina",
+        "shape_name": "Regina"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_cedarislesdean",
         "last_updated": "2006-01-01",
         "neighborhood": "Cedar - Isles - Dean",
-        "neighborhood_key": "cedar_isles_dean"
+        "neighborhood_key": "cedar_isles_dean",
+        "shape_name": "Cedar - Isles - Dean"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_kenny",
         "last_updated": "2006-01-01",
         "neighborhood": "Kenny",
-        "neighborhood_key": "kenny"
+        "neighborhood_key": "kenny",
+        "shape_name": "Kenny"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_seward",
         "last_updated": "2006-01-01",
         "neighborhood": "Seward",
-        "neighborhood_key": "seward"
+        "neighborhood_key": "seward",
+        "shape_name": "Seward"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_cedarriverside",
         "last_updated": "2006-01-01",
         "neighborhood": "Cedar Riverside",
-        "neighborhood_key": "cedar_riverside"
+        "neighborhood_key": "cedar_riverside",
+        "shape_name": "Cedar Riverside"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_kenwood",
         "last_updated": "2006-01-01",
         "neighborhood": "Kenwood",
-        "neighborhood_key": "kenwood"
+        "neighborhood_key": "kenwood",
+        "shape_name": "Kenwood"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_sheridan",
         "last_updated": "2006-01-01",
         "neighborhood": "Sheridan",
-        "neighborhood_key": "sheridan"
+        "neighborhood_key": "sheridan",
+        "shape_name": "Sheridan"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_central",
         "last_updated": "2006-01-01",
         "neighborhood": "Central",
-        "neighborhood_key": "central"
+        "neighborhood_key": "central",
+        "shape_name": "Central"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_kingfield",
         "last_updated": "2006-01-01",
         "neighborhood": "King Field",
-        "neighborhood_key": "king_field"
+        "neighborhood_key": "king_field",
+        "shape_name": "King Field"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_shinglecreek",
         "last_updated": "2006-01-01",
         "neighborhood": "Shingle Creek",
-        "neighborhood_key": "shingle_creek"
+        "neighborhood_key": "shingle_creek",
+        "shape_name": "Shingle Creek"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_cleveland",
         "last_updated": "2006-01-01",
         "neighborhood": "Cleveland",
-        "neighborhood_key": "cleveland"
+        "neighborhood_key": "cleveland",
+        "shape_name": "Cleveland"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_lindbohanon",
         "last_updated": "2006-01-01",
         "neighborhood": "Lind - Bohanon",
-        "neighborhood_key": "lind_bohanon"
+        "neighborhood_key": "lind_bohanon",
+        "shape_name": "Lind - Bohanon"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_stanthonye",
         "last_updated": "2006-01-01",
         "neighborhood": "St. Anthony East",
-        "neighborhood_key": "st_anthony_east"
+        "neighborhood_key": "st_anthony_east",
+        "shape_name": "St. Anthony East"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_columbiapark",
         "last_updated": "2006-01-01",
         "neighborhood": "Columbia Park",
-        "neighborhood_key": "columbia_park"
+        "neighborhood_key": "columbia_park",
+        "shape_name": "Columbia Park"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_lindenhills",
         "last_updated": "2006-01-01",
         "neighborhood": "Linden Hills",
-        "neighborhood_key": "linden_hills"
+        "neighborhood_key": "linden_hills",
+        "shape_name": "Linden Hills"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_stanthonyw",
         "last_updated": "2006-01-01",
         "neighborhood": "St. Anthony West",
-        "neighborhood_key": "st_anthony_west"
+        "neighborhood_key": "st_anthony_west",
+        "shape_name": "St. Anthony West"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_como",
         "last_updated": "2006-01-01",
         "neighborhood": "Como",
-        "neighborhood_key": "como"
+        "neighborhood_key": "como",
+        "shape_name": "Como (Minneapolis)"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_loganpark",
         "last_updated": "2006-01-01",
         "neighborhood": "Logan Park",
-        "neighborhood_key": "logan_park"
+        "neighborhood_key": "logan_park",
+        "shape_name": "Logan Park"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_standish",
         "last_updated": "2006-01-01",
         "neighborhood": "Standish",
-        "neighborhood_key": "standish"
+        "neighborhood_key": "standish",
+        "shape_name": "Standish"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_cooper",
         "last_updated": "2006-01-01",
         "neighborhood": "Cooper",
-        "neighborhood_key": "cooper"
+        "neighborhood_key": "cooper",
+        "shape_name": "Cooper"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_longfellow",
         "last_updated": "2006-01-01",
         "neighborhood": "Longfellow",
-        "neighborhood_key": "longfellow"
+        "neighborhood_key": "longfellow",
+        "shape_name": "Longfellow"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_stevenssquareloringheights",
         "last_updated": "2006-01-01",
         "neighborhood": "Stevens Square - Loring Heights",
-        "neighborhood_key": "stevens_square_loring_heights"
+        "neighborhood_key": "stevens_square_loring_heights",
+        "shape_name": "Steven's Square - Loring Heights"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_corcoran",
         "last_updated": "2006-01-01",
         "neighborhood": "Corcoran",
-        "neighborhood_key": "corcoran"
+        "neighborhood_key": "corcoran",
+        "shape_name": "Corcoran"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_loringpark",
         "last_updated": "2006-01-01",
         "neighborhood": "Loring Park",
-        "neighborhood_key": "loring_park"
+        "neighborhood_key": "loring_park",
+        "shape_name": "Loring Park"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_sumnerglenwood",
         "last_updated": "2006-01-01",
         "neighborhood": "Sumner - Glenwood",
-        "neighborhood_key": "sumner_glenwood"
+        "neighborhood_key": "sumner_glenwood",
+        "shape_name": "Sumner - Glenwood"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_diamondlake",
         "last_updated": "2006-01-01",
         "neighborhood": "Diamond Lake",
-        "neighborhood_key": "diamond_lake"
+        "neighborhood_key": "diamond_lake",
+        "shape_name": "Diamond Lake"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_lowryhill",
         "last_updated": "2006-01-01",
         "neighborhood": "Lowry Hill",
-        "neighborhood_key": "lowry_hill"
+        "neighborhood_key": "lowry_hill",
+        "shape_name": "Lowry Hill"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_tangletown",
         "last_updated": "2006-01-01",
         "neighborhood": "Tangletown",
-        "neighborhood_key": "tangletown"
+        "neighborhood_key": "tangletown",
+        "shape_name": "Tangletown"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_downtowneast",
         "last_updated": "2006-01-01",
         "neighborhood": "Downtown East",
-        "neighborhood_key": "downtown_east"
+        "neighborhood_key": "downtown_east",
+        "shape_name": "Downtown East"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_lowryhilleast",
         "last_updated": "2006-01-01",
         "neighborhood": "Lowry Hill East",
-        "neighborhood_key": "lowry_hill_east"
+        "neighborhood_key": "lowry_hill_east",
+        "shape_name": "Lowry Hill East"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_universityminnesota",
         "last_updated": "2006-01-01",
         "neighborhood": "University of Minnesota",
-        "neighborhood_key": "university_of_minnesota"
+        "neighborhood_key": "university_of_minnesota",
+        "shape_name": "University of Minnesota"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_downtownwest",
         "last_updated": "2006-01-01",
         "neighborhood": "Downtown West",
-        "neighborhood_key": "downtown_west"
+        "neighborhood_key": "downtown_west",
+        "shape_name": "Downtown West"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_lyndale",
         "last_updated": "2006-01-01",
         "neighborhood": "Lyndale",
-        "neighborhood_key": "lyndale"
+        "neighborhood_key": "lyndale",
+        "shape_name": "Lyndale"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_venturavillage",
         "last_updated": "2006-01-01",
         "neighborhood": "Ventura Village",
-        "neighborhood_key": "ventura_village"
+        "neighborhood_key": "ventura_village",
+        "shape_name": "Ventura Village"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_eastharriet",
         "last_updated": "2006-01-01",
         "neighborhood": "East Harriet",
-        "neighborhood_key": "east_harriet"
+        "neighborhood_key": "east_harriet",
+        "shape_name": "East Harriet"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_lynnhurst",
         "last_updated": "2006-01-01",
         "neighborhood": "Lynnhurst",
-        "neighborhood_key": "lynnhurst"
+        "neighborhood_key": "lynnhurst",
+        "shape_name": "Lynnhurst"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_victory",
         "last_updated": "2006-01-01",
         "neighborhood": "Victory",
-        "neighborhood_key": "victory"
+        "neighborhood_key": "victory",
+        "shape_name": "Victory"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_eastisles",
         "last_updated": "2006-01-01",
         "neighborhood": "East Isles",
-        "neighborhood_key": "east_isles"
+        "neighborhood_key": "east_isles",
+        "shape_name": "East Isles"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_marcyholmes",
         "last_updated": "2006-01-01",
         "neighborhood": "Marcy Holmes",
-        "neighborhood_key": "marcy_holmes"
+        "neighborhood_key": "marcy_holmes",
+        "shape_name": "Marcy Holmes"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_waitepark",
         "last_updated": "2006-01-01",
         "neighborhood": "Waite Park",
-        "neighborhood_key": "waite_park"
+        "neighborhood_key": "waite_park",
+        "shape_name": "Waite Park"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_eastphillips",
         "last_updated": "2006-01-01",
         "neighborhood": "East Phillips",
-        "neighborhood_key": "east_phillips"
+        "neighborhood_key": "east_phillips",
+        "shape_name": "East Phillips"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_marshallterrace",
         "last_updated": "2006-01-01",
         "neighborhood": "Marshall Terrace",
-        "neighborhood_key": "marshall_terrace"
+        "neighborhood_key": "marshall_terrace",
+        "shape_name": "Marshall Terrace"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_webbercamden",
         "last_updated": "2006-01-01",
         "neighborhood": "Webber - Camden",
-        "neighborhood_key": "webber_camden"
+        "neighborhood_key": "webber_camden",
+        "shape_name": "Webber - Camden"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_ecco",
         "last_updated": "2006-01-01",
         "neighborhood": "ECCO",
-        "neighborhood_key": "ecco"
+        "neighborhood_key": "ecco",
+        "shape_name": "ECCO"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_mckinley",
         "last_updated": "2006-01-01",
         "neighborhood": "McKinley",
-        "neighborhood_key": "mckinley"
+        "neighborhood_key": "mckinley",
+        "shape_name": "McKinley"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_wenonah",
         "last_updated": "2006-01-01",
         "neighborhood": "Wenonah",
-        "neighborhood_key": "wenonah"
+        "neighborhood_key": "wenonah",
+        "shape_name": "Wenonah"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_elliotpark",
         "last_updated": "2006-01-01",
         "neighborhood": "Elliot Park",
-        "neighborhood_key": "elliot_park"
+        "neighborhood_key": "elliot_park",
+        "shape_name": "Elliot Park"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_midcityindustrial",
         "last_updated": "2006-01-01",
         "neighborhood": "Mid - City Industrial",
-        "neighborhood_key": "mid_city_industrial"
+        "neighborhood_key": "mid_city_industrial",
+        "shape_name": "Mid - City Industrial"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_westcalhoun",
         "last_updated": "2006-01-01",
         "neighborhood": "West Calhoun",
-        "neighborhood_key": "west_calhoun"
+        "neighborhood_key": "west_calhoun",
+        "shape_name": "West Calhoun"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_ericsson",
         "last_updated": "2006-01-01",
         "neighborhood": "Ericsson",
-        "neighborhood_key": "ericsson"
+        "neighborhood_key": "ericsson",
+        "shape_name": "Ericsson"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_midtownphillips",
         "last_updated": "2006-01-01",
         "neighborhood": "Midtown Phillips",
-        "neighborhood_key": "midtown_phillips"
+        "neighborhood_key": "midtown_phillips",
+        "shape_name": "Midtown Phillips"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_whittier",
         "last_updated": "2006-01-01",
         "neighborhood": "Whittier",
-        "neighborhood_key": "whittier"
+        "neighborhood_key": "whittier",
+        "shape_name": "Whittier"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_field",
         "last_updated": "2006-01-01",
         "neighborhood": "Field",
-        "neighborhood_key": "field"
+        "neighborhood_key": "field",
+        "shape_name": "Field"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_minnehaha",
         "last_updated": "2006-01-01",
         "neighborhood": "Minnehaha",
-        "neighborhood_key": "minnehaha"
+        "neighborhood_key": "minnehaha",
+        "shape_name": "Minnehaha"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_willardhay",
         "last_updated": "2006-01-01",
         "neighborhood": "Willard - Hay",
-        "neighborhood_key": "willard_hay"
+        "neighborhood_key": "willard_hay",
+        "shape_name": "Willard - Hay"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_folwell",
         "last_updated": "2006-01-01",
         "neighborhood": "Folwell",
-        "neighborhood_key": "folwell"
+        "neighborhood_key": "folwell",
+        "shape_name": "Folwell"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_morrispark",
         "last_updated": "2006-01-01",
         "neighborhood": "Morris Park",
-        "neighborhood_key": "morris_park"
+        "neighborhood_key": "morris_park",
+        "shape_name": "Morris Park"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_windom",
         "last_updated": "2006-01-01",
         "neighborhood": "Windom",
-        "neighborhood_key": "windom"
+        "neighborhood_key": "windom",
+        "shape_name": "Windom"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_fulton",
         "last_updated": "2006-01-01",
         "neighborhood": "Fulton",
-        "neighborhood_key": "fulton"
+        "neighborhood_key": "fulton",
+        "shape_name": "Fulton"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_nearnorth",
         "last_updated": "2006-01-01",
         "neighborhood": "Near - North",
-        "neighborhood_key": "near_north"
+        "neighborhood_key": "near_north",
+        "shape_name": "Near - North"
     },
     {
         "url": "http://www.minneapolismn.gov/maps/about_maps_neighbohood_windompark",
         "last_updated": "2006-01-01",
         "neighborhood": "Windom Park",
-        "neighborhood_key": "windom_park"
+        "neighborhood_key": "windom_park",
+        "shape_name": "Windom Park"
     }
 ]
