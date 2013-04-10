@@ -21,10 +21,14 @@
   },
   "devDependencies": {
     "grunt": "0.4.x",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "*",
     "grunt-contrib-copy": "*",
-    "grunt-s3": "*",
-    "grunt-clean": "*",
-    "grunt-contrib-jst": "*"
+    "grunt-contrib-jst": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-gss-pull": "*",
+    "grunt-s3": "*"
   }, 
   "licenses": [
     {
