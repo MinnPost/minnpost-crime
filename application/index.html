@@ -98,7 +98,7 @@
 
     <!-- Application CSS -->
     <style type="text/css">
-      @import url('./css/style.css');
+      @import url('../dist/minnpost-crime.latest.css');
     </style>
     
     <!--
@@ -240,13 +240,7 @@
       }
     </script>
     
-    <script type="text/javascript" src="./lib/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="./lib/jquery.jsonp-2.4.0.min.js"></script>
-    <script type="text/javascript" src="./lib/underscore-1.4.4.min.js"></script>
-    <script type="text/javascript" src="./lib/backbone-1.0.0.min.js"></script>
-    <script type="text/javascript" src="./lib/d3-3.1.5.min.js"></script>
-    <script type="text/javascript" src="./lib/topojson-1.0.0.min.js"></script>
-    <script type="text/javascript" src="./lib/simple-map-d3-master-20130410.js"></script>
+    <script type="text/javascript" src="../dist/minnpost-crime.libs.js"></script>
     
     
 
@@ -257,8 +251,7 @@
     <script type="text/javascript" src="http://code.highcharts.com/2.2.4/highcharts.js"></script>
     <script type="text/javascript" src="http://code.highcharts.com/2.2.4/modules/exporting.js"></script>
 
-    <script type="text/javascript" src="./js/charts.js"></script>
-    <script type="text/javascript" src="./js/maps.js"></script>
+    <script type="text/javascript" src="../dist/minnpost-crime.latest.min.js"></script>
 
 
     <!--
@@ -269,7 +262,7 @@
     <script type="text/javascript">
       
       $(document).ready(function() {
-        mapper('../data/');
+        mapper('../dist/data/');
       });
     
     </script>

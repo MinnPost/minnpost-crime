@@ -98,7 +98,7 @@
 
     <!-- Application CSS -->
     <style type="text/css">
-      @import url('./css/style.css');
+      @import url('https://s3.amazonaws.com/data.minnpost/projects/minnpost-crime/minnpost-crime.latest.css');
     </style>
     
     <!--
@@ -211,27 +211,6 @@
     </script>
     
 
-
-    <!-- 
-      Include Javascript libraries here.
-      
-      The bits around the inclusion of the libraries
-      provides a temporary hack around jQuery so we
-      can use a newer version.
-      
-      JS and other relevant libraries are hosted on our
-      AWS S3 account.  This ensures we do not have to
-      embed them or otherwise manage them on the MinnPost
-      site which would be a pain.  We can also leverage
-      using the same source across projects.
-      
-      You are welcome to use hosted/CDN versions of
-      libraries, but do ensure you are using a specific
-      version.  DO NOT use the latest, or latest-stable,
-      or development versions of hosted libraries
-      as they are subject to change and will eventutally
-      break, creating more work for us.
-    -->
     <script type="text/javascript">
       // Hack around existing jQuery
       if (jQuery) {
@@ -240,25 +219,12 @@
       }
     </script>
     
-    <script type="text/javascript" src="./lib/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="./lib/jquery.jsonp-2.4.0.min.js"></script>
-    <script type="text/javascript" src="./lib/underscore-1.4.4.min.js"></script>
-    <script type="text/javascript" src="./lib/backbone-1.0.0.min.js"></script>
-    <script type="text/javascript" src="./lib/d3-3.1.5.min.js"></script>
-    <script type="text/javascript" src="./lib/topojson-1.0.0.min.js"></script>
-    <script type="text/javascript" src="./lib/simple-map-d3-master-20130410.js"></script>
+    <script type="text/javascript" src="https://s3.amazonaws.com/data.minnpost/projects/minnpost-crime/minnpost-crime.libs.js"></script>
     
-    
-
-    <!--
-      Using hosted CDN version of Highcharts, note that
-      it is a specific version.
-    -->
     <script type="text/javascript" src="http://code.highcharts.com/2.2.4/highcharts.js"></script>
     <script type="text/javascript" src="http://code.highcharts.com/2.2.4/modules/exporting.js"></script>
 
-    <script type="text/javascript" src="./js/charts.js"></script>
-    <script type="text/javascript" src="./js/maps.js"></script>
+    <script type="text/javascript" src="https://s3.amazonaws.com/data.minnpost/projects/minnpost-crime/minnpost-crime.latest.min.js"></script>
 
 
     <!--
@@ -267,9 +233,8 @@
       https://github.com/MinnPost/javascript
     -->
     <script type="text/javascript">
-      
       $(document).ready(function() {
-        mapper('../data/');
+        mapper('https://s3.amazonaws.com/data.minnpost/projects/minnpost-crime/data/');
       });
     
     </script>

@@ -46,6 +46,19 @@
   margin-bottom: 1em;
 }
 
+.simple-map-d3-tooltip-container {
+  position: relative;
+}
+.simple-map-d3-tooltip {
+  position: absolute;
+  display: none;
+  top: 5px;
+  right: 5px;
+  border: 1px solid #898989;
+  padding: .5em;
+  font-size: .75em;
+}
+
 #crime-map {
   width: 100%;
   height: 500px;
