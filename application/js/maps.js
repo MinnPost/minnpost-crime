@@ -2,9 +2,14 @@
 
 (function($, undefined) {
   var neighborhoodTopoJSON = '../data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012-keyed.topo.json';
+  var crimeURLBase = 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=';
+  var crimeQuery = "SELECT * FROM `swdata` WHERE year = '2011'";
   var $mapContainer = $('#crime-map');
   var width = $mapContainer.width();
   var height = $mapContainer.height();
+  var crimes = {};
+  var colorSet = ['#F7FCF5', '#E5F5E0', '#C7E9C0', '#A1D99B', 
+      '#74C476', '#41AB5D', '#238B45', '#005A32'];
   
   // Canvas  
   var svg = d3.select('#crime-map').append('svg')
@@ -18,6 +23,26 @@
   
     var path = d3.geo.path()
       .projection(projOptions.projection);
+    
+    // Add total crimes up
+    geojson.features = _.map(geojson.features, function(f) {
+      var crimesInNeighborhood = _.where(crimes, { 'neighborhood_key': f.properties.neighbor_1 });
+      var total = 0;
+      _.each(crimesInNeighborhood, function(c) { total += c.total; });
+      f.properties.crimes = total;
+      return f;
+    });
+    
+    // Color rate
+    var min = d3.min(geojson.features, function(d) { return d.properties['crimes']; });
+    var max = d3.max(geojson.features, function(d) { return d.properties['crimes']; });
+    // Use a sort of sensible, proportional color step
+    var colorStep = ((max - min) / colorSet.length / 2);
+
+    var colorRange = d3.scale.linear()
+      .domain(d3.range(min, max, colorStep))
+      .range(colorSet)
+      .clamp(true);
   
     svg
       .selectAll('path')
@@ -25,11 +50,18 @@
       .enter().append('path')
         .attr('d', path)
         .attr('class', 'crime-map-boundary')
-        .attr('transform', 'translate(' + projOptions.offsetxd + ', ' + projOptions.offsetyd + ')');
+        .attr('transform', 'translate(' + projOptions.offsetxd + ', ' + projOptions.offsetyd + ')')
+        .attr('fill', function(d) { return colorRange(d.properties['crimes']) });
   };
   
   // Get data
-  d3.json(neighborhoodTopoJSON, drawMap);
+  $.jsonp({
+    url: crimeURLBase + encodeURI(crimeQuery),
+    success: function(data) {
+      crimes = data;
+      d3.json(neighborhoodTopoJSON, drawMap);
+    }
+  });
   
 })(jQuery);
 
