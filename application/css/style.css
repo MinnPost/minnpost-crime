@@ -1,0 +1,69 @@
+
+.interactive-container  {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-top: 1em;
+}
+.interactive-container .clear {
+  clear: both;
+}
+.interactive-container .js-dependent,
+.interactive-container .hidden {
+  display: none;
+}
+.interactive-container .footnote {
+  font-size: .75em;
+  font-style: italic;
+  color: #414141;
+  margin-top: 3em;
+  border-top: 1px solid #BCBCBC;
+  padding-top: 1em;
+}
+.interactive-container .loading-general {
+  width: 100%;
+  text-align: center;
+  padding: 2em 2em;
+  color: #ABABAB;
+  vertical-align: middle;
+  height: 100%;
+  line-height: 100%;
+}
+.interactive-container .loading-general span {
+  padding: 10px 5px 10px 40px;
+  background: transparent url('https://s3.amazonaws.com/data.minnpost/projects/2012-mn-election-results/images/ajax-loader.gif') center left no-repeat;
+  vertical-align: middle;
+  height: 100%;
+  line-height: 100%;
+}
+
+.interactive-container .number {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.interactive-container .highchart-container {
+  width: 100%;
+  height: 500px;
+  margin-bottom: 1em;
+}
+
+#crime-map {
+  width: 100%;
+  height: 500px;
+  border: 1px solid #232323;
+  margin-bottom: 2em;
+}
+
+.crime-map-boundary {
+  stroke: #232323;
+  fill: #FCFCFC;
+}
+
+/**
+ * Begin custom styles.
+ */
+
+/**
+ * Responsive creen size styles
+ */
+@media screen and (max-width: 960px) {
+}
