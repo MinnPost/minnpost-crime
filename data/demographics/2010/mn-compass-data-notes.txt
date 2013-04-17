@@ -1,0 +1,29 @@
+The following was pulled from the original Excel file
+=========================================================
+
+Notes about the data
+
+The data appearing in this workbook  were prepared by Minnesota Compass for the Minneapolis-St. Paul Neighborhood Profiles, generously funded by the McKnight Foundation  and under the direction of numerous community advisors. 
+
+The data come from three sources produced by the U.S. Census Bureau: 
+
+- 2010 decennial census (demographic data including total population, race and ethnicity, as well as housing units and types of households); 
+- 2009 Local Employment Dynamics data from OnTheMap (employment of residents, and local jobs and their characteristics); and 
+- 2005-2009 American Community Survey (all other data including income, education, housing and social characteristics). 
+
+The data year (found in row 3) will alert users of the original data source. 
+
+Data from the 2005-2009 American Community Survey were collected by surveys over those five years, and therefore describe the average characteristics for the 5-year time period.  Data in the workbook from the 2005-2009 American Community Survey have been weighted to the 2010 counts for housing and population, although percentages are unchanged. This provides a better estimate of how many people or housing units relate to each characteristic. All dollar amounts are shown in 2009 dollars. Percentages may not sum to 100 percent due to rounding.
+
+No data in this workbook have been suppressed. However, data users are cautioned that many data are unreliable, due to large error margins associated with the data (found alongside the data estimates).  Please use with discretion.  Error margins are associated with a 90% confidence interval.   
+
+Minnesota Compass has chosen to suppress data in the Minneapolis-St. Paul Neighborhood Profiles available online when there were fewer than 10 people or units in a category, or the error margins were greater than ± 10 percentage points, or the error margins were greater than 25% of the estimate of a numeric value (such as median income). Large error margins occur when too few people were in the survey sample, making the data unreliable. 
+
+X indicates data were unavailable or not applicable. 
+Data have been summarized to the neighborhood-level by assigning census blocks, block groups, and tracts to respective neighborhoods and apportioning data in the cases where these geographies have been split across neighborhoods. 
+
+These data are public information and may be reproduced for free with appropriate citation. Users of this data should cite it as "Minnesota Compass, Minneapolis-St. Paul Neighborhood Profiles" and include the following URL: www.mncompass.org/twincities/neighborhoods.php. 
+
+Additional questions can be directed to info@mncompass.org.
+
+-Minnesota Compass, Wilder Research, October 2011

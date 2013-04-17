@@ -18,6 +18,8 @@
     "minnpost"
   ],
   "dependencies": {
+    "csv": "0.3.x",
+    "underscore": "1.4.x"
   },
   "devDependencies": {
     "grunt": "0.4.x",
