@@ -27,7 +27,12 @@ var cHeaders = [];
 var fData = {};
 var dataStartRow = 4;
 var columnDataStart = 5;
-
+var nTranslations = {
+  'cedar_isles___dean': 'cedar_isles_dean',
+  'humboldt_industrial': 'humboldt_industrial_area',
+  'prospect_park_east_river_road': 'prospect_park_east_river',
+  'steven_s_square_loring_heights': 'stevens_square_loring_heights'
+};
 
 
 // Make ID from headings
@@ -40,16 +45,24 @@ function makeID(name, type, number, year) {
 };
 
 // Make place_id
-function makePlaceID(neighborhood, community) {
+function makePlaceID(neighborhood, community, city) {
+  var id = '';
+  var n;
+
+  id = city.toLowerCase().replace(/[^a-z0-9]/g, '_')
+      .replace('__', '_').replace('__', '_');
+  id += '_';
+      
   if (!neighborhood) {
-    neighborhood = 'community_' + community.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    id += 'community_' + community.toLowerCase().replace(/[^a-z0-9]/g, '_');
   }
   else {
-    neighborhood = neighborhood.toLowerCase().replace(/[^a-z0-9]/g, '_')
+    n = neighborhood.toLowerCase().replace(/[^a-z0-9]/g, '_')
       .replace('__', '_').replace('__', '_');
+    id += (!_.isUndefined(nTranslations[n])) ? nTranslations[n] : n;
   }
   
-  return neighborhood;
+  return id;
 };
 
 
@@ -102,6 +115,9 @@ function saveNewFile() {
     data: fData,
     meta: cHeaders
   };
+      
+  console.log('Rows: ' + _.size(fData));
+  console.log('Columns: ' + _.size(cHeaders));
 
   fs.writeFile(output_path, JSON.stringify(output), function(error) {
     if (error) {
@@ -132,13 +148,13 @@ function processCSV() {
     .on('record', function(row, index) {
       var processedRow = {};
       
-      if (index >= dataStartRow) {
+      if (index >= dataStartRow && row[0] != '') {
         _.each(cHeaders, function(h, i) {
           processedRow[h.key] = row[i];
         });
       
         // Make place/neighborhood id
-        processedRow.placeID = makePlaceID(row[1], row[2]);
+        processedRow.placeID = makePlaceID(row[1], row[2], row[4]);
         
         fData[processedRow.placeID] = processedRow;
       }
