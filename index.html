@@ -147,6 +147,29 @@
         <!--
           This is where your main HTML should go.
         -->
+          <h3>Demographics and Crime (2011)</h3>
+          
+          <form>
+            <label for="demographics-select-1">Demographics 1:</label>
+            <select name="demographics-select-1" id="demographics-select-1">
+              <option value="none">None</option>
+            </select> <br />
+            
+            <label for="demographics-select-3">Demographics 2:</label>
+            <select name="demographics-select-2" id="demographics-select-2">
+              <option value="none">None</option>
+            </select> <br />
+            
+            <a href="#" id="demographics-submit">Update</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            [<a href="#" id="demographics-load-data">Load data</a>]
+          </form>
+            
+          <div id="demographic-chart"></div>
+          <div class="clear-block">
+            <div id="demographic-map-1"></div>
+            <div id="demographic-map-2"></div>
+          </div>
+        </div>
         
         <div>
           <h3>Crime maps (2011)</h3>
@@ -235,6 +258,7 @@
     <script type="text/javascript">
       $(document).ready(function() {
         mapper('http://mp-jsonproxy.herokuapp.com/proxy?callback=?&url=https://s3.amazonaws.com/data.minnpost/projects/minnpost-crime/data/');
+        demographics('http://mp-jsonproxy.herokuapp.com/proxy?callback=?&url=https://s3.amazonaws.com/data.minnpost/projects/minnpost-crime/data/');
       });
     
     </script>

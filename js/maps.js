@@ -1,5 +1,5 @@
-var DATAPATH = DATAPATH || '../data/';
 var mapper = {};
+var neighborhood2011GeoJSON;
 
 (function($, undefined) {
   var crimeURLBase = 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=';
@@ -9,6 +9,7 @@ var mapper = {};
   var crimes = {};
   var neighborhoods = {};
   var geojson;
+  var templateTooltip = _.template($('#template-tooltip-crime').html());
   
   // Handle incoming data
   function drawMap(type) {
@@ -32,11 +33,15 @@ var mapper = {};
     });
     
     $('#crime-map').html('');
+    
+    neighborhood2011GeoJSON = geojson;
+    
     var map1 = SimpleMapD3({
       container: '#crime-map',
       data: geojson,
       colorOn: true,
-      colorProperty: type
+      colorProperty: type,
+      tooltipContent: templateTooltip
     });
   }
 

@@ -25,6 +25,7 @@ var output_path = path.resolve(__dirname, '../' + output);
 var cData = [];
 var cHeaders = [];
 var fData = {};
+var fMeta = {};
 var dataStartRow = 4;
 var columnDataStart = 5;
 var nTranslations = {
@@ -109,11 +110,18 @@ function makeHeaders() {
   });
 };
 
+// Transform headers
+function makeFinalHeaders() {
+  _.each(cHeaders, function(c) {
+    fMeta[c.key] = c;
+  });
+}
+
 // Save out data
 function saveNewFile() {
   var output = {
     data: fData,
-    meta: cHeaders
+    meta: fMeta
   };
       
   console.log('Rows: ' + _.size(fData));
@@ -160,6 +168,7 @@ function processCSV() {
       }
     })
     .on('end', function(count) {
+      makeFinalHeaders();
       saveNewFile();
     })
     .on('error', function(error) {
