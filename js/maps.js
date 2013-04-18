@@ -47,7 +47,7 @@ var neighborhood2011GeoJSON;
 
   
   mapper = function(dataPath) {
-    dataPath = dataPath || './data/';
+    dataPath = dataPath || './data/neighborhoods/minneapolis/';
   
     // Get data
     $.jsonp({
@@ -60,7 +60,7 @@ var neighborhood2011GeoJSON;
         if (dataPath.indexOf('proxy') > 0) {
           method = 'jsonp';
         }
-        var neighborhoodTopoJSON = dataPath + 'neighborhoods/minneapolis/minneapolis-neighborhoods-2012-keyed.topo.json';
+        var neighborhoodTopoJSON = dataPath + 'minneapolis-neighborhoods-2012-keyed.topo.json';
         $.ajax({
           dataType: method,
           url: neighborhoodTopoJSON,

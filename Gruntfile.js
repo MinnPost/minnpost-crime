@@ -38,7 +38,7 @@ module.exports = function(grunt) {
         separator: '\r\n\r\n'
       },
       dist: {
-        src: ['js/maps.js', 'js/charts.js'],
+        src: ['js/maps.js', 'js/charts.js', 'js/demographics.js'],
         dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.js'
       },
       dist_latest: {
@@ -132,14 +132,17 @@ module.exports = function(grunt) {
         //key: 'YOUR KEY',
         //secret: 'YOUR SECRET',
         bucket: 'data.minnpost',
-        access: 'public-read',
-        gzip: true
+        access: 'public-read'
       },
       mp_deploy: {
         upload: [
           {
-            src: 'dist/**',
+            src: 'dist/*',
             dest: 'projects/<%= pkg.name %>/'
+          },
+          {
+            src: 'dist/data/**',
+            dest: 'projects/<%= pkg.name %>/data/'
           }
         ]
       }

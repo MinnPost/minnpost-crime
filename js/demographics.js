@@ -13,7 +13,6 @@ var demographics = {};
     if (neighborhood2011GeoJSON && demoData) {
       geojson = neighborhood2011GeoJSON;
       
-      console.log(demoData.data);
       _.each(demoData.data, function(d, r) {
         _.each(demoData.data[r], function(c, k) {
           if (demoData.meta[k] && demoData.meta[k].type == '%') {
@@ -78,14 +77,14 @@ var demographics = {};
 
   
   demographics = function(dataPath) {
-    dataPath = dataPath || './data/';
+    dataPath = dataPath || './data/demographics/2010/';
     
     // Get data
     var method = 'json';
     if (dataPath.indexOf('proxy') > 0) {
       method = 'jsonp';
     }
-    var url = dataPath + 'demographics/2010/twin-cities-neighborhood-demographics-2010.json';
+    var url = dataPath + 'twin-cities-neighborhood-demographics-2010.json';
     $.ajax({
       dataType: method,
       url: url,
