@@ -8,6 +8,8 @@
  * Output:
  * data/demographics/2010/twin-cities-neighborhood-demographics-2010.json
  *
+ * Due to the amount of columns and data in the column headings
+ * we actually make a key system so that we do not repeat so much data.
  */
 var path = require('path');
 var fs = require('fs');
@@ -75,14 +77,16 @@ function makeHeaders() {
   _.each(cData[dataStartRow - 1], function(c, i) {
     var columnMetaData = {};
     
-    columnMetaData.n = cData[3][i];
-      
+    // Make key.  Use string so not to confuse
+    // with an array
+    columnMetaData.key = 'k-' + i;
+    
+    columnMetaData.name = cData[3][i];
     if (i >= columnDataStart) {
       columnMetaData.id = makeID(cData[3][i], cData[0][i], cData[1][i], cData[2][i]);
-      // Type
-      columnMetaData.t = makeType(cData[1][i]);
-      // Year
-      columnMetaData.y = cData[2][i];
+      columnMetaData.data = cData[0][i];
+      columnMetaData.type = makeType(cData[1][i]);
+      columnMetaData.year = cData[2][i];
     }
     else {
       columnMetaData.id = makeID(cData[3][i]);
@@ -94,7 +98,12 @@ function makeHeaders() {
 
 // Save out data
 function saveNewFile() {
-  fs.writeFile(output_path, JSON.stringify(fData), function(error) {
+  var output = {
+    data: fData,
+    meta: cHeaders
+  };
+
+  fs.writeFile(output_path, JSON.stringify(output), function(error) {
     if (error) {
       console.log('Error saving: ' + error);
     } 
@@ -125,20 +134,13 @@ function processCSV() {
       
       if (index >= dataStartRow) {
         _.each(cHeaders, function(h, i) {
-          var meta = _.clone(h);
-          delete meta.id;
-        
-          processedRow[h.id] = meta;
-          processedRow[h.id].value = row[i];
+          processedRow[h.key] = row[i];
         });
       
         // Make place/neighborhood id
-        processedRow.p_id = {
-          name: 'Place ID',
-          value: makePlaceID(row[1], row[2])
-        };
+        processedRow.placeID = makePlaceID(row[1], row[2]);
         
-        fData[processedRow.p_id.value] = processedRow;
+        fData[processedRow.placeID] = processedRow;
       }
     })
     .on('end', function(count) {
