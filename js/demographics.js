@@ -55,7 +55,7 @@ var demographics = {};
         .replace('{{{PROP1}}}', demo1)
         .replace('{{{PROP2}}}', demo2)
         .replace('{{{PROP1}}}', demo1)
-        .replace('{{{PROP2}}}', demo2))
+        .replace('{{{PROP2}}}', demo2));
       
       $('#demographic-map-1').html('');
       var map1 = SimpleMapD3({
@@ -66,7 +66,7 @@ var demographics = {};
         tooltipContent: template
       });
       $('#demographic-map-2').html('');
-      var map1 = SimpleMapD3({
+      var map2 = SimpleMapD3({
         container: '#demographic-map-2',
         data: geojson,
         colorOn: true,
