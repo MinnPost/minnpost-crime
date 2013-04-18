@@ -70,6 +70,20 @@
   stroke: #232323;
 }
 
+#demographic-map-1,
+#demographic-map-2 {
+  width: 40%;
+  height: 300px;
+  border: 1px solid #232323;
+  margin: 0 10px 2em 0;
+  float: left;
+}
+
+#demographics-select-1,
+#demographics-select-2 {
+  width: 300px;
+}
+
 /**
  * Begin custom styles.
  */
