@@ -50,14 +50,19 @@ var mapper = {};
       success: function(data) {
         crimes = data;
         
-        console.log(dataPath);
-        // *********************
-        
+        // hackish
+        var method = 'json';
+        if (dataPath.indexOf('proxy') > 0) {
+          method = 'jsonp';
+        }
         var neighborhoodTopoJSON = dataPath + 'neighborhoods/minneapolis/minneapolis-neighborhoods-2012-keyed.topo.json';
-        d3.json(neighborhoodTopoJSON, function(error, data) {
-          neighborhoods = data;
-          
-          drawMap();
+        $.ajax({
+          dataType: method,
+          url: neighborhoodTopoJSON,
+          success: function(data) {
+            neighborhoods = data;
+            drawMap();
+          }
         });
       }
     });

@@ -29,7 +29,7 @@ module.exports = function(grunt) {
           namespace: 'mpApp.<%= pkg.name %>.templates'
         },
         files: {
-          'dist/templates.js': ['application/js/templates/*.html']
+          'dist/templates.js': ['js/templates/*.html']
         }
       }
     },
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
         separator: '\r\n\r\n'
       },
       dist: {
-        src: ['application/js/maps.js', 'application/js/charts.js'],
+        src: ['js/maps.js', 'js/charts.js'],
         dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.js'
       },
       dist_latest: {
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
         dest: 'dist/<%= pkg.name %>.latest.js'
       },
       libs: {
-        src: ['application/lib/jquery-1.9.1.min.js', 'application/lib/underscore-1.4.4.min.js', 'application/lib/backbone-1.0.0.min.js', 'application/lib/jquery.jsonp-2.4.0.min.js', 'application/lib/d3-3.1.5.min.js', 'application/lib/topojson-1.0.0.min.js', 'application/lib/simple-map-d3-master-20130410.js'],
+        src: ['lib/jquery-1.9.1.min.js', 'lib/underscore-1.4.4.min.js', 'lib/backbone-1.0.0.min.js', 'lib/jquery.jsonp-2.4.0.min.js', 'lib/d3-3.1.5.min.js', 'lib/topojson-1.0.0.min.js', 'lib/simple-map-d3-master-20130410.js'],
         dest: 'dist/<%= pkg.name %>.libs.js',
         options: {
           separator: ';\r\n\r\n'
@@ -76,20 +76,20 @@ module.exports = function(grunt) {
     copy: {
       dist: {
         files: {
-          'dist/<%= pkg.name %>.<%= pkg.version %>.css': 'application/css/style.css',
-          'dist/<%= pkg.name %>.<%= pkg.version %>.ie.css': 'application/css/style.ie.css'
+          'dist/<%= pkg.name %>.<%= pkg.version %>.css': 'css/style.css',
+          'dist/<%= pkg.name %>.<%= pkg.version %>.ie.css': 'css/style.ie.css'
         }
       },
       dist_latest: {
         files: {
-          'dist/<%= pkg.name %>.latest.css': 'application/css/style.css',
-          'dist/<%= pkg.name %>.latest.ie.css': 'application/css/style.ie.css'
+          'dist/<%= pkg.name %>.latest.css': 'css/style.css',
+          'dist/<%= pkg.name %>.latest.ie.css': 'css/style.ie.css'
         }
       },
       images: {
         files: [
           {
-            cwd: './application/css/images/',
+            cwd: './css/images/',
             expand: true,
             filter: 'isFile',
             src: ['*'],

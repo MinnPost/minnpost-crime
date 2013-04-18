@@ -66,7 +66,7 @@
       Include any library or external CSS files below.
     -->
     <style type="text/css">
-      @import url('./lib/flurid-2.1/flurid.min.css');
+      @import url('./components/flurid-2.1/flurid.min.css');
     </style>
     
     
@@ -98,7 +98,7 @@
 
     <!-- Application CSS -->
     <style type="text/css">
-      @import url('../dist/minnpost-crime.latest.css');
+      @import url('./css/style.css');
     </style>
     
     <!--
@@ -240,7 +240,13 @@
       }
     </script>
     
-    <script type="text/javascript" src="../dist/minnpost-crime.libs.js"></script>
+    <script type="text/javascript" src="./components/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="./components/jquery.jsonp-2.4.0.min.js"></script>
+    <script type="text/javascript" src="./components/underscore-1.4.4.min.js"></script>
+    <script type="text/javascript" src="./components/backbone-1.0.0.min.js"></script>
+    <script type="text/javascript" src="./components/d3-3.1.5.min.js"></script>
+    <script type="text/javascript" src="./components/topojson-1.0.0.min.js"></script>
+    <script type="text/javascript" src="./components/simple-map-d3-master-20130410.js"></script>
     
     
 
@@ -251,7 +257,8 @@
     <script type="text/javascript" src="http://code.highcharts.com/2.2.4/highcharts.js"></script>
     <script type="text/javascript" src="http://code.highcharts.com/2.2.4/modules/exporting.js"></script>
 
-    <script type="text/javascript" src="../dist/minnpost-crime.latest.min.js"></script>
+    <script type="text/javascript" src="./js/charts.js"></script>
+    <script type="text/javascript" src="./js/maps.js"></script>
 
 
     <!--
@@ -262,7 +269,7 @@
     <script type="text/javascript">
       
       $(document).ready(function() {
-        mapper('../dist/data/');
+        mapper('./data/');
       });
     
     </script>
