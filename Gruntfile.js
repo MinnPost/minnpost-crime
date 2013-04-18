@@ -46,7 +46,7 @@ module.exports = function(grunt) {
         dest: 'dist/<%= pkg.name %>.latest.js'
       },
       libs: {
-        src: ['lib/jquery-1.9.1.min.js', 'lib/underscore-1.4.4.min.js', 'lib/backbone-1.0.0.min.js', 'lib/jquery.jsonp-2.4.0.min.js', 'lib/d3-3.1.5.min.js', 'lib/topojson-1.0.0.min.js', 'lib/simple-map-d3-master-20130410.js'],
+        src: ['components/jquery-1.9.1.min.js', 'components/underscore-1.4.4.min.js', 'components/backbone-1.0.0.min.js', 'components/jquery.jsonp-2.4.0.min.js', 'components/d3-3.1.5.min.js', 'components/topojson-1.0.0.min.js', 'components/simple-map-d3-master-20130410.js'],
         dest: 'dist/<%= pkg.name %>.libs.js',
         options: {
           separator: ';\r\n\r\n'
@@ -54,7 +54,7 @@ module.exports = function(grunt) {
       }
       /*
       css_libs: {
-        src: ['css/lib/jquery.qtip.master-20130221.css'],
+        src: ['css/components/jquery.qtip.master-20130221.css'],
         dest: 'dist/<%= pkg.name %>.libs.css',
         separator: '\r\n\r\n'
       }

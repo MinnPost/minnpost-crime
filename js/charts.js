@@ -22,7 +22,7 @@
         url: neighborhoodURL.replace('[[[NEIGHBORHOOD]]]', neighborhood),
         success: function(data) {
           var seriesTypes = ['homicide', 'rape', 'robbery', 'agg_assault', 
-            'burglary', 'larceny', 'auto_theft', 'arson']
+            'burglary', 'larceny', 'auto_theft', 'arson'];
             
           var series = [];
           
@@ -32,8 +32,8 @@
               data: _.map(data, function(d) {
                 return [
                   Date.UTC(d.year, d.month, 1),
-                  parseInt(d[t])
-                ]
+                  parseInt(d[t], 10)
+                ];
               })
             });
           });
@@ -47,7 +47,7 @@
               text: 'Neighborhood crime data'
             },
             xAxis: {
-              type: 'datetime',
+              type: 'datetime'
             },
             yAxis: {
               min: 0,
@@ -57,7 +57,7 @@
               spline: {
                 marker: {
                   enabled: false
-                },
+                }
               }
             },
             series: series
@@ -80,7 +80,7 @@
         $('#chart-example').html('<p><br /><br />Select neighborhood...</p>');
         
         $('#neighborhood-select').on('change', function(e) {
-          updateChart($(this).val(), parseInt($('#max-select').val()) || 50);
+          updateChart($(this).val(), parseInt($('#max-select').val(), 10) || 50);
         });
       }
     });

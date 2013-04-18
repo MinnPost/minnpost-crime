@@ -38,11 +38,11 @@ var mapper = {};
       colorOn: true,
       colorProperty: type
     });
-  };
+  }
 
   
   mapper = function(dataPath) {
-    var dataPath = dataPath || '../data/';
+    dataPath = dataPath || './data/';
   
     // Get data
     $.jsonp({
@@ -71,6 +71,6 @@ var mapper = {};
     $('#crime-type-select').on('change', function(e) {
       drawMap($(this).val() || 'total');
     });
-  }
+  };
   
 })(jQuery);
