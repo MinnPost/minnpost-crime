@@ -126,9 +126,7 @@ if (_.isFunction(Backbone.$.jsonp)) {
 })(mpApp['minnpost-crime'], jQuery);
 
 /**
- * Main application container for the Legislature Tracker
- *
- * An 'e' prefix is referring to editorialized content.
+ * Main application container for the MinnPost crime
  */
 (function(app, $, undefined) {
 
@@ -140,11 +138,15 @@ if (_.isFunction(Backbone.$.jsonp)) {
     },
   
     initialize: function(options) {
+      _.bindAll(this);
+      
       // Set app options
       app.options = _.extend(app.defaultOptions, options);
-    
-      // Bind to help with some event callbacks
-      _.bindAll(this);
+      
+      // Create main container view
+      this.applicationView = new app.ViewContainer({
+        el: app.options.el
+      }).render().renderGeneralLoading();
       
       this.start();
     },
@@ -164,7 +166,7 @@ if (_.isFunction(Backbone.$.jsonp)) {
     routeCity: function(city) {
     },
   
-    // City route
+    // Neightborhood route
     neighborhood: function(city, neighborhood) {
     }
   });
@@ -174,4 +176,95 @@ if (_.isFunction(Backbone.$.jsonp)) {
     app.router = new app.Application(options);
     return app;
   };
+})(mpApp['minnpost-crime'], jQuery);
+
+/**
+ * Models for MinnPost crime app
+ */
+(function(app, $, undefined) {
+
+  /**
+   * Model for city level data
+   */
+  app.ModelCity = Backbone.Model.extend({
+    
+  });
+
+  /**
+   * Model for neighborhood level data
+   */
+  app.ModelNeighborhood = Backbone.Model.extend({
+    
+  });
+
+
+})(mpApp['minnpost-crime'], jQuery);
+
+/**
+ * Collections for MinnPost crime app
+ */
+(function(app, $, undefined) {
+
+  /**
+   * Collection for city models
+   */
+  app.CollectionCities = Backbone.Collection.extend({
+    model: app.ModelCity
+    
+  });
+
+  /**
+   * Collection for neighborhood models
+   */
+  app.CollectionNeighborhoods = Backbone.Collection.extend({
+    model: app.ModelNeighborhood
+    
+  });
+
+
+})(mpApp['minnpost-crime'], jQuery);
+
+/**
+ * Views for MinnPost crime app
+ */
+(function(app, $, undefined) {
+
+  /**
+   * Main application view
+   */
+  app.ViewContainer = Backbone.View.extend({
+    
+    // Main template render
+    render: function() {
+      app.getTemplate('template-application-container', function(template) {
+        $(this.el).html(template({ }));
+      }, this);
+      return this;
+    },
+    
+    // Display loading
+    renderLoading: function(el) {
+      var $el = (_.isUndefined(el)) ? $(this.el) : $(this.el).find(el);
+    
+      app.getTemplate('template-loading', function(template) {
+        $el.html(template({ }));
+      }, this);
+      return this;
+    },
+    
+    // Display loading specifically in the header
+    renderGeneralLoading: function() {
+      this.renderLoading('.general-loading .col');
+      $('.general-loading').slideDown();
+      return this;
+    },
+    
+    // Stop general loading
+    renderStopGeneralLoading: function() {
+      this.$el.find('.general-loading').slideUp();
+      return this;
+    }
+  });
+
+
 })(mpApp['minnpost-crime'], jQuery);
