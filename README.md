@@ -1,4 +1,15 @@
-# Crime
+# MinnPost Crime
+
+An application that explores crime in Minnesota.
+
+## Install
+
+1. For data processing and deploying: `npm install`
+1. To view application: `bower install`
+
+## Data processing
+
+1. To turn MN Compass neighborhood profile data to JSON: `node data-processing/mncompass-2010-xlsx-json.js`
 
 ## Data
 

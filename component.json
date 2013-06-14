@@ -1,0 +1,18 @@
+{
+  "name": "minnpost-crime",
+  "version": "0.0.1",
+  "main": "index.html",
+  "dependencies": {
+    "jquery": "~1.9.1",
+    "topojson": "~1.1.3",
+    "backbone": "~1.0.0",
+    "flurid": "~52c8af4feaabdebd25798d116a22d67350f07cb5",
+    "jquery-jsonp": "~2.4.0",
+    "underscore": "~1.4.4"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ]
+}
