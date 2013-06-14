@@ -21,7 +21,8 @@
     border-top: 1px solid #BCBCBC;
     padding-top: 1em;
   }
-  .loading-general {
+  
+  .loading {
     width: 100%;
     text-align: center;
     padding: 2em 2em;
@@ -30,15 +31,11 @@
     height: 100%;
     line-height: 100%;
   }
-  .loading-general span {
+  .loading span {
     padding: 10px 5px 10px 40px;
     background: transparent url($loader-image) center left no-repeat;
     vertical-align: middle;
     height: 100%;
     line-height: 100%;
-  }
-  
-  .number {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   }
 }

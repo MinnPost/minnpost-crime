@@ -1,7 +1,5 @@
 /**
- * Main application container for the Legislature Tracker
- *
- * An 'e' prefix is referring to editorialized content.
+ * Main application container for the MinnPost crime
  */
 (function(app, $, undefined) {
 
@@ -13,11 +11,15 @@
     },
   
     initialize: function(options) {
+      _.bindAll(this);
+      
       // Set app options
       app.options = _.extend(app.defaultOptions, options);
-    
-      // Bind to help with some event callbacks
-      _.bindAll(this);
+      
+      // Create main container view
+      this.applicationView = new app.ViewContainer({
+        el: app.options.el
+      }).render().renderGeneralLoading();
       
       this.start();
     },
