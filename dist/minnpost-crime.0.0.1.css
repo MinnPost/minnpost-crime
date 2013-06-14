@@ -1,17 +1,19 @@
-
-.interactive-container  {
+/**
+ * Main CSS
+ */
+.minnpost-application-container  {
   max-width: 960px;
   margin: 0 auto;
   padding-top: 1em;
 }
-.interactive-container .clear {
+.minnpost-application-container .clear {
   clear: both;
 }
-.interactive-container .js-dependent,
-.interactive-container .hidden {
+.minnpost-application-container .js-dependent,
+.minnpost-application-container .hidden {
   display: none;
 }
-.interactive-container .footnote {
+.minnpost-application-container .footnote {
   font-size: .75em;
   font-style: italic;
   color: #414141;
@@ -19,7 +21,7 @@
   border-top: 1px solid #BCBCBC;
   padding-top: 1em;
 }
-.interactive-container .loading-general {
+.minnpost-application-container .loading-general {
   width: 100%;
   text-align: center;
   padding: 2em 2em;
@@ -28,7 +30,7 @@
   height: 100%;
   line-height: 100%;
 }
-.interactive-container .loading-general span {
+.minnpost-application-container .loading-general span {
   padding: 10px 5px 10px 40px;
   background: transparent url('https://s3.amazonaws.com/data.minnpost/projects/2012-mn-election-results/images/ajax-loader.gif') center left no-repeat;
   vertical-align: middle;
@@ -36,57 +38,9 @@
   line-height: 100%;
 }
 
-.interactive-container .number {
+.minnpost-application-container .number {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
-
-.interactive-container .highchart-container {
-  width: 100%;
-  height: 500px;
-  margin-bottom: 1em;
-}
-
-.simple-map-d3-tooltip-container {
-  position: relative;
-}
-.simple-map-d3-tooltip {
-  position: absolute;
-  display: none;
-  top: 5px;
-  right: 5px;
-  border: 1px solid #898989;
-  padding: .5em;
-  font-size: .75em;
-}
-
-#crime-map {
-  width: 100%;
-  height: 500px;
-  border: 1px solid #232323;
-  margin-bottom: 2em;
-}
-
-.crime-map-boundary {
-  stroke: #232323;
-}
-
-#demographic-map-1,
-#demographic-map-2 {
-  width: 40%;
-  height: 300px;
-  border: 1px solid #232323;
-  margin: 0 10px 2em 0;
-  float: left;
-}
-
-#demographics-select-1,
-#demographics-select-2 {
-  width: 300px;
-}
-
-/**
- * Begin custom styles.
- */
 
 /**
  * Responsive creen size styles
