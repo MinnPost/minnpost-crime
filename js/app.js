@@ -21,6 +21,14 @@
         el: app.options.el
       }).render().renderGeneralLoading();
       
+      // Create collections and views (we use one view
+      // for multiple models to handle transition
+      // values.
+      this.cities = new app.CollectionCities();
+      this.neighborhoods = new app.CollectionNeighborhoods();
+      this.cityView = new app.ViewCity();
+      this.neighborhoodView = new app.ViewNeighborhood();
+      
       this.start();
     },
     
@@ -37,6 +45,13 @@
   
     // City route
     routeCity: function(city) {
+      this.city = this.cities.get(city);
+      if (_.isUndefined(this.city)) {
+        this.city = new app.ModelCity({ id: city });
+        this.cities.add(this.city);
+      }
+      
+      this.applicationView.renderContent(this.cityView, this.city);
     },
   
     // Neightborhood route

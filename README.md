@@ -46,3 +46,7 @@ You should utilize the `index-src.html` file to do development.  This applicatio
 * A combined shapefile with the keys from the definitive list has been create in QGIS (```data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012-keyed.shpfile```).
    * This has then been converted in GeoJSON with: ```ogr2ogr -f "GeoJSON" data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012-keyed.geo.json data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012-keyed.shpfile/minneapolis-neighborhoods-2012-keyed.shp```
    * And converted to TopoJSON with: ```topojson -p -o data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012-keyed.topo.json data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012-keyed.geo.json```
+
+## Hacks
+
+* Currently using custom version of Backbone.stickit, see [pull request](https://github.com/NYTimes/backbone.stickit/pull/122).
