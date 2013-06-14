@@ -39,7 +39,7 @@
     routeCity: function(city) {
     },
   
-    // City route
+    // Neightborhood route
     neighborhood: function(city, neighborhood) {
     }
   });
