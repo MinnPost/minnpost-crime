@@ -43,7 +43,7 @@ function makeID(name, type, number, year) {
   id += (number) ? ('-' + number.toLowerCase().replace(/[^a-z0-9]/g, '_')) : '';
   id += (year) ? ('-' + year) : '';
   return id;
-};
+}
 
 // Make place_id
 function makePlaceID(neighborhood, community, city) {
@@ -64,8 +64,7 @@ function makePlaceID(neighborhood, community, city) {
   }
   
   return id;
-};
-
+}
 
 // Handle data values
 function makeValue(data, parseNum) {
@@ -77,14 +76,14 @@ function makeValue(data, parseNum) {
   }
   
   return data;
-};
+}
 
 // Make type smaller for smaller filesize
 function makeType(type) {
   type = (type.toLowerCase() === 'number') ? '#' : type;
   type = (type.toLowerCase() === 'percent') ? '%' : type;
   return type;
-};
+}
 
 // Make column headers and metadata
 function makeHeaders() {
@@ -108,7 +107,7 @@ function makeHeaders() {
     
     cHeaders.push(columnMetaData);
   });
-};
+}
 
 // Transform headers
 function makeFinalHeaders() {
@@ -135,7 +134,7 @@ function saveNewFile() {
       console.log('JSON saved.');
     }
   }); 
-};
+}
 
 // Process data once we have the header data
 function processCSV() {
@@ -149,14 +148,14 @@ function processCSV() {
         return column;
       });
       
-      if (row[columnDataStart] != '') {
+      if (row[columnDataStart] !== '') {
         return row;
       }
     })
     .on('record', function(row, index) {
       var processedRow = {};
       
-      if (index >= dataStartRow && row[0] != '') {
+      if (index >= dataStartRow && row[0] !== '') {
         _.each(cHeaders, function(h, i) {
           processedRow[h.key] = row[i];
         });
@@ -174,7 +173,7 @@ function processCSV() {
     .on('error', function(error) {
       console.log('Error: ' + error.message);
     });
-};
+}
 
 // The first pass we use to make column names
 function processCSVHeaders() {
@@ -187,7 +186,7 @@ function processCSVHeaders() {
         return column;
       });
       
-      if (row[columnDataStart] != '') {
+      if (row[columnDataStart] !== '') {
         return row;
       }
     })
@@ -203,6 +202,6 @@ function processCSVHeaders() {
     .on('error', function(error) {
       console.log('Error: ' + error.message);
     });
-};
+}
 
 processCSVHeaders();
