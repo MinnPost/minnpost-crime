@@ -61,7 +61,7 @@ module.exports = function(grunt) {
       },
       // JS application
       dist: {
-        src: ['js/core.js', 'js/app.js'],
+        src: ['js/core.js', 'js/app.js', 'js/models.js', 'js/collections.js', 'js/views.js'],
         dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.js'
       },
       dist_latest: {
