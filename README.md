@@ -7,6 +7,18 @@ An application that explores crime in Minnesota.
 1. For data processing and deploying: `npm install`
 1. To view application: `bower install`
 
+## Development
+
+You should utilize the `index-src.html` file to do development.  This application uses SASS so utilizing `grunt watch` to compile SASS on the fly is recommended.
+
+## Build
+
+1. `grunt`
+
+## Deploy (for MinnPost)
+
+1. `grunt && grunt mp-deploy`
+
 ## Data processing
 
 1. To turn MN Compass neighborhood profile data to JSON: `node data-processing/mncompass-2010-xlsx-json.js`

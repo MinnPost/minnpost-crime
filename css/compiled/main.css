@@ -1,7 +1,24 @@
 /**
- * Main CSS
+ * Merge all stylesheets into one
  */
-.minnpost-application-container  {
+/**
+ * General variables
+ */
+/**
+ * General mixins
+ */
+/**
+ * Mixin handling breakpoints for media queries
+ * Source: http://css-tricks.com/media-queries-sass-3-2-and-codekit/
+ */
+/**
+ * Mixins used by helper classes .pull-image--$pos and .pull-quote--$pos
+ * 1. returns `left` if given `right` and vice versa
+ */
+/**
+ * Main styles for application
+ */
+.minnpost-application-container {
   max-width: 960px;
   margin: 0 auto;
   padding-top: 1em;
@@ -32,18 +49,11 @@
 }
 .minnpost-application-container .loading-general span {
   padding: 10px 5px 10px 40px;
-  background: transparent url('https://s3.amazonaws.com/data.minnpost/projects/2012-mn-election-results/images/ajax-loader.gif') center left no-repeat;
+  background: transparent url("https://s3.amazonaws.com/data.minnpost/projects/2012-mn-election-results/images/ajax-loader.gif") center left no-repeat;
   vertical-align: middle;
   height: 100%;
   line-height: 100%;
 }
-
 .minnpost-application-container .number {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-}
-
-/**
- * Responsive creen size styles
- */
-@media screen and (max-width: 960px) {
 }

@@ -22,6 +22,26 @@ module.exports = function(grunt) {
     jshint: {
       files: ['Gruntfile.js', 'js/*.js', 'data-processing/*.js']
     },
+    sass: {
+      dist: {
+        options: {
+          style: 'compressed'
+        },
+        files: {
+          'css/compiled/main.min.css': 'css/main.scss',
+          'css/compiled/main.ie.min.css': 'css/main.scss'
+        }
+      },
+      dev: {
+        options: {
+          style: 'expanded'
+        },
+        files: {
+          'css/compiled/main.css': 'css/main.scss',
+          'css/compiled/main.ie.css': 'css/main.scss'
+        }
+      }
+    },
     clean: {
       folder: 'dist/'
     },
@@ -39,6 +59,7 @@ module.exports = function(grunt) {
       options: {
         separator: '\r\n\r\n'
       },
+      // JS application
       dist: {
         src: ['js/core.js', 'js/app.js'],
         dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.js'
@@ -46,18 +67,20 @@ module.exports = function(grunt) {
       dist_latest: {
         src: ['<%= concat.dist.src %>'], dest: 'dist/<%= pkg.name %>.latest.js'
       },
+      // CSS application
       dist_css: {
-        src: ['css/style.css'], dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.css'
+        src: ['css/compiledmain.min.css'], dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.css'
       },
       dist_css_latest: {
-        src: ['css/style.css'], dest: 'dist/<%= pkg.name %>.latest.css'
+        src: ['css/compiledmain.min.css'], dest: 'dist/<%= pkg.name %>.latest.css'
       },
       dist_css_ie: {
-        src: ['css/style.ie.css'], dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.ie.css'
+        src: ['css/compiled/main.ie.min.css'], dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.ie.css'
       },
       dist_css_latest_ie: {
-        src: ['css/style.ie.css'], dest: 'dist/<%= pkg.name %>.latest.ie.css'
+        src: ['css/compiled/main.ie.min.css'], dest: 'dist/<%= pkg.name %>.latest.ie.css'
       },
+      // JS libs
       libs: {
         src: ['components/jquery/jquery.min.js', 'components/jquery-jsonp/src/jquery.jsonp.js', 'components/underscore/underscore-min.js', 'components/backbone/backbone-min.js', 'components/backbone.stickit/backbone.stickit.js', 'components/topojson/topojson.js'],
         dest: 'dist/<%= pkg.name %>.libs.js',
@@ -65,6 +88,7 @@ module.exports = function(grunt) {
           separator: ';\r\n\r\n'
         }
       },
+      // CSS libs
       libs_css: {
         src: ['components/flurid/dist/flurid.min.css'], dest: 'dist/<%= pkg.name %>.libs.css'
       },
@@ -140,17 +164,22 @@ module.exports = function(grunt) {
           }
         ]
       }
+    },
+    watch: {
+      files: ['<%= jshint.files %>', 'css/*.scss'],
+      tasks: 'lint-watch'
     }
   });
   
   // Load plugin tasks
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jst');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-gss-pull');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-s3');
   
 
@@ -169,7 +198,10 @@ module.exports = function(grunt) {
   });
 
   // Default build task
-  grunt.registerTask('default', ['jshint', 'clean', 'jst', 'concat', 'uglify', 'copy']);
+  grunt.registerTask('default', ['jshint', 'sass', 'clean', 'jst', 'concat', 'uglify', 'copy']);
+
+  // Watch dask
+  grunt.registerTask('lint-watch', ['jshint', 'sass:dev']);
   
   // Deploy tasks
   grunt.registerTask('mp-deploy', ['s3']);

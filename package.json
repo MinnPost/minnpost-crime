@@ -4,11 +4,11 @@
   "author": "MinnPost <support@minnpost.com>",
   "homepage": "https://github.com/MinnPost/minnpost-crime",
   "description": "MinnPost Crime",
-  "contributors": [ 
+  "contributors": [
     {
       "name": "Alan Palazzolo",
       "email": "apalazzolo@minnpost.com"
-    } 
+    }
   ],
   "repository": {
     "type": "git",
@@ -30,8 +30,10 @@
     "grunt-contrib-jst": "*",
     "grunt-contrib-clean": "*",
     "grunt-gss-pull": "*",
-    "grunt-s3": "*"
-  }, 
+    "grunt-s3": "*",
+    "grunt-contrib-watch": "~0.4.4",
+    "grunt-contrib-sass": "~0.3.0"
+  },
   "licenses": [
     {
       "type": "MIT",
