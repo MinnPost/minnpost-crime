@@ -12,13 +12,15 @@ module.exports = function(grunt) {
         ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */' + 
         '<%= "\\n\\n" %>'
     },
+    /*
     data_embed: {
-      mayoral_candidates: {
-        'dist/data.js': ['<%= gss_pull.mayor_data.dest %>']
-      }
+      bills: {
+        'dist/data.js': ['data/bills.json']
+      },
     },
+    */
     jshint: {
-      files: ['Gruntfile.js', 'js/*.js']
+      files: ['Gruntfile.js', 'js/*.js', 'data-processing/*.js']
     },
     clean: {
       folder: 'dist/'
@@ -38,27 +40,37 @@ module.exports = function(grunt) {
         separator: '\r\n\r\n'
       },
       dist: {
-        src: ['js/maps.js', 'js/charts.js', 'js/demographics.js'],
+        src: ['js/core.js', 'js/app.js'],
         dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.js'
       },
       dist_latest: {
-        src: ['<%= concat.dist.src %>'],
-        dest: 'dist/<%= pkg.name %>.latest.js'
+        src: ['<%= concat.dist.src %>'], dest: 'dist/<%= pkg.name %>.latest.js'
+      },
+      dist_css: {
+        src: ['css/style.css'], dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.css'
+      },
+      dist_css_latest: {
+        src: ['css/style.css'], dest: 'dist/<%= pkg.name %>.latest.css'
+      },
+      dist_css_ie: {
+        src: ['css/style.ie.css'], dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.ie.css'
+      },
+      dist_css_latest_ie: {
+        src: ['css/style.ie.css'], dest: 'dist/<%= pkg.name %>.latest.ie.css'
       },
       libs: {
-        src: ['components/jquery-1.9.1.min.js', 'components/underscore-1.4.4.min.js', 'components/backbone-1.0.0.min.js', 'components/jquery.jsonp-2.4.0.min.js', 'components/d3-3.1.5.min.js', 'components/topojson-1.0.0.min.js', 'components/simple-map-d3-master-20130410.js'],
+        src: ['components/jquery/jquery.min.js', 'components/jquery-jsonp/src/jquery.jsonp.js', 'components/underscore/underscore-min.js', 'components/backbone/backbone-min.js', 'components/backbone.stickit/backbone.stickit.js', 'components/topojson/topojson.js'],
         dest: 'dist/<%= pkg.name %>.libs.js',
         options: {
           separator: ';\r\n\r\n'
         }
+      },
+      libs_css: {
+        src: ['components/flurid/dist/flurid.min.css'], dest: 'dist/<%= pkg.name %>.libs.css'
+      },
+      libs_css_ie: {
+        src: [], dest: 'dist/<%= pkg.name %>.libs.ie.css'
       }
-      /*
-      css_libs: {
-        src: ['css/components/jquery.qtip.master-20130221.css'],
-        dest: 'dist/<%= pkg.name %>.libs.css',
-        separator: '\r\n\r\n'
-      }
-      */
     },
     uglify: {
       options: {
@@ -74,18 +86,6 @@ module.exports = function(grunt) {
       }
     },
     copy: {
-      dist: {
-        files: {
-          'dist/<%= pkg.name %>.<%= pkg.version %>.css': 'css/style.css',
-          'dist/<%= pkg.name %>.<%= pkg.version %>.ie.css': 'css/style.ie.css'
-        }
-      },
-      dist_latest: {
-        files: {
-          'dist/<%= pkg.name %>.latest.css': 'css/style.css',
-          'dist/<%= pkg.name %>.latest.ie.css': 'css/style.ie.css'
-        }
-      },
       images: {
         files: [
           {
@@ -107,16 +107,6 @@ module.exports = function(grunt) {
             dest: 'dist/data/'
           }
         ]
-      }
-    },
-    watch: {
-      files: '<config:lint.files>',
-      tasks: 'lint'
-    },
-    gss_pull: {
-      mayor_data: {
-        dest: 'data/mayoral_candidates.json',
-        src: ['0Amt1xpycNp7OdDYtRUJENTZEamVOby1tY2RHRi1SV1E']
       }
     },
     s3: {
@@ -143,6 +133,10 @@ module.exports = function(grunt) {
           {
             src: 'dist/data/**',
             dest: 'projects/<%= pkg.name %>/data/'
+          },
+          {
+            src: 'dist/images/**',
+            dest: 'projects/<%= pkg.name %>/images/'
           }
         ]
       }
@@ -173,11 +167,8 @@ module.exports = function(grunt) {
       grunt.log.write('Wrote ' + tasks[t][0] + ' to ' + t + '...').ok();
     }
   });
-  
-  // Data tasks
-  grunt.registerTask('data', ['gss_pull', 'data_embed']);
 
-  // Default task.
+  // Default build task
   grunt.registerTask('default', ['jshint', 'clean', 'jst', 'concat', 'uglify', 'copy']);
   
   // Deploy tasks
