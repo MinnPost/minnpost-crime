@@ -36,6 +36,7 @@
     // specifically start Backbone history
     start: function() {
       Backbone.history.start();
+      this.applicationView.renderStopGeneralLoading();
     },
   
     // Default route

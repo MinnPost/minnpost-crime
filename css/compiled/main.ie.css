@@ -54,3 +54,18 @@
   height: 100%;
   line-height: 100%;
 }
+.minnpost-application-container .placeholder {
+  border: 1px solid #222222;
+  background-color: #DDDDDD;
+  width: 100%;
+}
+.minnpost-application-container .inner-column-left {
+  margin-right: 1em;
+}
+.minnpost-application-container .row-space {
+  margin-bottom: 1em;
+}
+.minnpost-application-container .mc-city-container .map {
+  height: 300px;
+  width: 100%;
+}

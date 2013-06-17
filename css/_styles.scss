@@ -39,4 +39,26 @@
       line-height: 100%;
     }
   }
+  
+  .placeholder {
+    border: 1px solid #222222;
+    background-color: #DDDDDD; 
+    width: 100%;   
+  }
+  
+  .inner-column-left {
+    margin-right: $space;
+  }
+  
+  .row-space {
+    margin-bottom: $space;
+  }
+  
+  .mc-city-container {
+    
+    .map {
+      height: 300px;
+      width: 100%;
+    }
+  }
 }
