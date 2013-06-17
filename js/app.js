@@ -19,7 +19,7 @@
       // Create main container view
       this.applicationView = new app.ViewContainer({
         el: app.options.el
-      }).render().renderGeneralLoading();
+      }).render();
       
       // Create collections and views (we use one view
       // for multiple models to handle transition
@@ -36,7 +36,6 @@
     // specifically start Backbone history
     start: function() {
       Backbone.history.start();
-      this.applicationView.renderStopGeneralLoading();
     },
   
     // Default route
@@ -46,6 +45,15 @@
   
     // City route
     routeCity: function(city) {
+      var thisRouter = this;
+      
+      // Check if valid city
+      if (_.indexOf(app.options.validCities, city) === -1) {
+        this.routeDefault();
+      }
+      
+      // Load up city
+      this.applicationView.renderGeneralLoading();
       this.city = this.cities.get(city);
       if (_.isUndefined(this.city)) {
         this.city = new app.ModelCity({ id: city });
@@ -53,10 +61,13 @@
       }
       
       this.applicationView.renderContent(this.cityView, this.city);
+      this.city.fetchData(function() {
+        thisRouter.applicationView.renderStopGeneralLoading();
+      });
     },
   
     // Neightborhood route
-    neighborhood: function(city, neighborhood) {
+    routeNeighborhood: function(city, neighborhood) {
     }
   });
   

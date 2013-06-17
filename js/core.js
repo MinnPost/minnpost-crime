@@ -48,7 +48,9 @@ if (_.isFunction(Backbone.$.jsonp)) {
  */
 (function(app, $, undefined) {
   app.defaultOptions = {
-    dataPath: './'
+    dataPath: './',
+    dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]',
+    validCities: ['minneapolis']
   };
   
   /**
@@ -93,7 +95,7 @@ if (_.isFunction(Backbone.$.jsonp)) {
    * Returns jQuery's defferred object.
    */
   app.data = app.data || {};
-  app.getData = function(name) {
+  app.getLocalData = function(name) {
     var proxyPrefix = 'http://mp-jsonproxy.herokuapp.com/proxy?callback=?&url=';
     var useJSONP = false;
     var defers = [];
