@@ -4,10 +4,11 @@
   "main": "index.html",
   "dependencies": {
     "jquery": "~1.9.1",
-    "topojson": "~1.1.3",
+    "topojson": "~1.1.4",
+    "moment": "~2.0.0",
+    "flurid": "~52c8af4feaabdebd25798d116a22d67350f07cb5",
+    "backbone.stickit": "~0.6.3-alpha",
     "backbone": "~1.0.0",
-    "backbone.stickit": "https://github.com/zzolo/backbone.stickit.git#0.6.3-alpha",
-    "flurid": "https://github.com/kflorence/flurid.git",
     "jquery-jsonp": "~2.4.0",
     "underscore": "~1.4.4"
   },

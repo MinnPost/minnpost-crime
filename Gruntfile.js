@@ -82,7 +82,7 @@ module.exports = function(grunt) {
       },
       // JS libs
       libs: {
-        src: ['components/jquery/jquery.min.js', 'components/jquery-jsonp/src/jquery.jsonp.js', 'components/underscore/underscore-min.js', 'components/backbone/backbone-min.js', 'components/backbone.stickit/backbone.stickit.js', 'components/topojson/topojson.js'],
+        src: ['components/jquery/jquery.min.js', 'components/jquery-jsonp/src/jquery.jsonp.js', 'components/underscore/underscore-min.js', 'components/backbone/backbone-min.js', 'components/backbone.stickit/backbone.stickit.js', 'components/topojson/topojson.js', 'components/moment/min/moment.min.js'],
         dest: 'dist/<%= pkg.name %>.libs.js',
         options: {
           separator: ';\r\n\r\n'
