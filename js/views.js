@@ -67,7 +67,7 @@
    * View that holds common binding functions
    */
   app.ViewBinding = Backbone.View.extend({
-    
+    // Animate count to value
     bindUpdateCount: function($el, val, model, options) {
       var number = (_.isNaN(parseInt($el.text(), 10))) ? 0 : parseInt($el.text(), 10);
       var interval, intervalID;
@@ -88,8 +88,14 @@
       else {
         $el.html(val);
       }
+    },
+    
+    // Fade out then in
+    bindUpdateFade: function($el, val, model, options) {
+      $el.fadeOut('fast', function() {
+        $el.html(val).fadeIn('fast');
+      });
     }
-  
   });
 
   /**
@@ -104,7 +110,7 @@
         update: function($el, val, model, options) {
           var month = (val) ? moment(val.toString(), 'MM').format('MMMM') : '';
           var year = model.get('currentYear');
-          $el.html((month && year) ? month + ', ' + year : '');
+          this.bindUpdateFade($el, (month && year) ? month + ', ' + year : '', model, options);
         }
       },
       '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
