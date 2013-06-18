@@ -69,3 +69,7 @@
   height: 300px;
   width: 100%;
 }
+.minnpost-application-container .mc-city-container .stat-value {
+  font-size: 3em;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}

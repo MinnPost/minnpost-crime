@@ -16,19 +16,28 @@ _.mixin({
   /**
    * Formats number into currency
    */
-  formatCurrency: function(num) {
+  formatNumber: function(num, decimals) {
+    decimals = decimals || 2;
     var rgx = (/(\d+)(\d{3})/);
-    split = num.toFixed(2).toString().split('.');
+    
+    split = num.toFixed(decimals).toString().split('.');
     while (rgx.test(split[0])) {
       split[0] = split[0].replace(rgx, '$1' + ',' + '$2');
     }
-    return '$' + split[0] + '.' + split[1];
+    return split[0] + '.' + split[1];
+  },
+  
+  /**
+   * Formats number into currency
+   */
+  formatCurrency: function(num) {
+    return '$' + _.formatNumber(num, 2);
   },
   
   /**
    * Formats percentage
    */
-  formatPercentage: function(num) {
+  formatPercent: function(num) {
     return (num * 100).toFixed(1).toString() + '%';
   }
 });
@@ -50,6 +59,8 @@ if (_.isFunction(Backbone.$.jsonp)) {
   app.defaultOptions = {
     dataPath: './',
     dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]',
+    // See scraper for why this is needed
+    dataCrimeQueryWhere: "notes NOT LIKE 'Added  to%'",
     validCities: ['minneapolis']
   };
   

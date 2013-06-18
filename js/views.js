@@ -35,7 +35,6 @@
         contentView.render();
       }
       contentView.stickit();
-      
       this.contentViewCID = contentView.cid;
     },
     
@@ -67,8 +66,11 @@
    * View for city
    */
   app.ViewCity = Backbone.View.extend({
+    model: app.ModelCity,
+  
     bindings: {
-      '.id-test': { observe: 'id', update: 'bindUpdateFade' }
+      '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
+      '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' }
     },
     
     render: function() {
@@ -78,8 +80,26 @@
       return this;
     },
     
-    bindUpdateFade: function($el, val, model, options) {
-      $el.fadeOut(function() { $el.html(val).fadeIn(); }); 
+    bindUpdateCount: function($el, val, model, options) {
+      var number = (_.isNaN(parseInt($el.text(), 10))) ? 0 : parseInt($el.text(), 10);
+      var interval, intervalID;
+      
+      if (_.isNumber(val) && val != number) {
+        var greaterThan = (val > number);
+        interval = (val - number) / 40;
+        intervalID = setInterval(function() {
+          number = number + interval;
+          $el.html(_.formatPercent(number));
+          
+          if ((greaterThan && number >= val) || (!greaterThan && number <= val)) {
+            $el.html(_.formatPercent(val));
+            clearInterval(intervalID);
+          }
+        }, 20);
+      }
+      else {
+        $el.html(val);
+      }
     }
   });
 
