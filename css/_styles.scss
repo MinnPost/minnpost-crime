@@ -22,10 +22,14 @@
     padding-top: 1em;
   }
   
+  .messaging-container {
+    min-height: 3em;
+  }
+  
   .loading {
     width: 100%;
     text-align: center;
-    padding: 2em 2em;
+    padding: .5em 2em;
     color: #ABABAB;
     vertical-align: middle;
     height: 100%;

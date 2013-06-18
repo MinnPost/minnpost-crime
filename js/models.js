@@ -12,7 +12,7 @@
   
     // Set stats values
     setStats: function(stat) {
-      stat = stat || 'burglary';
+      stat = stat || 'total';
       
       this.set('lastMonthChange', this.getMonthChange(
         this.get('lastMonthYear'), this.get('lastMonthMonth'), stat));

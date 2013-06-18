@@ -50,14 +50,15 @@
     
     // Display loading specifically in the header
     renderGeneralLoading: function() {
-      this.renderLoading('.general-loading .column');
-      $('.general-loading').slideDown();
+      this.renderLoading('.messaging-container .column');
       return this;
     },
     
     // Stop general loading
     renderStopGeneralLoading: function() {
-      this.$el.find('.general-loading').slideUp();
+      this.$el.find('.messaging-container .loading').fadeOut(function() {
+        $(this).remove();
+      });
       return this;
     }
   });

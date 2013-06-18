@@ -38,10 +38,13 @@
   border-top: 1px solid #BCBCBC;
   padding-top: 1em;
 }
+.minnpost-application-container .messaging-container {
+  min-height: 3em;
+}
 .minnpost-application-container .loading {
   width: 100%;
   text-align: center;
-  padding: 2em 2em;
+  padding: .5em 2em;
   color: #ABABAB;
   vertical-align: middle;
   height: 100%;
