@@ -63,22 +63,9 @@
   });
 
   /**
-   * View for city
+   * View that holds common binding functions
    */
-  app.ViewCity = Backbone.View.extend({
-    model: app.ModelCity,
-  
-    bindings: {
-      '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
-      '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' }
-    },
-    
-    render: function() {
-      app.getTemplate('template-city', function(template) {
-        this.$el.html(template(this.model.toJSON()));
-      }, this);
-      return this;
-    },
+  app.ViewBinding = Backbone.View.extend({
     
     bindUpdateCount: function($el, val, model, options) {
       var number = (_.isNaN(parseInt($el.text(), 10))) ? 0 : parseInt($el.text(), 10);
@@ -101,12 +88,40 @@
         $el.html(val);
       }
     }
+  
+  });
+
+  /**
+   * View for city
+   */
+  app.ViewCity = app.ViewBinding.extend({
+    model: app.ModelCity,
+  
+    bindings: {
+      '.current-month-display': { 
+        observe: ['currentMonth', 'currentYear'], 
+        update: function($el, val, model, options) {
+          var month = (val) ? moment(val.toString(), 'MM').format('MMMM') : '';
+          var year = model.get('currentYear');
+          $el.html((month && year) ? month + ', ' + year : '');
+        }
+      },
+      '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
+      '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' }
+    },
+    
+    render: function() {
+      app.getTemplate('template-city', function(template) {
+        this.$el.html(template(this.model.toJSON()));
+      }, this);
+      return this;
+    }
   });
 
   /**
    * View for neighborhood
    */
-  app.ViewNeighborhood = Backbone.View.extend({
+  app.ViewNeighborhood = app.ViewBinding.extend({
   
   });
 
