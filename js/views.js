@@ -109,24 +109,42 @@
     bindings: {
       '.current-month-display': { 
         observe: ['currentMonth', 'currentYear'], 
-        update: function($el, val, model, options) {
-          var month = (val) ? moment(val.toString(), 'MM').format('MMMM') : '';
-          var year = model.get('currentYear');
-          this.bindUpdateFade($el, (month && year) ? month + ', ' + year : '', model, options);
-        }
+        update: 'bindUpdateCurrentMonthDisplay'
       },
       '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
       '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' },
       '#chart-one': {
         observe: 'crimeData',
-        update: function($el, val, model, options) {
-          data = model.getLastYearData();
-          if (_.isArray(data) && data.length > 0) {
-            $.jqplot('chart-one', [data], this.cityPlotOptions);
-          }
-        }
+        update: 'bindUpdateChartOne'
       },
-      '.section-title': 'title'
+      '.section-title': 'title',
+      '.city-category-stats': {
+        observe: 'crimeData',
+        update: 'bindUpdateCategoryCrime'
+      }
+    },
+    
+    bindUpdateCurrentMonthDisplay: function($el, val, model, options) {
+      var month = (val) ? moment(val.toString(), 'MM').format('MMMM') : '';
+      var year = model.get('currentYear');
+      this.bindUpdateFade($el, (month && year) ? month + ', ' + year : '', model, options);
+    },
+    
+    bindUpdateChartOne: function($el, val, model, options) {
+      data = model.getLastYearData();
+      if (_.isArray(data) && data.length > 0) {
+        $.jqplot('chart-one', [data], this.cityPlotOptions);
+      }
+    },
+    
+    bindUpdateCategoryCrime: function($el, val, model, options) {
+      if (!_.isUndefined(model.get('crimeData'))) {
+        _.each(model.get('categories'), function(cat, c) {
+          var stat = model.getMonthChange(model.get('lastMonthYear'), model.get('lastMonthMonth'), c);
+          var $statEl = $el.find('.city-category-stat-' + c + ' .stat-value');
+          this.bindUpdateCount($statEl, stat, model, options);
+        }, this);
+      }
     },
     
     cityPlotOptions: {

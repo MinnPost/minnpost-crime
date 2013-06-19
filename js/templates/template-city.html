@@ -44,10 +44,14 @@
       </div>
     </div>
     
-    <div class="row row-space">
-      <div class="column width_1/1 last">
-        
-      </div>
+    <div class="row row-space city-category-stats">
+      <h4>Crime changes from last month</h4>
+      <% _.each(categories, function(cat, c) { if (c !== 'total') { %>
+        <div class="city-category-stat city-category-stat-<%= c %> column width_1/<%= (_.size(categories) - 1) %>">
+          <div class="stat-label"><%= cat.title %></div>
+          <div class="stat-value"></div>
+        </div>
+      <% }}) %>
     </div>
     
     <div class="row">

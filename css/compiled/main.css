@@ -88,3 +88,10 @@
   font-size: 3em;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
+.minnpost-application-container .mc-city-container .city-category-stats .stat-label {
+  min-height: 3em;
+}
+.minnpost-application-container .mc-city-container .city-category-stats .stat-value {
+  font-size: 1.5em;
+  line-height: 1.15em;
+}

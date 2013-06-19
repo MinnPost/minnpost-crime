@@ -83,5 +83,16 @@
       font-size: 3em;
       font-family: $sans-serif-font;
     }
+    
+    .city-category-stats {
+      
+      .stat-label {
+        min-height: 3em;
+      }
+      .stat-value {
+        font-size: 1.5em;
+        line-height: 1.15em;
+      }
+    }
   }
 }
