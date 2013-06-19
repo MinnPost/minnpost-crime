@@ -114,12 +114,12 @@
       '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
       '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' },
       '#chart-one': {
-        observe: 'crimeData',
+        observe: 'crimesByMonth',
         update: 'bindUpdateChartOne'
       },
       '.section-title': 'title',
       '.city-category-stats': {
-        observe: 'crimeData',
+        observe: 'crimesByMonth',
         update: 'bindUpdateCategoryCrime'
       }
     },
@@ -131,14 +131,16 @@
     },
     
     bindUpdateChartOne: function($el, val, model, options) {
-      data = model.getLastYearData();
-      if (_.isArray(data) && data.length > 0) {
-        $.jqplot('chart-one', [data], this.cityPlotOptions);
+      var data1 = model.getLastYearData(1);
+      var data2 = model.getLastYearData(2);
+      
+      if (_.isArray(data1) && data1.length > 0) {
+        $.jqplot('chart-one', [data2, data1], this.cityPlotOptions);
       }
     },
     
     bindUpdateCategoryCrime: function($el, val, model, options) {
-      if (!_.isUndefined(model.get('crimeData'))) {
+      if (!_.isUndefined(model.get('crimesByMonth'))) {
         _.each(model.get('categories'), function(cat, c) {
           var stat = model.getMonthChange(model.get('lastMonthYear'), model.get('lastMonthMonth'), c);
           var $statEl = $el.find('.city-category-stat-' + c + ' .stat-value');
@@ -148,7 +150,7 @@
     },
     
     cityPlotOptions: {
-      seriesColors: [ '#10517F' ],
+      seriesColors: [ '#BCBCBC','#10517F' ],
       grid: {
         drawBorder: false,
         background: '#fafafa',

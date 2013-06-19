@@ -23,15 +23,21 @@
       return this;
     },
     
-    getLastYearData: function(stat) {
+    // Gets years data relative to current month
+    getLastYearData: function(years, stat) {
+      years = years || 1;
       stat = stat || 'total';
       var data = [];
       var count = 0;
       
-      if (_.isObject(this.get('crimeData'))) {
-        _.each(this.get('crimeData'), function(year, y) {
+      if (_.isObject(this.get('crimesByMonth'))) {
+        var filtered = this.getFilteredCrimesByMonth(
+          this.get('currentYear') - years, this.get('currentMonth'),
+          this.get('currentYear') - (years - 1), this.get('currentMonth'));
+
+        _.each(filtered, function(year, y) {
           _.each(year, function(month, m) {
-            data.push([ y + '-' + m, month[stat]]);
+            data.push([moment(m.toString(), 'MM').format('MMM'), month[stat]]);
           });
         });
       }
@@ -56,7 +62,28 @@
     // Get a crime state for month
     getCrimeByMonth: function(year, month, stat) {
       stat = stat || 'total';
-      return this.get('crimeData')[year][month][stat];
+      return this.get('crimesByMonth')[year][month][stat];
+    },
+    
+    // Filter crimes
+    getFilteredCrimesByMonth: function(year1, month1, year2, month2) {
+      year2 = year2 || this.get('currentYear');
+      month2 = month2 || this.get('currentMonth');
+      var filtered = {};
+      
+      _.each(this.get('crimesByMonth'), function(year, y) {
+        _.each(year, function(month, m) {
+          if ((y == year1 && m > month1) ||
+            (y == year2 && m <= month2) ||
+            ((year2 - year1) > 1 && y > year1 && y < year2)
+          ) {
+            filtered[y] = filtered[y] || {};
+            filtered[y][m] = month;
+          }
+        });
+      });
+      
+      return filtered;
     },
     
     // Get last month, as it could be last year
@@ -88,14 +115,14 @@
         this.setLastMonth();
         
         // Get data for various months (current, last, and last year)
-        defers.push(this.fetchDataPreviousYear(year, month));
+        defers.push(this.fetchDataPreviousYearsByMonth(year, month, 2));
         $.when.apply($, defers).done(function() {
           var data = thisModel.get('data') || {};
           _.each(arguments[0], function(r) {
             data[r.year] = data[r.year] || {};
             data[r.year][r.month] = r;
           });
-          thisModel.set('crimeData', data);
+          thisModel.set('crimesByMonth', data);
           thisModel.setStats();
           
           // Done and callback
@@ -119,16 +146,21 @@
       return defer;
     },
     
-    // Get data for month
-    fetchDataPreviousYear: function(year, month, done, context) {
+    // Get data aggregate by month for previous years
+    fetchDataPreviousYearsByMonth: function(year, month, years, done, context) {
+      years = (_.isNumber(years)) ? years : 1;
       var query = [];
+      
       query.push("SELECT year, month");
       _.each(this.get('categories'), function(category, c) {
         query.push(", SUM(" + c + ") AS " + c);
       });
       query.push(" FROM swdata WHERE " + app.options.dataCrimeQueryWhere);
       query.push(" AND ((year = " + year + " AND month <= " + month + ") ");
-      query.push(" OR (year = " + (year - 1) + " AND month >= " + month + "))");
+      if (years > 1) {
+        query.push(" OR (year < " + year + " AND year > " + (year - years) + ")");
+      }
+      query.push(" OR (year = " + (year - years) + " AND month >= " + month + "))");
       query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
       
       var defer = $.jsonp({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
