@@ -8,6 +8,7 @@
    */
   app.ModelCity = Backbone.Model.extend({
     initialize: function() {
+      this.set('categories', app.data['crime/categories']);
       this.set('title', 'Minneapolis profile');
     },
   
@@ -122,8 +123,8 @@
     fetchDataPreviousYear: function(year, month, done, context) {
       var query = [];
       query.push("SELECT year, month");
-      _.each(app.options.crimeStats, function(s) {
-        query.push(", SUM(" + s + ") AS " + s);
+      _.each(this.get('categories'), function(category, c) {
+        query.push(", SUM(" + c + ") AS " + c);
       });
       query.push(" FROM swdata WHERE " + app.options.dataCrimeQueryWhere);
       query.push(" AND ((year = " + year + " AND month <= " + month + ") ");

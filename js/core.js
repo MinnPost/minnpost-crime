@@ -57,12 +57,10 @@ if (_.isFunction(Backbone.$.jsonp)) {
  */
 (function(app, $, undefined) {
   app.defaultOptions = {
-    dataPath: './',
+    dataPath: './data/',
     dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]',
     // See scraper for why this is needed
-    dataCrimeQueryWhere: "notes NOT LIKE 'Added to%'",
-    validCities: ['minneapolis'],
-    crimeStats: ['total', 'homicide', 'rape', 'robbery', 'agg_assault', 'burglary', 'larceny', 'auto_theft', 'arson']
+    dataCrimeQueryWhere: "notes NOT LIKE 'Added to%'"
   };
   
   /**
@@ -123,16 +121,22 @@ if (_.isFunction(Backbone.$.jsonp)) {
     _.each(name, function(d) {
       var defer;
       
-      if (useJSONP) {
-        defer = $.jsonp({
-          url: proxyPrefix + encodeURI(app.options.dataPath + d + '.json')
+      if (_.isUndefined(app.data[name])) {
+        
+        if (useJSONP) {
+          defer = $.jsonp({
+            url: proxyPrefix + encodeURI(app.options.dataPath + d + '.json')
+          });
+        }
+        else {
+          defer = $.getJSON(app.options.dataPath + d + '.json');
+        }
+        
+        $.when(defer).done(function(data) {
+          app.data[d] = data;
         });
+        defers.push(defer);
       }
-      else {
-        defer = $.getJSON(app.options.dataPath + d + '.json');
-      }
-      
-      defers.push(defer);
     });
     
     return $.when.apply($, defers);

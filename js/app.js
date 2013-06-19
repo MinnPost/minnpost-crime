@@ -11,6 +11,7 @@
     },
   
     initialize: function(options) {
+      var thisRouter = this;
       _.bindAll(this);
       
       // Set app options
@@ -19,7 +20,7 @@
       // Create main container view
       this.applicationView = new app.ViewContainer({
         el: app.options.el
-      }).render();
+      }).render().renderGeneralLoading();
       
       // Create collections and views (we use one view
       // for multiple models to handle transition
@@ -29,7 +30,10 @@
       this.cityView = new app.ViewCity();
       this.neighborhoodView = new app.ViewNeighborhood();
       
-      this.start();
+      // Get some meta data
+      app.getLocalData(['crime/categories', 'cities/cities']).done(function() {
+        thisRouter.start();
+      });
     },
     
     // Start application (after data has been loaded),
@@ -48,7 +52,7 @@
       var thisRouter = this;
       
       // Check if valid city
-      if (_.indexOf(app.options.validCities, city) === -1) {
+      if (_.isUndefined(app.data['cities/cities'][city])) {
         this.routeDefault();
       }
       
