@@ -171,12 +171,14 @@ module.exports = function(grunt) {
             dest: 'projects/<%= pkg.name %>/'
           },
           {
-            src: 'dist/data/**',
-            dest: 'projects/<%= pkg.name %>/data/'
+            src: 'dist/data/**/*',
+            dest: 'projects/<%= pkg.name %>/data/',
+            rel: 'dist/data'
           },
           {
-            src: 'dist/images/**',
-            dest: 'projects/<%= pkg.name %>/images/'
+            src: 'dist/images/**/*',
+            dest: 'projects/<%= pkg.name %>/images/',
+            rel: 'dist/images'
           }
         ]
       }
