@@ -61,7 +61,7 @@ module.exports = function(grunt) {
       },
       // JS application
       dist: {
-        src: ['js/core.js', 'js/app.js', 'js/models.js', 'js/collections.js', 'js/views.js'],
+        src: ['js/core.js', 'dist/templates.js', 'js/app.js', 'js/models.js', 'js/collections.js', 'js/views.js'],
         dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.js'
       },
       dist_latest: {
@@ -69,10 +69,10 @@ module.exports = function(grunt) {
       },
       // CSS application
       dist_css: {
-        src: ['css/compiledmain.min.css'], dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.css'
+        src: ['css/compiled/main.min.css'], dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.css'
       },
       dist_css_latest: {
-        src: ['css/compiledmain.min.css'], dest: 'dist/<%= pkg.name %>.latest.css'
+        src: ['css/compiled/main.min.css'], dest: 'dist/<%= pkg.name %>.latest.css'
       },
       dist_css_ie: {
         src: ['css/compiled/main.ie.min.css'], dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.ie.css'
@@ -82,7 +82,23 @@ module.exports = function(grunt) {
       },
       // JS libs
       libs: {
-        src: ['components/jquery/jquery.min.js', 'components/jquery-jsonp/src/jquery.jsonp.js', 'components/underscore/underscore-min.js', 'components/backbone/backbone-min.js', 'components/backbone.stickit/backbone.stickit.js', 'components/topojson/topojson.js', 'components/moment/min/moment.min.js'],
+        src: [
+          'components/jquery/jquery.min.js', 
+          'components/jquery-jsonp/src/jquery.jsonp.js', 
+          'components/underscore/underscore-min.js', 
+          'components/backbone/backbone-min.js', 
+          'components/backbone.stickit/backbone.stickit.js', 
+          'components/topojson/topojson.js', 
+          'components/moment/min/moment.min.js', 
+          'components/jqplot/excanvas.min.js', 
+          'components/jqplot/jquery.jqplot.min.js', 
+          'components/jqplot/plugins/jqplot.barRenderer.min.js', 
+          'components/jqplot/plugins/jqplot.dateAxisRenderer.min.js', 
+          'components/jqplot/plugins/jqplot.canvasTextRenderer.min.js', 
+          'components/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js', 
+          'components/jqplot/plugins/jqplot.categoryAxisRenderer.min.js', 
+          'components/jqplot/plugins/jqplot.barRenderer.min.js'
+        ],
         dest: 'dist/<%= pkg.name %>.libs.js',
         options: {
           separator: ';\r\n\r\n'
