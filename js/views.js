@@ -36,6 +36,8 @@
       }
       contentView.stickit();
       this.contentViewCID = contentView.cid;
+      
+      return this;
     },
     
     // Display loading
@@ -123,7 +125,8 @@
             $.jqplot('chart-one', [data], this.cityPlotOptions);
           }
         }
-      }
+      },
+      '.section-title': 'title'
     },
     
     cityPlotOptions: {

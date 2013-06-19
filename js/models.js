@@ -8,6 +8,7 @@
    */
   app.ModelCity = Backbone.Model.extend({
     initialize: function() {
+      this.set('title', 'Minneapolis profile');
     },
   
     // Set stats values
