@@ -114,7 +114,47 @@
         }
       },
       '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
-      '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' }
+      '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' },
+      '#chart-one': {
+        observe: 'crimeData',
+        update: function($el, val, model, options) {
+          data = model.getLastYearData();
+          if (_.isArray(data) && data.length > 0) {
+            $.jqplot('chart-one', [data], this.cityPlotOptions);
+          }
+        }
+      }
+    },
+    
+    cityPlotOptions: {
+      seriesColors: [ '#10517F' ],
+      grid: {
+        drawBorder: false,
+        background: '#fafafa',
+        gridLineColor: '#dddddd',
+        shadow: false
+      },
+      series: {
+        renderer: $.jqplot.BarRenderer,
+        lineWidth: 1.5,
+        shadow: false,
+        markerOptions: {
+          size: 0,
+          shadow: false
+        },
+        rendererOptions: {
+          barPadding: 0,
+          barMargin: 2 
+        }
+      },
+      axes: {
+        xaxis: {
+          renderer: $.jqplot.CategoryAxisRenderer
+          //tickOptions: {
+          //  formatString: '%b \'%y'
+          //}
+        }
+      }
     },
     
     render: function() {

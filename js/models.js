@@ -20,6 +20,22 @@
         this.get('currentYear') - 1, this.get('currentMonth'), stat));
       return this;
     },
+    
+    getLastYearData: function(stat) {
+      stat = stat || 'total';
+      var data = [];
+      var count = 0;
+      
+      if (_.isObject(this.get('crimeData'))) {
+        _.each(this.get('crimeData'), function(year, y) {
+          _.each(year, function(month, m) {
+            data.push([ y + '-' + m, month[stat]]);
+          });
+        });
+      }
+      
+      return data;
+    },
   
     // Determine change between two months
     getMonthChange: function(year1, month1, stat, year2, month2) {
@@ -38,9 +54,7 @@
     // Get a crime state for month
     getCrimeByMonth: function(year, month, stat) {
       stat = stat || 'total';
-      return _.reduce(this.get('crimeData')[year][month], function(memo, row) {
-        return memo + row[stat];
-      }, 0);
+      return this.get('crimeData')[year][month][stat];
     },
     
     // Get last month, as it could be last year
@@ -72,14 +86,12 @@
         this.setLastMonth();
         
         // Get data for various months (current, last, and last year)
-        defers.push(this.fetchDataMonth(year, month));
-        defers.push(this.fetchDataMonth(this.get('lastMonthYear'), this.get('lastMonthMonth')));
-        defers.push(this.fetchDataMonth(year - 1, month));
+        defers.push(this.fetchDataPreviousYear(year, month));
         $.when.apply($, defers).done(function() {
           var data = thisModel.get('data') || {};
-          _.each(arguments, function(a) {
-            data[a[0][0].year] = data[a[0][0].year] || {};
-            data[a[0][0].year][a[0][0].month] = a[0];
+          _.each(arguments[0], function(r) {
+            data[r.year] = data[r.year] || {};
+            data[r.year][r.month] = r;
           });
           thisModel.set('crimeData', data);
           thisModel.setStats();
@@ -106,12 +118,19 @@
     },
     
     // Get data for month
-    fetchDataMonth: function(year, month, done, context) {
-      var query = "SELECT * FROM swdata WHERE month = " + month + 
-        " AND year = " + year + " AND " + app.options.dataCrimeQueryWhere +
-        " ORDER BY neighborhood_key";
-      var defer = $.jsonp({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
+    fetchDataPreviousYear: function(year, month, done, context) {
+      var query = [];
+      query.push("SELECT year, month");
+      _.each(app.options.crimeStats, function(s) {
+        query.push(", SUM(" + s + ") AS " + s);
+      });
+      query.push(" FROM swdata WHERE " + app.options.dataCrimeQueryWhere);
+      query.push(" AND ((year = " + year + " AND month <= " + month + ") ");
+      query.push(" OR (year = " + (year - 1) + " AND month >= " + month + "))");
+      query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
       
+      var defer = $.jsonp({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+  
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
           done.apply(context, [data[0]]);

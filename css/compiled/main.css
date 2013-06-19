@@ -72,6 +72,10 @@
   height: 300px;
   width: 100%;
 }
+.minnpost-application-container .mc-city-container #chart-one {
+  height: 200px;
+  width: 100%;
+}
 .minnpost-application-container .mc-city-container .current-month-display {
   font-size: 2em;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;

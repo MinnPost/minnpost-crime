@@ -60,8 +60,9 @@ if (_.isFunction(Backbone.$.jsonp)) {
     dataPath: './',
     dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]',
     // See scraper for why this is needed
-    dataCrimeQueryWhere: "notes NOT LIKE 'Added  to%'",
-    validCities: ['minneapolis']
+    dataCrimeQueryWhere: "notes NOT LIKE 'Added to%'",
+    validCities: ['minneapolis'],
+    crimeStats: ['total', 'homicide', 'rape', 'robbery', 'agg_assault', 'burglary', 'larceny', 'auto_theft', 'arson']
   };
   
   /**
