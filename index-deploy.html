@@ -105,7 +105,9 @@
       (function(app, $, undefined) {
         $(document).ready(function() {
           app.start(_.extend(app.defaultOptions, {
-            el: '#minnpost-crime-application'
+            el: '#minnpost-crime-application',
+            dataPath: 'https://s3.amazonaws.com/data.minnpost/projects/minnpost-crime/data/',
+            imagePath: 'https://s3.amazonaws.com/data.minnpost/projects/minnpost-crime/images/'
           }));
         });
     

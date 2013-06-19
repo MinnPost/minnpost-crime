@@ -1,0 +1,29 @@
+{
+  "total": {
+    "title": "Total"
+  }, 
+  "homicide": {
+    "title": "Homcide"
+  }, 
+  "rape": {
+    "title": "Rape"
+  }, 
+  "robbery": {
+    "title": "Robbery"
+  }, 
+  "agg_assault": {
+    "title": "Aggrevated Assault"
+  }, 
+  "burglary": {
+    "title": "Burglary"
+  }, 
+  "larceny": {
+    "title": "Larceny"
+  }, 
+  "auto_theft": {
+    "title": "Auto Theft"
+  }, 
+  "arson": {
+    "title": "Arson"
+  }
+}
