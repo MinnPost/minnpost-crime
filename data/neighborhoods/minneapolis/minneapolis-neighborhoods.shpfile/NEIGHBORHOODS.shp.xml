@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE metadata SYSTEM "http://www.fgdc.gov/metadata/fgdc-std-001-1998.dtd">
+<metadata>
+	<idinfo>
+		<citation>
+			<citeinfo>
+				<origin>REQUIRED: The name of an organization or individual that developed the data set.</origin>
+				<pubdate>REQUIRED: The date when the data set is published or otherwise made available for release.</pubdate>
+				<title Sync="TRUE">NEIGHBORHOODS</title>
+				<geoform Sync="TRUE">vector digital data</geoform>
+				<onlink Sync="TRUE">\\gisdev1.development.ci.minneapolis.mn.us\e$\Share\FrontDesk2727\Garrett\data\city_shapes\NEIGHBORHOODS.shp</onlink>
+				<ftname Sync="TRUE">NEIGHBORHOODS</ftname></citeinfo>
+		</citation>
+		<descript>
+			<abstract>City of Minneapolis Neighborhoods</abstract>
+			<purpose>REQUIRED: A summary of the intentions with which the data set was developed.</purpose>
+			<langdata Sync="TRUE">en</langdata></descript>
+		<timeperd>
+			<timeinfo>
+				<sngdate>
+					<caldate>6/7/2010</caldate>
+					<time>unknown</time></sngdate>
+			</timeinfo>
+			<current>publication date</current>
+		</timeperd>
+		<status>
+			<progress>REQUIRED: The state of the data set.</progress>
+			<update>REQUIRED: The frequency with which changes and additions are made to the data set after the initial data set is completed.</update>
+		</status>
+		<spdom>
+			<bounding>
+				<westbc Sync="TRUE">-93.329136</westbc>
+				<eastbc Sync="TRUE">-93.193849</eastbc>
+				<northbc Sync="TRUE">45.051251</northbc>
+				<southbc Sync="TRUE">44.890471</southbc>
+			</bounding>
+			<lboundng><leftbc Sync="TRUE">514047.271593</leftbc><rightbc Sync="TRUE">548974.886121</rightbc><bottombc Sync="TRUE">136285.031838</bottombc><topbc Sync="TRUE">194855.876967</topbc></lboundng></spdom>
+		<keywords>
+			<theme>
+				<themekt>REQUIRED: Reference to a formally registered thesaurus or a similar authoritative source of theme keywords.</themekt>
+				<themekey>REQUIRED: Common-use word or phrase used to describe the subject of the data set.</themekey>
+			</theme>
+		</keywords>
+		<accconst>REQUIRED: Restrictions and legal prerequisites for accessing the data set.</accconst>
+		<useconst>REQUIRED: Restrictions and legal prerequisites for using the data set after access is granted.</useconst>
+		<native Sync="TRUE">Microsoft Windows XP Version 5.1 (Build 2600) Service Pack 3; ESRI ArcCatalog 9.3.1.4000</native>
+		<natvform Sync="TRUE">Shapefile</natvform></idinfo>
+	<spdoinfo>
+		<direct Sync="TRUE">Vector</direct>
+		<ptvctinf>
+			<sdtsterm Name="NEIGHBORHOODS">
+				<sdtstype Sync="TRUE">G-polygon</sdtstype>
+				<ptvctcnt Sync="TRUE">87</ptvctcnt>
+			</sdtsterm>
+			<esriterm Name="NEIGHBORHOODS"><efeatyp Sync="TRUE">Simple</efeatyp><efeageom Sync="TRUE">Polygon</efeageom><esritopo Sync="TRUE">FALSE</esritopo><efeacnt Sync="TRUE">87</efeacnt><spindex Sync="TRUE">TRUE</spindex><linrefer Sync="TRUE">FALSE</linrefer></esriterm></ptvctinf>
+	</spdoinfo>
+	<spref>
+		<horizsys>
+			<planar>
+				<planci>
+					<plance Sync="TRUE">coordinate pair</plance>
+					<coordrep>
+						<absres Sync="TRUE">0.000000</absres>
+						<ordres Sync="TRUE">0.000000</ordres>
+					</coordrep>
+					<plandu Sync="TRUE">survey feet</plandu>
+				</planci>
+				<mapproj><mapprojn Sync="TRUE">Lambert Conformal Conic</mapprojn><lambertc><stdparll Sync="TRUE">44.883333</stdparll><stdparll Sync="TRUE">45.133333</stdparll><longcm Sync="TRUE">-93.383333</longcm><latprjo Sync="TRUE">44.791111</latprjo><feast Sync="TRUE">499999.999998</feast><fnorth Sync="TRUE">100000.000131</fnorth></lambertc></mapproj></planar>
+			<geodetic>
+				<horizdn Sync="TRUE">D_User_Defined</horizdn>
+				<ellips Sync="TRUE">User_Defined_Spheroid</ellips>
+				<semiaxis Sync="TRUE">6378418.941000</semiaxis>
+				<denflat Sync="TRUE">298.257224</denflat>
+			</geodetic>
+			<cordsysn><geogcsn Sync="TRUE">GCS_User_Defined</geogcsn><projcsn Sync="TRUE">HENNEPIN COUNTY, MN</projcsn></cordsysn></horizsys>
+		<vertdef>
+			<altsys>
+				<altres Sync="TRUE">1.000000</altres>
+				<altenc Sync="TRUE">Explicit elevation coordinate included with horizontal coordinates</altenc>
+			</altsys>
+		</vertdef>
+	</spref>
+	<eainfo>
+		<detailed Name="NEIGHBORHOODS">
+			<enttyp>
+				<enttypl Sync="TRUE">NEIGHBORHOODS</enttypl>
+				<enttypt Sync="TRUE">Feature Class</enttypt><enttypc Sync="TRUE">87</enttypc></enttyp>
+			<attr><attrlabl Sync="TRUE">FID</attrlabl><attalias Sync="TRUE">FID</attalias><attrtype Sync="TRUE">OID</attrtype><attwidth Sync="TRUE">4</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale><attrdef Sync="TRUE">Internal feature number.</attrdef><attrdefs Sync="TRUE">ESRI</attrdefs><attrdomv><udom Sync="TRUE">Sequential unique whole numbers that are automatically generated.</udom></attrdomv></attr><attr>
+				<attrlabl>INT_REFNO</attrlabl>
+				<attalias Sync="TRUE">INT_REFNO</attalias><attrtype Sync="TRUE">Number</attrtype><attwidth Sync="TRUE">19</attwidth><atnumdec Sync="TRUE">8</atnumdec></attr>
+			<attr>
+				<attrlabl>PREFIX</attrlabl>
+				<attalias Sync="TRUE">PREFIX</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">8</attwidth></attr>
+			<attr>
+				<attrlabl>UDI</attrlabl>
+				<attalias Sync="TRUE">UDI</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">64</attwidth></attr>
+			<attr>
+				<attrlabl>SYMBOL_NAM</attrlabl>
+				<attalias Sync="TRUE">SYMBOL_NAM</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">32</attwidth></attr>
+			<attr>
+				<attrlabl>BDNAME</attrlabl>
+				<attalias Sync="TRUE">BDNAME</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">50</attwidth></attr>
+			<attr>
+				<attrlabl>BDNUM</attrlabl>
+				<attalias Sync="TRUE">BDNUM</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">20</attwidth></attr>
+			<attr>
+				<attrlabl>TEXT_NBR</attrlabl>
+				<attalias Sync="TRUE">TEXT_NBR</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">8</attwidth></attr>
+			<attr>
+				<attrlabl>SHAPE</attrlabl>
+				<attrdef>Feature geometry.</attrdef>
+				<attrdefs>ESRI</attrdefs>
+				<attrdomv>
+					<udom>Coordinates defining the features.</udom>
+				</attrdomv>
+				<attalias Sync="TRUE">Shape</attalias><attrtype Sync="TRUE">Geometry</attrtype><attwidth Sync="TRUE">0</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr><attrlabl Sync="TRUE">SHAPE_AREA</attrlabl><attalias Sync="TRUE">SHAPE_AREA</attalias><attrtype Sync="TRUE">Float</attrtype><attwidth Sync="TRUE">19</attwidth><attrdef Sync="TRUE">Area of feature in internal units squared.</attrdef><attrdefs Sync="TRUE">ESRI</attrdefs><attrdomv><udom Sync="TRUE">Positive real numbers that are automatically generated.</udom></attrdomv><atnumdec Sync="TRUE">11</atnumdec></attr><attr><attrlabl Sync="TRUE">SHAPE_LEN</attrlabl><attalias Sync="TRUE">SHAPE_LEN</attalias><attrtype Sync="TRUE">Float</attrtype><attwidth Sync="TRUE">19</attwidth><atnumdec Sync="TRUE">11</atnumdec></attr></detailed>
+	</eainfo>
+	<distinfo>
+		<resdesc>Downloadable Data</resdesc>
+		<stdorder><digform><digtinfo><transize Sync="TRUE">0.303</transize><dssize Sync="TRUE">0.303</dssize></digtinfo></digform></stdorder></distinfo>
+	<metainfo>
+		<metd Sync="TRUE">20111101</metd>
+		<metc>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>REQUIRED: The organization responsible for the metadata information.</cntorg>
+					<cntper>REQUIRED: The person responsible for the metadata information.</cntper>
+				</cntorgp>
+				<cntaddr>
+					<addrtype>REQUIRED: The mailing and/or physical address for the organization or individual.</addrtype>
+					<city>REQUIRED: The city of the address.</city>
+					<state>REQUIRED: The state or province of the address.</state>
+					<postal>REQUIRED: The ZIP or other postal code of the address.</postal>
+				</cntaddr>
+				<cntvoice>REQUIRED: The telephone number by which individuals can speak to the organization or individual.</cntvoice>
+			</cntinfo>
+		</metc>
+		<metstdn Sync="TRUE">FGDC Content Standards for Digital Geospatial Metadata</metstdn>
+		<metstdv Sync="TRUE">FGDC-STD-001-1998</metstdv>
+		<mettc Sync="TRUE">local time</mettc>
+		<metextns>
+			<onlink>http://www.esri.com/metadata/esriprof80.html</onlink>
+			<metprof>ESRI Metadata Profile</metprof>
+		</metextns>
+		<langmeta Sync="TRUE">en</langmeta><metextns><onlink Sync="TRUE">http://www.esri.com/metadata/esriprof80.html</onlink><metprof Sync="TRUE">ESRI Metadata Profile</metprof></metextns></metainfo>
+	<Esri><CreaDate>20100912</CreaDate><CreaTime>21580000</CreaTime><SyncOnce>FALSE</SyncOnce><SyncDate>20111101</SyncDate><SyncTime>09373400</SyncTime><ModDate>20111101</ModDate><ModTime>09403600</ModTime><DataProperties><lineage><Process ToolSource="C:\Program Files\ArcGIS\ArcToolbox\Toolboxes\Conversion Tools.tbx\FeatureClassToFeatureClass" Date="20100208" Time="134213">FeatureClassToFeatureClass "Database Connections\BOUNDARY to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS" "Database Connections\EconDev to DBTGISPROD.sde\CPED.ECONDEV.NEIGHBORHOODS" NEIGHBORHOODS # "INT_REFNO 'INT_REFNO' true true false 8 Double 8 38 ,First,#,Database Connections\BOUNDARY to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,INT_REFNO,-1,-1;PREFIX 'PREFIX' true true false 8 Text 0 0 ,First,#,Database Connections\BOUNDARY to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,PREFIX,-1,-1;UDI 'UDI' true true false 64 Text 0 0 ,First,#,Database Connections\BOUNDARY to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,UDI,-1,-1;SYMBOL_NAM 'SYMBOL_NAM' true true false 32 Text 0 0 ,First,#,Database Connections\BOUNDARY to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,SYMBOL_NAM,-1,-1;BDNAME 'BDNAME' true true false 50 Text 0 0 ,First,#,Database Connections\BOUNDARY to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,BDNAME,-1,-1;BDNUM 'BDNUM' true true false 20 Text 0 0 ,First,#,Database Connections\BOUNDARY to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,BDNUM,-1,-1;TEXT_NBR 'TEXT_NBR' true true false 8 Text 0 0 ,First,#,Database Connections\BOUNDARY to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,TEXT_NBR,-1,-1" # "Database Connections\EconDev to DBTGISPROD.sde\CPED.ECONDEV.NEIGHBORHOODS\CPED.ECONDEV.NEIGHBORHOODS"</Process><Process ToolSource="C:\Program Files\ArcGIS\ArcToolbox\Toolboxes\Conversion Tools.tbx\FeatureClassToFeatureClass" Date="20100521" Time="081555">FeatureClassToFeatureClass "Database Connections\EconDev to DBTGISPROD.sde\CPED.ECONDEV.NEIGHBORHOODS\CPED.ECONDEV.NEIGHBORHOODS" "Database Connections\BOUNDARY to GISPUBTEST.sde" NEIGHBORHOODS_N # "INT_REFNO 'INT_REFNO' true true false 8 Double 8 38 ,First,#,Database Connections\EconDev to DBTGISPROD.sde\CPED.ECONDEV.NEIGHBORHOODS\CPED.ECONDEV.NEIGHBORHOODS,INT_REFNO,-1,-1;PREFIX 'PREFIX' true true false 8 Text 0 0 ,First,#,Database Connections\EconDev to DBTGISPROD.sde\CPED.ECONDEV.NEIGHBORHOODS\CPED.ECONDEV.NEIGHBORHOODS,PREFIX,-1,-1;UDI 'UDI' true true false 64 Text 0 0 ,First,#,Database Connections\EconDev to DBTGISPROD.sde\CPED.ECONDEV.NEIGHBORHOODS\CPED.ECONDEV.NEIGHBORHOODS,UDI,-1,-1;SYMBOL_NAM 'SYMBOL_NAM' true true false 32 Text 0 0 ,First,#,Database Connections\EconDev to DBTGISPROD.sde\CPED.ECONDEV.NEIGHBORHOODS\CPED.ECONDEV.NEIGHBORHOODS,SYMBOL_NAM,-1,-1;BDNAME 'BDNAME' true true false 50 Text 0 0 ,First,#,Database Connections\EconDev to DBTGISPROD.sde\CPED.ECONDEV.NEIGHBORHOODS\CPED.ECONDEV.NEIGHBORHOODS,BDNAME,-1,-1;BDNUM 'BDNUM' true true false 20 Text 0 0 ,First,#,Database Connections\EconDev to DBTGISPROD.sde\CPED.ECONDEV.NEIGHBORHOODS\CPED.ECONDEV.NEIGHBORHOODS,BDNUM,-1,-1;TEXT_NBR 'TEXT_NBR' true true false 8 Text 0 0 ,First,#,Database Connections\EconDev to DBTGISPROD.sde\CPED.ECONDEV.NEIGHBORHOODS\CPED.ECONDEV.NEIGHBORHOODS,TEXT_NBR,-1,-1" DEFAULTS "Database Connections\BOUNDARY to GISPUBTEST.sde\BOUNDARY.NEIGHBORHOODS_N"</Process><Process ToolSource="C:\Program Files\ArcGIS\ArcToolbox\Toolboxes\Conversion Tools.tbx\FeatureClassToFeatureClass" Date="20111013" Time="154024">FeatureClassToFeatureClass "Database Connections\GB to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS" Y:\Share\FrontDesk2727\Garrett\data\city_shapes NEIGHBORHOODS.shp # "INT_REFNO 'INT_REFNO' true true false 8 Double 8 38 ,First,#,Database Connections\GB to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,INT_REFNO,-1,-1;PREFIX 'PREFIX' true true false 8 Text 0 0 ,First,#,Database Connections\GB to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,PREFIX,-1,-1;UDI 'UDI' true true false 64 Text 0 0 ,First,#,Database Connections\GB to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,UDI,-1,-1;SYMBOL_NAM 'SYMBOL_NAM' true true false 32 Text 0 0 ,First,#,Database Connections\GB to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,SYMBOL_NAM,-1,-1;BDNAME 'BDNAME' true true false 50 Text 0 0 ,First,#,Database Connections\GB to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,BDNAME,-1,-1;BDNUM 'BDNUM' true true false 20 Text 0 0 ,First,#,Database Connections\GB to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,BDNUM,-1,-1;TEXT_NBR 'TEXT_NBR' true true false 8 Text 0 0 ,First,#,Database Connections\GB to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,TEXT_NBR,-1,-1;SHAPE_AREA 'SHAPE_AREA' false false true 0 Double 0 0 ,First,#,Database Connections\GB to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,SHAPE.AREA,-1,-1;SHAPE_LEN 'SHAPE_LEN' false false true 0 Double 0 0 ,First,#,Database Connections\GB to GISPUBPROD.sde\BOUNDARY.NEIGHBORHOODS,SHAPE.LEN,-1,-1" # Y:\Share\FrontDesk2727\Garrett\data\city_shapes\NEIGHBORHOODS.shp</Process></lineage></DataProperties><MetaID>{A78D36B0-0D53-4676-803C-934DC46C6320}</MetaID></Esri><dataqual><lineage><procstep><procdesc Sync="TRUE">Metadata imported.</procdesc><srcused Sync="TRUE">F:\GBS\Metadata\XML\BOUNDARY_NEIGHBORHOODS.xml</srcused><date Sync="TRUE">20080404</date><time Sync="TRUE">10583100</time></procstep><procstep><procdesc Sync="TRUE">Dataset copied.</procdesc><srcused Sync="TRUE">Server=GISPUBTEST; Service=Port:5151; User=boundary; Version=SDE.DEFAULT</srcused><procdate Sync="TRUE">20100903</procdate><proctime Sync="TRUE">11125100</proctime></procstep><procstep><procdesc Sync="TRUE">Dataset copied.</procdesc><srcused Sync="TRUE">Server=GISPUBQA; Service=5151; User=boundary; Version=SDE.DEFAULT</srcused><procdate Sync="TRUE">20100912</procdate><proctime Sync="TRUE">21580000</proctime></procstep></lineage></dataqual><dataIdInfo><envirDesc Sync="TRUE">Microsoft Windows XP Version 5.1 (Build 2600) Service Pack 3; ESRI ArcCatalog 9.3.1.4000</envirDesc><dataLang><languageCode Sync="TRUE" value="en"></languageCode></dataLang><idCitation><resTitle Sync="TRUE">NEIGHBORHOODS</resTitle><presForm><PresFormCd Sync="TRUE" value="005"></PresFormCd></presForm></idCitation><spatRpType><SpatRepTypCd Sync="TRUE" value="001"></SpatRepTypCd></spatRpType><dataExt><geoEle><GeoBndBox esriExtentType="native"><westBL Sync="TRUE">514047.271593</westBL><eastBL Sync="TRUE">548974.886121</eastBL><northBL Sync="TRUE">194855.876967</northBL><southBL Sync="TRUE">136285.031838</southBL><exTypeCode Sync="TRUE">1</exTypeCode></GeoBndBox></geoEle></dataExt><geoBox esriExtentType="decdegrees"><westBL Sync="TRUE">-93.329136</westBL><eastBL Sync="TRUE">-93.193849</eastBL><northBL Sync="TRUE">45.051251</northBL><southBL Sync="TRUE">44.890471</southBL><exTypeCode Sync="TRUE">1</exTypeCode></geoBox></dataIdInfo><mdLang><languageCode Sync="TRUE" value="en"></languageCode></mdLang><mdStanName Sync="TRUE">ISO 19115 Geographic Information - Metadata</mdStanName><mdStanVer Sync="TRUE">DIS_ESRI1.0</mdStanVer><mdChar><CharSetCd Sync="TRUE" value="004"></CharSetCd></mdChar><mdHrLv><ScopeCd Sync="TRUE" value="005"></ScopeCd></mdHrLv><mdHrLvName Sync="TRUE">dataset</mdHrLvName><distInfo><distributor><distorTran><onLineSrc><orDesc Sync="TRUE">002</orDesc><linkage Sync="TRUE">file://\\gisdev1.development.ci.minneapolis.mn.us\e$\Share\FrontDesk2727\Garrett\data\city_shapes\NEIGHBORHOODS.shp</linkage><protocol Sync="TRUE">Local Area Network</protocol></onLineSrc><transSize Sync="TRUE">0.303</transSize></distorTran><distorFormat><formatName Sync="TRUE">Shapefile</formatName></distorFormat></distributor></distInfo><refSysInfo><RefSystem><refSysID><identCode Sync="TRUE">HENNEPIN COUNTY, MN</identCode></refSysID></RefSystem></refSysInfo><spatRepInfo><VectSpatRep><topLvl><TopoLevCd Sync="TRUE" value="001"></TopoLevCd></topLvl><geometObjs Name="NEIGHBORHOODS"><geoObjTyp><GeoObjTypCd Sync="TRUE" value="001"></GeoObjTypCd></geoObjTyp><geoObjCnt Sync="TRUE">87</geoObjCnt></geometObjs></VectSpatRep></spatRepInfo><mdDateSt Sync="TRUE">20111101</mdDateSt></metadata>

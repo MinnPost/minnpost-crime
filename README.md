@@ -22,6 +22,8 @@ You should utilize the `index-src.html` file to do development.  This applicatio
 ## Data processing
 
 1. To turn MN Compass neighborhood profile data to JSON: `node data-processing/mncompass-2010-xlsx-json.js`
+1. Create final Minneapolis neighborhood data JSON:
+    1. Run: `node data-processing/minneapolis-neighborhoods.js`
 
 ## Data
 
@@ -39,13 +41,10 @@ You should utilize the `index-src.html` file to do development.  This applicatio
 #### Neighborhoods
 
 * [Definitive list of Minneapolis Neighborhoods](http://www.minneapolismn.gov/maps/neighborhoods) last updated 2006-01-01.  A [scraper of this data](https://scraperwiki.com/scrapers/minneapolis_neighborhoods/) has been made.  Downloaded locally (```data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012.json```).  These contain keys that should be used throughout the application.
-   * Download JSON with this command, though this data should not change anytime soon: ```wget -O data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012.json "https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=json&name=minneapolis_neighborhoods&query=select%20*%20from%20%60swdata%60" ```
-   * Download CSV: ```wget -O data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012.csv "https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=csv&name=minneapolis_neighborhoods&query=select%20*%20from%20%60swdata%60" ```
-* A geographical file of all Twin Cities neighborhoods was provided by [MN Compass](http://www.mncompass.org/) (via email).  Minneapolis wanted to charge $25 and have us sign an NDA.
-   * The KMZ has been converted to a shapefile (```data/neighborhoods/twin-cities-neighborhoods-2012.shpfile```) and then split into the two cities (```data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012.shpfile```) with QGIS.
-* A combined shapefile with the keys from the definitive list has been create in QGIS (```data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012-keyed.shpfile```).
-   * This has then been converted in GeoJSON with: ```ogr2ogr -f "GeoJSON" data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012-keyed.geo.json data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012-keyed.shpfile/minneapolis-neighborhoods-2012-keyed.shp```
-   * And converted to TopoJSON with: ```topojson -p -o data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012-keyed.topo.json data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012-keyed.geo.json```
+   * Download JSON with this command, though this data should not change anytime soon: `wget -O data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012.json "https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=json&name=minneapolis_neighborhoods&query=select%20*%20from%20%60swdata%60"`
+   * Download CSV: `wget -O data/neighborhoods/minneapolis/minneapolis-neighborhoods-2012.csv "https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=csv&name=minneapolis_neighborhoods&query=select%20*%20from%20%60swdata%60"`
+* Downloaded shapefile of the neighborhoods was provided by the [City of Minneapolis](http://www.minneapolismn.gov/maps/about_maps_public-maps-links): `wget -O data/neighborhoods/minneapolis/minneapolis-neighborhoods.shp.zip "http://www.minneapolismn.gov/www/groups/public/@bis/documents/webcontent/wcms1p-106980.zip"`.  This was extracted with: `cd data/neighborhoods/minneapolis/ && unzip minneapolis-neighborhoods.shpfile.zip -d minneapolis-neighborhoods.shpfile; cd -;`
+   * This has been converted to a GeojSON file with: `ogr2ogr -f "GeoJSON" data/neighborhoods/minneapolis/minneapolis-neighborhoods.geo.json data/neighborhoods/minneapolis/minneapolis-neighborhoods.shpfile/NEIGHBORHOODS.shp -t_srs "EPSG:4326"`
 
 ## Hacks
 
