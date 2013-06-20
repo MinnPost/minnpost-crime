@@ -12,13 +12,18 @@ module.exports = function(grunt) {
         ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */' + 
         '<%= "\\n\\n" %>'
     },
-    /*
     data_embed: {
-      bills: {
-        'dist/data.js': ['data/bills.json']
-      },
+      app_data: {
+        options: {
+          output: 'dist/data.js'
+        },
+        files: {
+          'neighborhoods/minneapolis.topo': ['data/neighborhoods/minneapolis.topo.json'],
+          'cities/cities': ['data/cities/cities.json'],
+          'crime/categories': ['data/crime/categories.json']
+        }
+      }
     },
-    */
     jshint: {
       files: ['Gruntfile.js', 'js/*.js', 'data-processing/*.js']
     },
@@ -61,7 +66,8 @@ module.exports = function(grunt) {
       },
       // JS application
       dist: {
-        src: ['js/core.js', 'dist/templates.js', 'js/app.js', 'js/models.js', 'js/collections.js', 'js/views.js'],
+        src: ['js/core.js', 'dist/data.js', 'dist/templates.js', 
+          'js/app.js', 'js/models.js', 'js/collections.js', 'js/views.js'],
         dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.js'
       },
       dist_latest: {
@@ -203,20 +209,24 @@ module.exports = function(grunt) {
 
   // Custom task to save json data into a JS file for concatentation
   grunt.registerMultiTask('data_embed', 'Make data embeddable', function() {
-    var t, file, output;
-    var tasks = this.data; 
+    var options = this.options();
     var config = grunt.config.get();
+    var finalOutput = '';
+    console.log(options);
     
-    for (t in tasks) {
-      file = grunt.file.read(tasks[t][0]);
-      output = 'mpApp["' + config.pkg.name + '"].data["' + this.target + '"] = ' + file + ';';
-      grunt.file.write(t, output);
-      grunt.log.write('Wrote ' + tasks[t][0] + ' to ' + t + '...').ok();
-    }
+    this.files.forEach(function(f) {
+      var data = grunt.file.readJSON(f.src[0]);
+      finalOutput += 'mpApp["' + config.pkg.name + '"].data["' + f.dest + '"] = ' + JSON.stringify(data) + '; \n\n';
+      grunt.log.write('Read file: ' + f.src[0] + '...').ok();
+      
+    });
+    
+    grunt.file.write(options.output, finalOutput);
+    grunt.log.write('Wrote data to: ' + options.output + '...').ok();
   });
 
   // Default build task
-  grunt.registerTask('default', ['jshint', 'sass', 'clean', 'jst', 'concat', 'uglify', 'copy']);
+  grunt.registerTask('default', ['jshint', 'sass', 'clean', 'data_embed', 'jst', 'concat', 'uglify', 'copy']);
 
   // Watch dask
   grunt.registerTask('lint-watch', ['jshint', 'sass:dev']);
