@@ -9,6 +9,12 @@
       'neighborhood/:city/:neighborhood': 'routeNeighborhood',
       '*defaultR': 'routeDefault'
     },
+    
+    defaultData: [
+      'neighborhoods/minneapolis.topo',
+      'crime/categories',
+      'cities/cities'
+    ],
   
     initialize: function(options) {
       var thisRouter = this;
@@ -31,7 +37,24 @@
       this.neighborhoodView = new app.ViewNeighborhood();
       
       // Get some meta data
-      app.getLocalData(['crime/categories', 'cities/cities']).done(function() {
+      
+      app.getLocalData(this.defaultData).done(function() {
+        // Add neighborhoods to collection
+        _.each(topojson.feature(app.data['neighborhoods/minneapolis.topo'], 
+          app.data['neighborhoods/minneapolis.topo'].objects.neighborhoods).features,
+          function(feature, i) {
+            // Take out properties as we will store them in the
+            // the model
+            var model = _.clone(feature.properties);
+            feature.properties = {};
+            model.geoJSON = feature;
+            
+            // Make id based on city as well
+            model.id = model.city + '/' + model.key;
+            thisRouter.neighborhoods.add(new app.ModelNeighborhood(model));
+          }
+        );
+        
         thisRouter.start();
       });
     },

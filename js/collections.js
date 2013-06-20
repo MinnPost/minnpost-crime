@@ -15,7 +15,8 @@
    * Collection for neighborhood models
    */
   app.CollectionNeighborhoods = Backbone.Collection.extend({
-    model: app.ModelNeighborhood
+    model: app.ModelNeighborhood,
+    comparator: 'id'
     
   });
 
