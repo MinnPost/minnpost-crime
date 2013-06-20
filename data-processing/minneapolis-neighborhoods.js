@@ -25,7 +25,7 @@ var inputSource = require(path.resolve(__dirname, '../data/neighborhoods/minneap
 var inputShapes = require(path.resolve(__dirname, '../data/neighborhoods/minneapolis/minneapolis-neighborhoods.geo.json'));
 
 // Output
-var output = path.resolve(__dirname, '../data/neighborhoods/minneapolis/minneapolis-neighborhoods.topo.json');
+var output = path.resolve(__dirname, '../data/neighborhoods/minneapolis.topo.json');
 
 // Manual translation of shapefile name to neighborhood key
 var translateShapeToSource = {
