@@ -121,10 +121,10 @@ _.each(inputShapes.features, function(neighborhood, n) {
 
 
 // Create topojson
-var topoInput = { collection: finalJSON };
+var topoInput = { neighborhoods: finalJSON };
 var topology = topojson.topology(topoInput, {
   id: function(f) {
-    f.properties.key
+    return f.properties.key;
   },
   'property-transform': function(properties, key, value) {
     properties[key] = value;

@@ -1,6 +1,7 @@
 .DS_Store
 !dist
 dist/templates.js
+dist/data.js
 node_modules
 components
 ENV

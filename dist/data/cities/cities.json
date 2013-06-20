@@ -1,5 +1,9 @@
 {
   "minneapolis": {
-    "title": "Minneapolis"
+    "title": "Minneapolis",
+    "population": {
+      "2000": 382618,
+      "2010": 382578
+    }
   }
 }
