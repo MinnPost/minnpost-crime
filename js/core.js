@@ -14,17 +14,17 @@ mpApp['minnpost-crime'] = mpApp['minnpost-crime'] || {};
  */
 _.mixin({
   /**
-   * Formats number into currency
+   * Formats number 
    */
   formatNumber: function(num, decimals) {
-    decimals = decimals || 2;
+    decimals = (_.isUndefined(decimals)) ? 2 : 0;
     var rgx = (/(\d+)(\d{3})/);
-    
     split = num.toFixed(decimals).toString().split('.');
+    
     while (rgx.test(split[0])) {
       split[0] = split[0].replace(rgx, '$1' + ',' + '$2');
     }
-    return split[0] + '.' + split[1];
+    return (decimals) ? split[0] + '.' + split[1] : split[0];
   },
   
   /**

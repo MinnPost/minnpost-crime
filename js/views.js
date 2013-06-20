@@ -157,12 +157,10 @@
         gridLineColor: '#dddddd',
         shadow: false
       },
-      series: {
-        renderer: $.jqplot.BarRenderer,
-        lineWidth: 1.5,
+      seriesDefaults: {
         shadow: false,
         markerOptions: {
-          size: 0,
+          size: 6,
           shadow: false
         },
         rendererOptions: {
@@ -173,10 +171,18 @@
       axes: {
         xaxis: {
           renderer: $.jqplot.CategoryAxisRenderer
-          //tickOptions: {
-          //  formatString: '%b \'%y'
-          //}
+        },
+        yaxis: {
+          min: 0,
+          tickOptions: {
+            formatter: function(format, value) { return _.formatNumber(value, 0); } 
+          }
         }
+      },
+      highlighter: {
+        show: true,
+        sizeAdjust: 7,
+        tooltipAxes: 'y'
       }
     },
     
