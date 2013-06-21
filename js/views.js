@@ -18,7 +18,7 @@
     
     // Render content area.  Wrapped here to check if the view
     // is the same
-    renderContent: function(contentView, model) {
+    renderContent: function(contentView, cityModel, neighborhoodsCollection) {
       var rerender = false;
       var el = this.el + ' .mc-content col';
       
@@ -28,7 +28,12 @@
       
       // Update view
       contentView.setElement($(this.el).find('.mc-content'));
-      contentView.model = model;
+      if (!_.isUndefined(cityModel)) {
+        contentView.model = cityModel;
+      }
+      if (!_.isUndefined(neighborhoodsCollection)) {
+        contentView.collection = neighborhoodsCollection;
+      }
       
       // Rerender if needed
       if (rerender) {
@@ -190,6 +195,11 @@
       app.getTemplate('template-city', function(template) {
         this.$el.html(template(this.model.toJSON()));
       }, this);
+      
+      this.neighborhoodMapView = new app.ViewNeighborhoodMap({
+        collection: this.collection,
+        el: '#neighborhood-map'
+      }).render();
       return this;
     }
   });
@@ -199,6 +209,61 @@
    */
   app.ViewNeighborhood = app.ViewBinding.extend({
   
+  });
+
+  /**
+   * View for neighborhood map
+   */
+  app.ViewNeighborhoodMap = app.ViewBinding.extend({
+    collection: app.CollectionNeighborhoods,
+    
+    styleDefault: {
+      stroke: true,
+      color: '#107F3E',
+      weight: 1,
+      opacity: 0.5,
+      fill: true,
+      fillColor: '#107F3E',
+      fillOpacity: 0.2
+    },
+    
+    baseLayer: new L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png'),
+    
+    initialize: function() {
+      this.map = new L.Map(this.el);
+      this.map.setView([44.9800, -93.2636], 12);
+      this.map.addLayer(this.baseLayer);
+      this.map.attributionControl.setPrefix(false);
+    },
+    
+    // Renders out collection
+    render: function() {
+      var thisView = this;
+      this.FeatureGroup = new L.featureGroup();
+      
+      this.collection.each(function(n) {
+        var layer = n.get('mapLayer');
+        
+        if (_.isUndefined(layer)) {
+          layer = new L.geoJson(n.get('geoJSON'));
+          n.set('mapLayer', layer);
+        }
+        
+        layer.setStyle(thisView.styleDefault);
+        thisView.FeatureGroup.addLayer(layer);
+        thisView.map.addLayer(layer);
+        
+        layer.on('mouseover', thisView.bindMapFeatureHover);
+      });
+      
+      this.map.fitBounds(this.FeatureGroup.getBounds());
+      //this.FeatureGroup.on('mouseover', this.bindMapFeatureHover);
+    },
+    
+    // How to handle hover events
+    bindMapFeatureHover: function(e) {
+      //console.log(e);
+    }
   });
 
 

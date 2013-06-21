@@ -95,7 +95,8 @@ module.exports = function(grunt) {
           'components/backbone/backbone-min.js', 
           'components/backbone.stickit/backbone.stickit.js', 
           'components/topojson/topojson.js', 
-          'components/moment/min/moment.min.js', 
+          'components/moment/min/moment.min.js',
+          'components/leaflet/dist/leaflet.js', 
           'components/jqplot/excanvas.min.js', 
           'components/jqplot/jquery.jqplot.min.js', 
           'components/jqplot/plugins/jqplot.barRenderer.min.js', 
@@ -112,10 +113,12 @@ module.exports = function(grunt) {
       },
       // CSS libs
       libs_css: {
-        src: ['components/flurid/dist/flurid.min.css'], dest: 'dist/<%= pkg.name %>.libs.css'
+        src: ['components/flurid/dist/flurid.min.css', 'components/leaflet/dist/leaflet.css'], 
+        dest: 'dist/<%= pkg.name %>.libs.css'
       },
       libs_css_ie: {
-        src: [], dest: 'dist/<%= pkg.name %>.libs.ie.css'
+        src: ['components/leaflet/dist/leaflet.ie.css'],
+        dest: 'dist/<%= pkg.name %>.libs.ie.css'
       }
     },
     uglify: {

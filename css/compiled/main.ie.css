@@ -72,8 +72,8 @@
 .minnpost-application-container .row-space {
   margin-bottom: 1em;
 }
-.minnpost-application-container .mc-city-container .map {
-  height: 300px;
+.minnpost-application-container .mc-city-container #neighborhood-map {
+  height: 350px;
   width: 100%;
 }
 .minnpost-application-container .mc-city-container #chart-one {

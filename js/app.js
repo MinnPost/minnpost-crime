@@ -85,8 +85,8 @@
         this.city = new app.ModelCity({ id: city });
         this.cities.add(this.city);
       }
-      
-      this.applicationView.renderContent(this.cityView, this.city);
+      // Render
+      this.applicationView.renderContent(this.cityView, this.city, this.neighborhoods);
       this.city.fetchData(function() {
         thisRouter.applicationView.renderStopGeneralLoading();
       });
