@@ -120,8 +120,7 @@ if (_.isFunction(Backbone.$.jsonp)) {
     // Go through each file and add to defers
     _.each(name, function(d) {
       var defer;
-      
-      if (_.isUndefined(app.data[name])) {
+      if (_.isUndefined(app.data[d])) {
         
         if (useJSONP) {
           defer = $.jsonp({
@@ -170,7 +169,7 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="mc-city-container">\n  <div class="flurid">\n    <div class="row row-space">\n      <div class="column width_1/1">\n        <h2 class="section-title"></h2>\n      </div>\n    </div>\n  \n    <div class="row row-space">\n      <div class="column width_1/2">\n        <div class="inner-column-left">\n          <div class="map placeholder">\n            Map <span class="month-display"></span>\n          </div>\n        </div>\n      </div>\n      \n      <div class="column width_1/2 last">\n        <h3>Current Month</h3>\n        <p class="current-month-display"></p>\n        \n        <h3>Total Crime</h3>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-last-month">\n              <p>Change from last month</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-last-year">\n              <p>Change from last year</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n        \n      </div>\n    </div>\n    \n    <div class="row row-space city-category-stats">\n      <h4>Crime changes from last month</h4>\n      ';
+__p += '<div class="mc-city-container">\n  <div class="flurid">\n    <div class="row row-space">\n      <div class="column width_1/1">\n        <h2 class="section-title"></h2>\n      </div>\n    </div>\n  \n    <div class="row row-space">\n      <div class="column width_1/2">\n        <div class="inner-column-left">\n          <div id="neighborhood-map">\n          </div>\n        </div>\n      </div>\n      \n      <div class="column width_1/2 last">\n        <h3>Current Month</h3>\n        <p class="current-month-display"></p>\n        \n        <h3>Total Crime</h3>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-last-month">\n              <p>Change from last month</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-last-year">\n              <p>Change from last year</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n        \n      </div>\n    </div>\n    \n    <div class="row row-space city-category-stats">\n      <h4>Crime changes from last month</h4>\n      ';
  _.each(categories, function(cat, c) { if (c !== 'total') { ;
 __p += '\n        <div class="city-category-stat city-category-stat-' +
 ((__t = ( c )) == null ? '' : __t) +
@@ -191,6 +190,18 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class="loading-container">\n  <div class="loading"><span>Loading...</span></div>\n</div>';
+
+}
+return __p
+};
+
+this["mpApp"]["minnpost-crime"]["templates"]["js/templates/template-map-label.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div class="map-label-inner-container">\n  <h4>' +
+((__t = ( title )) == null ? '' : __t) +
+'</h4>\n</div>';
 
 }
 return __p
@@ -234,21 +245,22 @@ return __p
       this.cityView = new app.ViewCity();
       this.neighborhoodView = new app.ViewNeighborhood();
       
-      // Get some meta data
-      
+      // Get the compiled data
       app.getLocalData(this.defaultData).done(function() {
         // Add neighborhoods to collection
         _.each(topojson.feature(app.data['neighborhoods/minneapolis.topo'], 
           app.data['neighborhoods/minneapolis.topo'].objects.neighborhoods).features,
           function(feature, i) {
-            // Take out properties as we will store them in the
-            // the model
             var model = _.clone(feature.properties);
-            feature.properties = {};
+            model.id = model.city + '/' + model.key;
+            
+            // Take out properties as we will store them in the
+            // the model, not in the geoJSON
+            delete feature.properties;
             model.geoJSON = feature;
+            model.geoJSON.id = model.id;
             
             // Make id based on city as well
-            model.id = model.city + '/' + model.key;
             thisRouter.neighborhoods.add(new app.ModelNeighborhood(model));
           }
         );
@@ -284,8 +296,8 @@ return __p
         this.city = new app.ModelCity({ id: city });
         this.cities.add(this.city);
       }
-      
-      this.applicationView.renderContent(this.cityView, this.city);
+      // Render
+      this.applicationView.renderContent(this.cityView, this.city, this.neighborhoods);
       this.city.fetchData(function() {
         thisRouter.applicationView.renderStopGeneralLoading();
       });
@@ -534,7 +546,7 @@ return __p
     
     // Render content area.  Wrapped here to check if the view
     // is the same
-    renderContent: function(contentView, model) {
+    renderContent: function(contentView, cityModel, neighborhoodsCollection) {
       var rerender = false;
       var el = this.el + ' .mc-content col';
       
@@ -544,7 +556,12 @@ return __p
       
       // Update view
       contentView.setElement($(this.el).find('.mc-content'));
-      contentView.model = model;
+      if (!_.isUndefined(cityModel)) {
+        contentView.model = cityModel;
+      }
+      if (!_.isUndefined(neighborhoodsCollection)) {
+        contentView.collection = neighborhoodsCollection;
+      }
       
       // Rerender if needed
       if (rerender) {
@@ -706,6 +723,11 @@ return __p
       app.getTemplate('template-city', function(template) {
         this.$el.html(template(this.model.toJSON()));
       }, this);
+      
+      this.neighborhoodMapView = new app.ViewNeighborhoodMap({
+        collection: this.collection,
+        el: '#neighborhood-map'
+      }).render();
       return this;
     }
   });
@@ -715,6 +737,109 @@ return __p
    */
   app.ViewNeighborhood = app.ViewBinding.extend({
   
+  });
+
+  /**
+   * View for neighborhood map
+   */
+  app.ViewNeighborhoodMap = app.ViewBinding.extend({
+    collection: app.CollectionNeighborhoods,
+    
+    styleDefault: {
+      stroke: true,
+      color: '#107F3E',
+      weight: 1,
+      opacity: 0.5,
+      fill: true,
+      fillColor: '#107F3E',
+      fillOpacity: 0.2
+    },
+    
+    baseLayer: new L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png'),
+    
+    initialize: function() {
+      this.map = new L.Map(this.el);
+      this.map.setView([44.9800, -93.2636], 12);
+      this.map.addLayer(this.baseLayer);
+      this.map.attributionControl.setPrefix(false);
+      this.renderLabelContainer();
+      
+      // Get hover template.  This should be use
+      // with a callback
+      app.getTemplate('template-map-label', function(template) {
+        this.templates = this.templates || {};
+        this.templates['template-map-label'] = template;
+      }, this);
+    },
+    
+    // Renders out collection
+    render: function() {
+      var thisView = this;
+      this.FeatureGroup = new L.featureGroup();
+      
+      this.collection.each(function(n) {
+        var layer = n.get('mapLayer');
+        
+        if (_.isUndefined(layer)) {
+          layer = new L.geoJson(n.get('geoJSON'));
+          n.set('mapLayer', layer);
+        }
+        
+        layer.setStyle(thisView.styleDefault);
+        thisView.FeatureGroup.addLayer(layer);
+        thisView.map.addLayer(layer);
+        
+        layer.on('mouseover', thisView.bindMapFeatureMouseover, thisView);
+        layer.on('mouseout', thisView.bindMapFeatureMouseout, thisView);
+      });
+      
+      this.map.fitBounds(this.FeatureGroup.getBounds());
+    },
+    
+    // Make hover container
+    renderLabelContainer: function() {
+      this.LabelControl = this.LabelControl || L.Control.extend({
+        options: {
+          position: 'topright'
+        },
+
+        onAdd: function (map) {
+          var container = L.DomUtil.create('div', 'map-label-container');
+          return container;
+        }
+      });
+
+      this.map.addControl(new this.LabelControl());
+      this.$el.find('.map-label-container').hide();
+    },
+    
+    // How to handle mouseover events
+    bindMapFeatureMouseover: function(e) {
+      // Is this the best way to get this
+      var layer = e.layer._layers[e.layer._leaflet_id - 1];
+      var options = layer.options;
+      var neighborhood = this.collection.get(layer.feature.id);
+      options.fillOpacity = options.fillOpacity * 4;
+      layer.setStyle(options);
+      
+      // Label
+      this.$el.find('.map-label-container').html(
+        this.templates['template-map-label']({
+          title: neighborhood.get('title')
+        })
+      ).show();
+    },
+    
+    // How to handle mouseout events
+    bindMapFeatureMouseout: function(e) {
+      var layer = e.layer._layers[e.layer._leaflet_id - 1];
+      var options = layer.options;
+      options.fillOpacity = options.fillOpacity / 4;
+      layer.setStyle(options);
+      
+      // Label
+      this.$el.find('.map-label-container').hide();
+    }
   });
 
 
