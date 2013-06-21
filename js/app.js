@@ -42,14 +42,16 @@
         _.each(topojson.feature(app.data['neighborhoods/minneapolis.topo'], 
           app.data['neighborhoods/minneapolis.topo'].objects.neighborhoods).features,
           function(feature, i) {
-            // Take out properties as we will store them in the
-            // the model
             var model = _.clone(feature.properties);
-            feature.properties = {};
+            model.id = model.city + '/' + model.key;
+            
+            // Take out properties as we will store them in the
+            // the model, not in the geoJSON
+            delete feature.properties;
             model.geoJSON = feature;
+            model.geoJSON.id = model.id;
             
             // Make id based on city as well
-            model.id = model.city + '/' + model.key;
             thisRouter.neighborhoods.add(new app.ModelNeighborhood(model));
           }
         );

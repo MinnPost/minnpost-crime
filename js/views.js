@@ -234,6 +234,14 @@
       this.map.setView([44.9800, -93.2636], 12);
       this.map.addLayer(this.baseLayer);
       this.map.attributionControl.setPrefix(false);
+      this.renderLabelContainer();
+      
+      // Get hover template.  This should be use
+      // with a callback
+      app.getTemplate('template-map-label', function(template) {
+        this.templates = this.templates || {};
+        this.templates['template-map-label'] = template;
+      }, this);
     },
     
     // Renders out collection
@@ -253,16 +261,56 @@
         thisView.FeatureGroup.addLayer(layer);
         thisView.map.addLayer(layer);
         
-        layer.on('mouseover', thisView.bindMapFeatureHover);
+        layer.on('mouseover', thisView.bindMapFeatureMouseover, thisView);
+        layer.on('mouseout', thisView.bindMapFeatureMouseout, thisView);
       });
       
       this.map.fitBounds(this.FeatureGroup.getBounds());
-      //this.FeatureGroup.on('mouseover', this.bindMapFeatureHover);
     },
     
-    // How to handle hover events
-    bindMapFeatureHover: function(e) {
-      //console.log(e);
+    // Make hover container
+    renderLabelContainer: function() {
+      this.LabelControl = this.LabelControl || L.Control.extend({
+        options: {
+          position: 'topright'
+        },
+
+        onAdd: function (map) {
+          var container = L.DomUtil.create('div', 'map-label-container');
+          return container;
+        }
+      });
+
+      this.map.addControl(new this.LabelControl());
+      this.$el.find('.map-label-container').hide();
+    },
+    
+    // How to handle mouseover events
+    bindMapFeatureMouseover: function(e) {
+      // Is this the best way to get this
+      var layer = e.layer._layers[e.layer._leaflet_id - 1];
+      var options = layer.options;
+      var neighborhood = this.collection.get(layer.feature.id);
+      options.fillOpacity = options.fillOpacity * 4;
+      layer.setStyle(options);
+      
+      // Label
+      this.$el.find('.map-label-container').html(
+        this.templates['template-map-label']({
+          title: neighborhood.get('title')
+        })
+      ).show();
+    },
+    
+    // How to handle mouseout events
+    bindMapFeatureMouseout: function(e) {
+      var layer = e.layer._layers[e.layer._leaflet_id - 1];
+      var options = layer.options;
+      options.fillOpacity = options.fillOpacity / 4;
+      layer.setStyle(options);
+      
+      // Label
+      this.$el.find('.map-label-container').hide();
     }
   });
 
