@@ -120,8 +120,7 @@ if (_.isFunction(Backbone.$.jsonp)) {
     // Go through each file and add to defers
     _.each(name, function(d) {
       var defer;
-      
-      if (_.isUndefined(app.data[name])) {
+      if (_.isUndefined(app.data[d])) {
         
         if (useJSONP) {
           defer = $.jsonp({

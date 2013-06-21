@@ -36,8 +36,7 @@
       this.cityView = new app.ViewCity();
       this.neighborhoodView = new app.ViewNeighborhood();
       
-      // Get some meta data
-      
+      // Get the compiled data
       app.getLocalData(this.defaultData).done(function() {
         // Add neighborhoods to collection
         _.each(topojson.feature(app.data['neighborhoods/minneapolis.topo'], 
