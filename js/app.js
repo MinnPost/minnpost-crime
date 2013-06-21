@@ -33,11 +33,17 @@
       // values.
       this.cities = new app.CollectionCities();
       this.neighborhoods = new app.CollectionNeighborhoods();
-      this.cityView = new app.ViewCity();
-      this.neighborhoodView = new app.ViewNeighborhood();
+      this.cityView = new app.ViewCity({ app: this });
+      this.neighborhoodView = new app.ViewNeighborhood({ app: this });
       
       // Get the compiled data
       app.getLocalData(this.defaultData).done(function() {
+        // Add cities to collections
+        _.each(app.data['cities/cities'], function(c, id) {
+          c.id = id;
+          thisRouter.cities.add(new app.ModelCity(c));
+        });
+      
         // Add neighborhoods to collection
         _.each(topojson.feature(app.data['neighborhoods/minneapolis.topo'], 
           app.data['neighborhoods/minneapolis.topo'].objects.neighborhoods).features,
@@ -75,18 +81,14 @@
     routeCity: function(city) {
       var thisRouter = this;
       
-      // Check if valid city
-      if (_.isUndefined(app.data['cities/cities'][city])) {
-        this.routeDefault();
-      }
-      
       // Load up city
       this.applicationView.renderGeneralLoading();
-      this.city = this.cities.get(city);
-      if (_.isUndefined(this.city)) {
-        this.city = new app.ModelCity({ id: city });
-        this.cities.add(this.city);
+      city = this.cities.get(city);
+      if (_.isUndefined(city)) {
+        this.routeDefault();
       }
+      this.city = city;
+      
       // Render
       this.applicationView.renderContent(this.cityView, this.city, this.neighborhoods);
       this.city.fetchData(function() {
@@ -96,6 +98,30 @@
   
     // Neightborhood route
     routeNeighborhood: function(city, neighborhood) {
+      var thisRouter = this;
+      
+      // Load up city
+      this.applicationView.renderGeneralLoading();
+      city = this.cities.get(city);
+      if (_.isUndefined(city)) {
+        this.routeDefault();
+      }
+      this.city = city;
+      
+      // Load up neighborhood
+      neighborhood = this.neighborhoods.get(this.city.id + '/' + neighborhood);
+      if (!neighborhood) {
+        this.routeDefault();
+      }
+      this.neighborhood = neighborhood;
+      
+      // Render
+      /*
+      this.applicationView.renderContent(this.neighborhoodView, this.neighborhood, this.neighborhoods);
+      this.neighborhood.fetchData(function() {
+        thisRouter.applicationView.renderStopGeneralLoading();
+      });
+      */
     }
   });
   

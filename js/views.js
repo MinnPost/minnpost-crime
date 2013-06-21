@@ -198,7 +198,8 @@
       
       this.neighborhoodMapView = new app.ViewNeighborhoodMap({
         collection: this.collection,
-        el: '#neighborhood-map'
+        el: '#neighborhood-map',
+        app: this.options.app
       }).render();
       return this;
     }
@@ -263,6 +264,7 @@
         
         layer.on('mouseover', thisView.bindMapFeatureMouseover, thisView);
         layer.on('mouseout', thisView.bindMapFeatureMouseout, thisView);
+        layer.on('click', thisView.bindMapFeatureClick, thisView);
       });
       
       this.map.fitBounds(this.FeatureGroup.getBounds());
@@ -311,6 +313,12 @@
       
       // Label
       this.$el.find('.map-label-container').hide();
+    },
+    
+    // How to handle click events
+    bindMapFeatureClick: function(e) {
+      var layer = e.layer._layers[e.layer._leaflet_id - 1];
+      this.options.app.navigate('/neighborhood/' + layer.feature.id, { trigger: true, replace: true });
     }
   });
 
