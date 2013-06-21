@@ -4,9 +4,32 @@
 (function(app, $, undefined) {
 
   /**
+   * Basic model for other crime models
+   */
+  app.ModelCrime = Backbone.Model.extend({
+    dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]',
+    // See scraper for why this is needed
+    dataCrimeQueryWhere: "notes NOT LIKE 'Added to%'",
+  
+    // Get most recent month and year
+    fetchRecentMonth: function(done, context) {
+      context = context || this;
+      var query = "SELECT month, year FROM swdata ORDER BY year || '-' || month DESC LIMIT 1";
+      var defer = $.jsonp({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
+      
+      if (_.isFunction(done)) {
+        $.when(defer).done(function(data) {
+          done.apply(context, [data[0].year, data[0].month]);
+        });
+      }
+      return defer;
+    }
+  });
+
+  /**
    * Model for city level data
    */
-  app.ModelCity = Backbone.Model.extend({
+  app.ModelCity = app.ModelCrime.extend({
     initialize: function() {
       this.set('categories', app.data['crime/categories']);
       this.set('title', 'Minneapolis profile');
@@ -132,20 +155,6 @@
       return this;
     },
     
-    // Get most recent month and year
-    fetchRecentMonth: function(done, context) {
-      context = context || this;
-      var query = "SELECT month, year FROM swdata ORDER BY year || '-' || month DESC LIMIT 1";
-      var defer = $.jsonp({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
-      
-      if (_.isFunction(done)) {
-        $.when(defer).done(function(data) {
-          done.apply(context, [data[0].year, data[0].month]);
-        });
-      }
-      return defer;
-    },
-    
     // Get data aggregate by month for previous years
     fetchDataPreviousYearsByMonth: function(year, month, years, done, context) {
       years = (_.isNumber(years)) ? years : 1;
@@ -155,7 +164,7 @@
       _.each(this.get('categories'), function(category, c) {
         query.push(", SUM(" + c + ") AS " + c);
       });
-      query.push(" FROM swdata WHERE " + app.options.dataCrimeQueryWhere);
+      query.push(" FROM swdata WHERE " + this.dataCrimeQueryWhere);
       query.push(" AND ((year = " + year + " AND month <= " + month + ") ");
       if (years > 1) {
         query.push(" OR (year < " + year + " AND year > " + (year - years) + ")");
@@ -163,7 +172,7 @@
       query.push(" OR (year = " + (year - years) + " AND month >= " + month + "))");
       query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
       
-      var defer = $.jsonp({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = $.jsonp({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
@@ -177,7 +186,7 @@
   /**
    * Model for neighborhood level data
    */
-  app.ModelNeighborhood = Backbone.Model.extend({
+  app.ModelNeighborhood = app.ModelCrime.extend({
     
   });
 
