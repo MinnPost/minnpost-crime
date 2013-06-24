@@ -1,15 +1,18 @@
-<div class="mc-city-container">
+<div class="mc-neighborhood-container">
   <div class="flurid">
     <div class="row row-space">
       <div class="column width_1/1">
         <h2 class="section-title"><%= (typeof title != 'undefined') ? title : '' %></h2>
+        <% if (typeof city != 'undefined') { %>
+          <a href="#city/<%= city %>"><%= city %></a>
+        <% } %>
       </div>
     </div>
   
     <div class="row row-space">
       <div class="column width_1/2">
         <div class="inner-column-left">
-          <div id="city-map">
+          <div id="neighborhood-map">
           </div>
         </div>
       </div>
@@ -41,18 +44,6 @@
         </div>
         
       </div>
-    </div>
-    
-    <div class="row row-space city-category-stats">
-      <h4>Crime changes from last month</h4>
-      <% if (typeof categories != 'undefined') { %>
-        <% _.each(categories, function(cat, c) { if (c !== 'total') { %>
-          <div class="city-category-stat city-category-stat-<%= c %> column width_1/<%= (_.size(categories) - 1) %>">
-            <div class="stat-label"><%= cat.title %></div>
-            <div class="stat-value"></div>
-          </div>
-        <% }}) %>
-      <% } %>
     </div>
     
     <div class="row">

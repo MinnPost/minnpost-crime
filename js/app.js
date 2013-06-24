@@ -23,46 +23,102 @@
       // Set app options
       app.options = _.extend(app.defaultOptions, options);
       
-      // Create main container view
-      this.applicationView = new app.ViewContainer({
-        el: app.options.el
-      }).render().renderGeneralLoading();
+      // Create data structures and views
+      this.createDataStructures();
+      this.createApplicationView();
       
-      // Create collections and views (we use one view
-      // for multiple models to handle transition
-      // values.
-      this.cities = new app.CollectionCities();
-      this.neighborhoods = new app.CollectionNeighborhoods();
-      this.cityView = new app.ViewCity({ app: this });
-      this.neighborhoodView = new app.ViewNeighborhood({ app: this });
-      
+      // Render applciation view and mark as loading
+      this.applicationView.render().renderGeneralLoading();
+
+      // Fetch and parse initial data
+      this.fetchData(function() {
+        thisRouter.parseData();
+        thisRouter.createViews();
+        thisRouter.applicationView.renderStopGeneralLoading();
+        thisRouter.applicationView.renderParts();
+        thisRouter.start();
+      });
+    },
+    
+    // Get initial data
+    fetchData: function(done) {
       // Get the compiled data
       app.getLocalData(this.defaultData).done(function() {
-        // Add cities to collections
-        _.each(app.data['cities/cities'], function(c, id) {
-          c.id = id;
-          thisRouter.cities.add(new app.ModelCity(c));
-        });
+        done();
+      });
+    },
+    
+    // Parse initial data
+    parseData: function() {
+      var thisRouter = this;
       
-        // Add neighborhoods to collection
-        _.each(topojson.feature(app.data['neighborhoods/minneapolis.topo'], 
-          app.data['neighborhoods/minneapolis.topo'].objects.neighborhoods).features,
-          function(feature, i) {
-            var model = _.clone(feature.properties);
-            model.id = model.city + '/' + model.key;
-            
-            // Take out properties as we will store them in the
-            // the model, not in the geoJSON
-            delete feature.properties;
-            model.geoJSON = feature;
-            model.geoJSON.id = model.id;
-            
-            // Make id based on city as well
-            thisRouter.neighborhoods.add(new app.ModelNeighborhood(model));
-          }
-        );
-        
-        thisRouter.start();
+      // Add cities to collections
+      _.each(app.data['cities/cities'], function(c, id) {
+        c.id = id;
+        thisRouter.cities.add(new app.ModelCity(c));
+      });
+    
+      // Add neighborhoods to collection
+      _.each(topojson.feature(app.data['neighborhoods/minneapolis.topo'], 
+        app.data['neighborhoods/minneapolis.topo'].objects.neighborhoods).features,
+        function(feature, i) {
+          var model = _.clone(feature.properties);
+          model.id = model.city + '/' + model.key;
+          
+          // Take out properties as we will store them in the
+          // the model, not in the geoJSON
+          delete feature.properties;
+          model.geoJSON = feature;
+          model.geoJSON.id = model.id;
+          
+          // Make id based on city as well
+          thisRouter.neighborhoods.add(new app.ModelNeighborhood(model));
+        }
+      );
+      
+      return this;
+    },
+    
+    // Create data structures
+    createDataStructures: function() {
+      this.cities = new app.CollectionCities();
+      this.neighborhoods = new app.CollectionNeighborhoods();
+    },
+    
+    // Create main view
+    createApplicationView: function() {
+      this.applicationView = new app.ViewContainer({
+        el: app.options.el,
+        app: this
+      });
+    },
+    
+    // Create sub views
+    createViews: function() {
+      this.applicationView = new app.ViewContainer({
+        el: app.options.el,
+        app: this
+      });
+      this.cityView = new app.ViewCity({
+        model: this.city,
+        app: this,
+        el: '.mc-city-view-container'
+      });
+      this.neighborhoodView = new app.ViewNeighborhood({
+        model: this.neighborhood,
+        collection: this.neighborhoods,
+        app: this,
+        el: '.mc-neighborhood-view-container'
+      });
+      this.cityMapView = new app.ViewNeighborhoodMap({
+        collection: this.neighborhoods,
+        el: '#city-map',
+        app: this
+      });
+      this.neighborhoodMapView = new app.ViewNeighborhoodMap({
+        collection: this.neighborhoods,
+        el: '#neighborhood-map',
+        app: this
       });
     },
     
@@ -90,7 +146,7 @@
       this.city = city;
       
       // Render
-      this.applicationView.renderContent(this.cityView, this.city, this.neighborhoods);
+      this.applicationView.renderCity(this.city);
       this.city.fetchData(function() {
         thisRouter.applicationView.renderStopGeneralLoading();
       });
@@ -116,12 +172,10 @@
       this.neighborhood = neighborhood;
       
       // Render
-      /*
-      this.applicationView.renderContent(this.neighborhoodView, this.neighborhood, this.neighborhoods);
+      this.applicationView.renderNeighborhood(this.neighborhood, this.city);
       this.neighborhood.fetchData(function() {
         thisRouter.applicationView.renderStopGeneralLoading();
       });
-      */
     }
   });
   

@@ -77,9 +77,11 @@
       var crime1 = this.getCrimeByMonth(year1, month1, stat);
       var crime2 = this.getCrimeByMonth(year2, month2, stat);
       // Can't divide by zero, so percentage difference from
-      // zero is actually subject, we choose, 0.1 so that a 1
+      // zero is actually subject, we choose a value so that a 1
       // change would be 100%
-      return (crime2 - crime1) / ((crime1 === 0) ? 0.1 : crime1);
+      // (1 - x) / x = 1
+      
+      return (crime2 - crime1) / ((crime1 === 0) ? 0.5 : crime1);
     },
     
     // Get a crime state for month
@@ -187,6 +189,12 @@
    * Model for neighborhood level data
    */
   app.ModelNeighborhood = app.ModelCrime.extend({
+  
+    // Get all that sweet, sweet data
+    fetchData: function(done, context) {
+      var thisModel = this;
+      context = context || this;
+    }
     
   });
 

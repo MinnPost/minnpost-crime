@@ -10,37 +10,45 @@
     
     // Main template render
     render: function() {
+      // Render container
       app.getTemplate('template-application-container', function(template) {
         $(this.el).html(template({ }));
       }, this);
       return this;
     },
     
-    // Render content area.  Wrapped here to check if the view
-    // is the same
-    renderContent: function(contentView, cityModel, neighborhoodsCollection) {
-      var rerender = false;
-      var el = this.el + ' .mc-content col';
+    // Render sub parts
+    renderParts: function() {
+      // Render city and neighborhood view
+      this.options.app.cityView.render();
+      this.options.app.cityMapView.render();
+      this.options.app.neighborhoodView.render();
+      this.options.app.neighborhoodMapView.render();
+      return this;
+    },
+    
+    // Render City view
+    renderCity: function(cityModel) {
+      var thisView = this;
+    
+      this.options.app.cityView.model = cityModel;
+      this.options.app.cityView.stickit();
+      this.options.app.cityView.$el.slideDown(function() {
+        thisView.options.app.cityMapView.renderMap();
+      });
+      this.options.app.neighborhoodView.$el.slideUp();
+      return this;
+    },
+    
+    // Render Neighborhood view
+    renderNeighborhood: function(neighborhoodModel, cityModel) {
+      var thisView = this;
       
-      if (this.contentViewCID !== contentView.cid) {
-        rerender = true;
-      }
-      
-      // Update view
-      contentView.setElement($(this.el).find('.mc-content'));
-      if (!_.isUndefined(cityModel)) {
-        contentView.model = cityModel;
-      }
-      if (!_.isUndefined(neighborhoodsCollection)) {
-        contentView.collection = neighborhoodsCollection;
-      }
-      
-      // Rerender if needed
-      if (rerender) {
-        contentView.render();
-      }
-      contentView.stickit();
-      this.contentViewCID = contentView.cid;
+      this.options.app.neighborhoodView.model = neighborhoodModel;
+      this.options.app.neighborhoodView.$el.slideDown(function() {
+        thisView.options.app.neighborhoodMapView.renderMap();
+      });
+      this.options.app.cityView.$el.slideUp();
       
       return this;
     },
@@ -192,15 +200,11 @@
     },
     
     render: function() {
+      var data = (_.isObject(this.model)) ? this.model.toJSON() : {};
+    
       app.getTemplate('template-city', function(template) {
-        this.$el.html(template(this.model.toJSON()));
+        this.$el.html(template(data));
       }, this);
-      
-      this.neighborhoodMapView = new app.ViewNeighborhoodMap({
-        collection: this.collection,
-        el: '#neighborhood-map',
-        app: this.options.app
-      }).render();
       return this;
     }
   });
@@ -209,6 +213,14 @@
    * View for neighborhood
    */
   app.ViewNeighborhood = app.ViewBinding.extend({
+    
+    render: function() {
+      var data = (_.isObject(this.model)) ? this.model.toJSON() : {};
+      app.getTemplate('template-neighborhood', function(template) {
+        this.$el.html(template(data));
+      }, this);
+      return this;
+    }
   
   });
 
@@ -228,46 +240,62 @@
       fillOpacity: 0.2
     },
     
-    baseLayer: new L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png'),
-    
     initialize: function() {
-      this.map = new L.Map(this.el);
-      this.map.setView([44.9800, -93.2636], 12);
-      this.map.addLayer(this.baseLayer);
-      this.map.attributionControl.setPrefix(false);
-      this.renderLabelContainer();
-      
       // Get hover template.  This should be use
       // with a callback
       app.getTemplate('template-map-label', function(template) {
         this.templates = this.templates || {};
         this.templates['template-map-label'] = template;
       }, this);
+      
+      this.mapRendered = false;
     },
     
     // Renders out collection
     render: function() {
+      return this;
+    },
+    
+    // Render map
+    renderMap: function() {
       var thisView = this;
-      this.FeatureGroup = new L.featureGroup();
+      var baseLayer = new L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png');
+      if (_.isUndefined(this.el)) {
+        this.setElement(this.$el.selector);
+      }
       
-      this.collection.each(function(n) {
-        var layer = n.get('mapLayer');
+      // Only render the map once
+      if (this.mapRendered === false) {
+        this.map = new L.Map(this.el);
+        this.map.setView([44.9800, -93.2636], 12);
+        this.map.addLayer(baseLayer);
+        this.map.attributionControl.setPrefix(false);
+        this.renderLabelContainer();
         
-        if (_.isUndefined(layer)) {
-          layer = new L.geoJson(n.get('geoJSON'));
-          n.set('mapLayer', layer);
-        }
+        this.FeatureGroup = new L.featureGroup();
         
-        layer.setStyle(thisView.styleDefault);
-        thisView.FeatureGroup.addLayer(layer);
-        thisView.map.addLayer(layer);
+        this.collection.each(function(n) {
+          var layer = new L.geoJson(n.get('geoJSON'));
+          
+          layer.setStyle(thisView.styleDefault);
+          thisView.FeatureGroup.addLayer(layer);
+          
+          layer.on('mouseover', thisView.bindMapFeatureMouseover, thisView);
+          layer.on('mouseout', thisView.bindMapFeatureMouseout, thisView);
+          layer.on('click', thisView.bindMapFeatureClick, thisView);
+          thisView.map.addLayer(layer);
+        });
         
-        layer.on('mouseover', thisView.bindMapFeatureMouseover, thisView);
-        layer.on('mouseout', thisView.bindMapFeatureMouseout, thisView);
-        layer.on('click', thisView.bindMapFeatureClick, thisView);
-      });
-      
-      this.map.fitBounds(this.FeatureGroup.getBounds());
+        this.map.fitBounds(this.FeatureGroup.getBounds());
+        this.mapRendered = true;
+      }
+      return this;
+    },
+    
+    // Recenter
+    mapRecenter: function() {
+      this.map.setView([44.9800, -93.2636], 12);
+      return this;
     },
     
     // Make hover container
@@ -285,6 +313,7 @@
 
       this.map.addControl(new this.LabelControl());
       this.$el.find('.map-label-container').hide();
+      return this;
     },
     
     // How to handle mouseover events
@@ -318,7 +347,7 @@
     // How to handle click events
     bindMapFeatureClick: function(e) {
       var layer = e.layer._layers[e.layer._leaflet_id - 1];
-      this.options.app.navigate('/neighborhood/' + layer.feature.id, { trigger: true, replace: true });
+      this.options.app.navigate('/neighborhood/' + layer.feature.id, { trigger: true });
     }
   });
 

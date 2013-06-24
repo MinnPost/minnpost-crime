@@ -72,11 +72,13 @@
 .minnpost-application-container .row-space {
   margin-bottom: 1em;
 }
-.minnpost-application-container .mc-city-container #neighborhood-map {
+.minnpost-application-container #neighborhood-map,
+.minnpost-application-container #city-map {
   height: 350px;
   width: 100%;
 }
-.minnpost-application-container .mc-city-container #neighborhood-map .map-label-container {
+.minnpost-application-container #neighborhood-map .map-label-container,
+.minnpost-application-container #city-map .map-label-container {
   min-width: 10em;
   max-width: 18em;
   min-height: 2em;
@@ -86,7 +88,8 @@
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
   border: 1px solid #888;
 }
-.minnpost-application-container .mc-city-container #neighborhood-map .map-label-container .map-label-inner-container {
+.minnpost-application-container #neighborhood-map .map-label-container .map-label-inner-container,
+.minnpost-application-container #city-map .map-label-container .map-label-inner-container {
   padding: .5em;
 }
 .minnpost-application-container .mc-city-container #chart-one {
