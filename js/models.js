@@ -23,6 +23,23 @@
         });
       }
       return defer;
+    },
+    
+    // We have population data from 2000 and 2010, so we abstract
+    // that out to fill in years
+    createPopulationYears: function() {
+      var baseData = this.get('population');
+      var popData = {};
+      var rate = (baseData[2010] - baseData[2000]) / 10;
+      var year = 2000;
+      
+      for (year; year <= 2020; year++) {
+        // Estimate population based on year
+        popData[year] = baseData[2000] + (rate * (year - 2000));
+      }
+      
+      this.set('population', popData);
+      return this;
     }
   });
 
@@ -32,7 +49,7 @@
   app.ModelCity = app.ModelCrime.extend({
     initialize: function() {
       this.set('categories', app.data['crime/categories']);
-      this.set('title', 'Minneapolis profile');
+      this.createPopulationYears();
     },
   
     // Set stats values
@@ -189,6 +206,11 @@
    * Model for neighborhood level data
    */
   app.ModelNeighborhood = app.ModelCrime.extend({
+  
+    initialize: function() {
+      this.set('categories', app.data['crime/categories']);
+      this.createPopulationYears();
+    },
   
     // Get all that sweet, sweet data
     fetchData: function(done, context) {

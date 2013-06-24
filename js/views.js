@@ -32,11 +32,15 @@
       var thisView = this;
     
       this.options.app.cityView.model = cityModel;
-      this.options.app.cityView.stickit();
       this.options.app.cityView.$el.slideDown(function() {
         thisView.options.app.cityMapView.renderMap();
       });
       this.options.app.neighborhoodView.$el.slideUp();
+      
+      if (!_.isObject(this.options.app.cityView._modelBindings)) {
+        this.options.app.cityView.stickit();
+      }
+      
       return this;
     },
     
@@ -45,8 +49,10 @@
       var thisView = this;
       
       this.options.app.neighborhoodView.model = neighborhoodModel;
+      this.options.app.neighborhoodView.stickit();
       this.options.app.neighborhoodView.$el.slideDown(function() {
-        thisView.options.app.neighborhoodMapView.renderMap();
+        thisView.options.app.neighborhoodMapView.renderMap(false);
+        thisView.options.app.neighborhoodMapView.mapFocusNeighborhood(neighborhoodModel);
       });
       this.options.app.cityView.$el.slideUp();
       
@@ -257,9 +263,11 @@
     },
     
     // Render map
-    renderMap: function() {
+    renderMap: function(fitGroup) {
+      fitGroup = (!_.isUndefined(fitGroup)) ? fitGroup : true;
       var thisView = this;
       var baseLayer = new L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png');
+      
       if (_.isUndefined(this.el)) {
         this.setElement(this.$el.selector);
       }
@@ -272,13 +280,13 @@
         this.map.attributionControl.setPrefix(false);
         this.renderLabelContainer();
         
-        this.FeatureGroup = new L.featureGroup();
+        this.featureGroup = new L.featureGroup();
         
         this.collection.each(function(n) {
           var layer = new L.geoJson(n.get('geoJSON'));
           
           layer.setStyle(thisView.styleDefault);
-          thisView.FeatureGroup.addLayer(layer);
+          thisView.featureGroup.addLayer(layer);
           
           layer.on('mouseover', thisView.bindMapFeatureMouseover, thisView);
           layer.on('mouseout', thisView.bindMapFeatureMouseout, thisView);
@@ -286,15 +294,31 @@
           thisView.map.addLayer(layer);
         });
         
-        this.map.fitBounds(this.FeatureGroup.getBounds());
+        if (fitGroup) {
+          this.map.fitBounds(this.featureGroup.getBounds());
+        }
         this.mapRendered = true;
       }
+      
       return this;
     },
     
-    // Recenter
-    mapRecenter: function() {
-      this.map.setView([44.9800, -93.2636], 12);
+    // Focus on neighnorhood
+    mapFocusNeighborhood: function(model) {
+      this.model = (_.isObject(model)) ? model : this.model;
+      var layer, options;
+      
+      // If model is set, show specific neighborhood.
+      // TODO: Need to reset weight on other layers
+      if (_.isObject(this.model)) {
+        this.featureGroup.setStyle({ weight: this.styleDefault.weight });
+        layer = this.getLayerByModelID();
+        options = layer._layers[layer._leaflet_id - 1].options;
+        options.weight = options.weight + 8;
+        layer.setStyle(options);
+        this.map.fitBounds(layer.getBounds());
+      }
+      
       return this;
     },
     
@@ -348,6 +372,15 @@
     bindMapFeatureClick: function(e) {
       var layer = e.layer._layers[e.layer._leaflet_id - 1];
       this.options.app.navigate('/neighborhood/' + layer.feature.id, { trigger: true });
+    },
+    
+    // Get layer by nieghborhod id
+    getLayerByModelID: function(model) {
+      var searchModel = model || this.model;
+      var topLayer = _.find(this.featureGroup._layers, function(l, i) {
+        return (l._layers[l._leaflet_id - 1].feature.id == searchModel.id);
+      });
+      return topLayer;
     }
   });
 

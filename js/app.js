@@ -143,13 +143,15 @@
       if (_.isUndefined(city)) {
         this.routeDefault();
       }
-      this.city = city;
-      
-      // Render
-      this.applicationView.renderCity(this.city);
-      this.city.fetchData(function() {
-        thisRouter.applicationView.renderStopGeneralLoading();
-      });
+      else {
+        this.city = city;
+        
+        // Render
+        this.applicationView.renderCity(this.city);
+        this.city.fetchData(function() {
+          thisRouter.applicationView.renderStopGeneralLoading();
+        });
+      }
     },
   
     // Neightborhood route
@@ -162,20 +164,22 @@
       if (_.isUndefined(city)) {
         this.routeDefault();
       }
-      this.city = city;
-      
-      // Load up neighborhood
-      neighborhood = this.neighborhoods.get(this.city.id + '/' + neighborhood);
-      if (!neighborhood) {
-        this.routeDefault();
+      else {
+        this.city = city;
+        
+        // Load up neighborhood
+        neighborhood = this.neighborhoods.get(this.city.id + '/' + neighborhood);
+        if (!neighborhood) {
+          this.routeDefault();
+        }
+        this.neighborhood = neighborhood;
+        
+        // Render
+        this.applicationView.renderNeighborhood(this.neighborhood, this.city);
+        this.neighborhood.fetchData(function() {
+          thisRouter.applicationView.renderStopGeneralLoading();
+        });
       }
-      this.neighborhood = neighborhood;
-      
-      // Render
-      this.applicationView.renderNeighborhood(this.neighborhood, this.city);
-      this.neighborhood.fetchData(function() {
-        thisRouter.applicationView.renderStopGeneralLoading();
-      });
     }
   });
   
