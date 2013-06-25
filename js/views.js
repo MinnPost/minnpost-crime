@@ -219,6 +219,11 @@
    * View for neighborhood
    */
   app.ViewNeighborhood = app.ViewBinding.extend({
+    model: app.ModelNeighborhood,
+  
+    bindings: {
+      '.section-title': 'title'
+    },
     
     render: function() {
       var data = (_.isObject(this.model)) ? this.model.toJSON() : {};

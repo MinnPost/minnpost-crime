@@ -57,10 +57,7 @@ if (_.isFunction(Backbone.$.jsonp)) {
  */
 (function(app, $, undefined) {
   app.defaultOptions = {
-    dataPath: './data/',
-    dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]',
-    // See scraper for why this is needed
-    dataCrimeQueryWhere: "notes NOT LIKE 'Added to%'"
+    dataPath: './data/'
   };
   
   /**
@@ -158,7 +155,7 @@ this["mpApp"]["minnpost-crime"]["templates"]["js/templates/template-application-
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="mc-application-container">\n    \n  <div class="flurid mc-header">\n    <div class="row">\n      <div class="column width_1/1">\n      </div>\n    </div>\n    \n    <div class="row messaging-container">\n      <div class="column width_1/1">\n      \n      </div>\n    </div>\n  </div>\n  \n  <div class="mc-content">\n  </div>\n    \n    \n  <div class="flurid mc-footer">\n    <div class="row">\n      <div class="column width_1/1">\n        \n        <p>Footer</p>\n      \n      </div>\n    </div>\n  </div>\n</div>';
+__p += '<div class="mc-application-container">\n    \n  <div class="flurid mc-header">\n    <div class="row">\n      <div class="column width_1/1">\n      \n      </div>\n    </div>\n    \n    <div class="row messaging-container">\n      <div class="column width_1/1">\n      \n      </div>\n    </div>\n  </div>\n  \n  <div class="flurid mc-header">\n    <div class="row">\n      <div class="column width_1/2">\n        <div id="neighborhood-map"></div>\n      </div>\n      <div class="column width_1/2 last">\n      </div>\n    </div>\n  </div>\n  \n  <div class="mc-content">\n    <div class="mc-city-view-container">\n    \n    </div>\n    <div class="mc-neighborhood-view-container">\n    \n    </div>\n  </div>\n    \n    \n  <div class="flurid mc-footer">\n    <div class="row">\n      <div class="column width_1/1">\n        \n      </div>\n    </div>\n  </div>\n</div>';
 
 }
 return __p
@@ -169,7 +166,9 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="mc-city-container">\n  <div class="flurid">\n    <div class="row row-space">\n      <div class="column width_1/1">\n        <h2 class="section-title"></h2>\n      </div>\n    </div>\n  \n    <div class="row row-space">\n      <div class="column width_1/2">\n        <div class="inner-column-left">\n          <div id="neighborhood-map">\n          </div>\n        </div>\n      </div>\n      \n      <div class="column width_1/2 last">\n        <h3>Current Month</h3>\n        <p class="current-month-display"></p>\n        \n        <h3>Total Crime</h3>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-last-month">\n              <p>Change from last month</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-last-year">\n              <p>Change from last year</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n        \n      </div>\n    </div>\n    \n    <div class="row row-space city-category-stats">\n      <h4>Crime changes from last month</h4>\n      ';
+__p += '<div class="mc-city-container">\n  <div class="flurid">\n    <div class="row row-space">\n      <div class="column width_1/1">\n        <h2 class="section-title">' +
+((__t = ( (!_.isUndefined(title)) ? title : '' )) == null ? '' : __t) +
+'</h2>\n      </div>\n    </div>\n  \n    <div class="row row-space">\n      <div class="column width_1/2">\n        <div class="inner-column-left">\n          <div class="neighborhood-map-placeholder">\n          </div>\n        </div>\n      </div>\n      \n      <div class="column width_1/2 last">\n        <h3>Current Month</h3>\n        <p class="current-month-display"></p>\n        \n        <h3>Total Crime</h3>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-last-month">\n              <p>Change from last month</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-last-year">\n              <p>Change from last year</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n        \n      </div>\n    </div>\n    \n    <div class="row row-space city-category-stats">\n      <h4>Crime changes from last month</h4>\n      ';
  _.each(categories, function(cat, c) { if (c !== 'total') { ;
 __p += '\n        <div class="city-category-stat city-category-stat-' +
 ((__t = ( c )) == null ? '' : __t) +
@@ -179,7 +178,7 @@ __p += '\n        <div class="city-category-stat city-category-stat-' +
 ((__t = ( cat.title )) == null ? '' : __t) +
 '</div>\n          <div class="stat-value"></div>\n        </div>\n      ';
  }}) ;
-__p += '\n    </div>\n    \n    <div class="row">\n      <div class="column width_1/1 last">\n        <h4>Crime over the past year(compared to year before)</h4>\n        <div id="chart-one"></div>\n      </div>\n    </div>\n  </div>\n</div>';
+__p += '\n    </div>\n    \n    <div class="row">\n      <div class="column width_1/1 last">\n        <h4>Crime over the past year (compared to year before)</h4>\n        <div id="chart-one"></div>\n      </div>\n    </div>\n  </div>\n</div>';
 
 }
 return __p
@@ -202,6 +201,27 @@ with (obj) {
 __p += '<div class="map-label-inner-container">\n  <h4>' +
 ((__t = ( title )) == null ? '' : __t) +
 '</h4>\n</div>';
+
+}
+return __p
+};
+
+this["mpApp"]["minnpost-crime"]["templates"]["js/templates/template-neighborhood.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="mc-neighborhood-container">\n  <div class="flurid">\n    <div class="row row-space">\n      <div class="column width_1/1">\n        <h2 class="section-title">' +
+((__t = ( (!_.isUndefined(title)) ? title : '' )) == null ? '' : __t) +
+'</h2>\n        ';
+ if (!_.isUndefined(city)) { ;
+__p += '\n          <a href="#city/' +
+((__t = ( city )) == null ? '' : __t) +
+'">' +
+((__t = ( city )) == null ? '' : __t) +
+'</a>\n        ';
+ } ;
+__p += '\n      </div>\n    </div>\n  \n    <div class="row row-space">\n      <div class="column width_1/2">\n        <div class="inner-column-left">\n          <div id="neighborhood-map">\n          </div>\n        </div>\n      </div>\n      \n      <div class="column width_1/2 last">\n        <h3>Current Month</h3>\n        <p class="current-month-display"></p>\n        \n        <h3>Total Crime</h3>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-last-month">\n              <p>Change from last month</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-last-year">\n              <p>Change from last year</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n        \n      </div>\n    </div>\n    \n    <div class="row">\n      <div class="column width_1/1 last">\n        <h4>Crime over the past year (compared to year before)</h4>\n        <div id="chart-one"></div>\n      </div>\n    </div>\n  </div>\n</div>';
 
 }
 return __p
@@ -232,47 +252,92 @@ return __p
       // Set app options
       app.options = _.extend(app.defaultOptions, options);
       
-      // Create main container view
-      this.applicationView = new app.ViewContainer({
-        el: app.options.el
-      }).render().renderGeneralLoading();
+      // Create data structures and views
+      this.createDataStructures();
+      this.createViews();
       
-      // Create collections and views (we use one view
-      // for multiple models to handle transition
-      // values.
-      this.cities = new app.CollectionCities();
-      this.neighborhoods = new app.CollectionNeighborhoods();
-      this.cityView = new app.ViewCity();
-      this.neighborhoodView = new app.ViewNeighborhood();
+      // Render applciation view and mark as loading
+      this.applicationView.render().renderGeneralLoading();
       
+      // Fetch and parse initial data
+      this.fetchData(function() {
+        thisRouter.parseData(function() {
+          thisRouter.applicationView.renderStopGeneralLoading();
+          thisRouter.start();
+        });
+      });
+    },
+    
+    // Get initial data
+    fetchData: function(done) {
       // Get the compiled data
       app.getLocalData(this.defaultData).done(function() {
-        // Add neighborhoods to collection
-        _.each(topojson.feature(app.data['neighborhoods/minneapolis.topo'], 
-          app.data['neighborhoods/minneapolis.topo'].objects.neighborhoods).features,
-          function(feature, i) {
-            var model = _.clone(feature.properties);
-            model.id = model.city + '/' + model.key;
-            
-            // Take out properties as we will store them in the
-            // the model, not in the geoJSON
-            delete feature.properties;
-            model.geoJSON = feature;
-            model.geoJSON.id = model.id;
-            
-            // Make id based on city as well
-            thisRouter.neighborhoods.add(new app.ModelNeighborhood(model));
-          }
-        );
-        
-        thisRouter.start();
+        done();
+      });
+    },
+    
+    // Parse initial data
+    parseData: function(done) {
+      var thisRouter = this;
+      
+      // Add cities to collections
+      _.each(app.data['cities/cities'], function(c, id) {
+        c.id = id;
+        thisRouter.cities.add(new app.ModelCity(c));
+      });
+    
+      // Add neighborhoods to collection
+      _.each(topojson.feature(app.data['neighborhoods/minneapolis.topo'], 
+        app.data['neighborhoods/minneapolis.topo'].objects.neighborhoods).features,
+        function(feature, i) {
+          var model = _.clone(feature.properties);
+          model.id = model.city + '/' + model.key;
+          
+          // Take out properties as we will store them in the
+          // the model, not in the geoJSON
+          delete feature.properties;
+          model.geoJSON = feature;
+          model.geoJSON.id = model.id;
+          
+          // Make id based on city as well
+          thisRouter.neighborhoods.add(new app.ModelNeighborhood(model));
+        }
+      );
+    },
+    
+    // Create data structures
+    createDataStructures: function() {
+      this.cities = new app.CollectionCities();
+      this.neighborhoods = new app.CollectionNeighborhoods();
+    },
+    
+    // Create views
+    createViews: function() {
+      this.applicationView = new app.ViewContainer({
+        el: app.options.el
+      });
+      this.cityView = new app.ViewCity({
+        model: this.city,
+        app: this,
+        el: '.mc-city-view-container'
+      });
+      this.neighborhoodView = new app.ViewNeighborhood({
+        model: this.neighborhood,
+        collection: this.neighborhoods,
+        app: this,
+        el: '.mc-city-neighborhood-container'
+      });
+      this.neighborhoodMapView = new app.ViewNeighborhoodMap({
+        collection: this.neighborhoods,
+        el: '#neighborhood-map',
+        app: this
       });
     },
     
     // Start application (after data has been loaded),
     // specifically start Backbone history
     start: function() {
-      Backbone.history.start();
+      //Backbone.history.start();
     },
   
     // Default route
@@ -284,18 +349,14 @@ return __p
     routeCity: function(city) {
       var thisRouter = this;
       
-      // Check if valid city
-      if (_.isUndefined(app.data['cities/cities'][city])) {
-        this.routeDefault();
-      }
-      
       // Load up city
       this.applicationView.renderGeneralLoading();
-      this.city = this.cities.get(city);
-      if (_.isUndefined(this.city)) {
-        this.city = new app.ModelCity({ id: city });
-        this.cities.add(this.city);
+      city = this.cities.get(city);
+      if (_.isUndefined(city)) {
+        this.routeDefault();
       }
+      this.city = city;
+      
       // Render
       this.applicationView.renderContent(this.cityView, this.city, this.neighborhoods);
       this.city.fetchData(function() {
@@ -305,6 +366,30 @@ return __p
   
     // Neightborhood route
     routeNeighborhood: function(city, neighborhood) {
+      var thisRouter = this;
+      
+      // Load up city
+      this.applicationView.renderGeneralLoading();
+      city = this.cities.get(city);
+      if (_.isUndefined(city)) {
+        this.routeDefault();
+      }
+      this.city = city;
+      
+      // Load up neighborhood
+      neighborhood = this.neighborhoods.get(this.city.id + '/' + neighborhood);
+      if (!neighborhood) {
+        this.routeDefault();
+      }
+      this.neighborhood = neighborhood;
+      
+      // Render
+      this.applicationView.renderContent(this.neighborhoodView, this.neighborhood, this.neighborhoods);
+      /*
+      this.neighborhood.fetchData(function() {
+        thisRouter.applicationView.renderStopGeneralLoading();
+      });
+      */
     }
   });
   
@@ -321,9 +406,32 @@ return __p
 (function(app, $, undefined) {
 
   /**
+   * Basic model for other crime models
+   */
+  app.ModelCrime = Backbone.Model.extend({
+    dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]',
+    // See scraper for why this is needed
+    dataCrimeQueryWhere: "notes NOT LIKE 'Added to%'",
+  
+    // Get most recent month and year
+    fetchRecentMonth: function(done, context) {
+      context = context || this;
+      var query = "SELECT month, year FROM swdata ORDER BY year || '-' || month DESC LIMIT 1";
+      var defer = $.jsonp({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
+      
+      if (_.isFunction(done)) {
+        $.when(defer).done(function(data) {
+          done.apply(context, [data[0].year, data[0].month]);
+        });
+      }
+      return defer;
+    }
+  });
+
+  /**
    * Model for city level data
    */
-  app.ModelCity = Backbone.Model.extend({
+  app.ModelCity = app.ModelCrime.extend({
     initialize: function() {
       this.set('categories', app.data['crime/categories']);
       this.set('title', 'Minneapolis profile');
@@ -371,9 +479,11 @@ return __p
       var crime1 = this.getCrimeByMonth(year1, month1, stat);
       var crime2 = this.getCrimeByMonth(year2, month2, stat);
       // Can't divide by zero, so percentage difference from
-      // zero is actually subject, we choose, 0.1 so that a 1
+      // zero is actually subject, we choose a value so that a 1
       // change would be 100%
-      return (crime2 - crime1) / ((crime1 === 0) ? 0.1 : crime1);
+      // (1 - x) / x = 1
+      
+      return (crime2 - crime1) / ((crime1 === 0) ? 0.5 : crime1);
     },
     
     // Get a crime state for month
@@ -449,20 +559,6 @@ return __p
       return this;
     },
     
-    // Get most recent month and year
-    fetchRecentMonth: function(done, context) {
-      context = context || this;
-      var query = "SELECT month, year FROM swdata ORDER BY year || '-' || month DESC LIMIT 1";
-      var defer = $.jsonp({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
-      
-      if (_.isFunction(done)) {
-        $.when(defer).done(function(data) {
-          done.apply(context, [data[0].year, data[0].month]);
-        });
-      }
-      return defer;
-    },
-    
     // Get data aggregate by month for previous years
     fetchDataPreviousYearsByMonth: function(year, month, years, done, context) {
       years = (_.isNumber(years)) ? years : 1;
@@ -472,7 +568,7 @@ return __p
       _.each(this.get('categories'), function(category, c) {
         query.push(", SUM(" + c + ") AS " + c);
       });
-      query.push(" FROM swdata WHERE " + app.options.dataCrimeQueryWhere);
+      query.push(" FROM swdata WHERE " + this.dataCrimeQueryWhere);
       query.push(" AND ((year = " + year + " AND month <= " + month + ") ");
       if (years > 1) {
         query.push(" OR (year < " + year + " AND year > " + (year - years) + ")");
@@ -480,7 +576,7 @@ return __p
       query.push(" OR (year = " + (year - years) + " AND month >= " + month + "))");
       query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
       
-      var defer = $.jsonp({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = $.jsonp({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
@@ -494,7 +590,7 @@ return __p
   /**
    * Model for neighborhood level data
    */
-  app.ModelNeighborhood = Backbone.Model.extend({
+  app.ModelNeighborhood = app.ModelCrime.extend({
     
   });
 
@@ -726,7 +822,8 @@ return __p
       
       this.neighborhoodMapView = new app.ViewNeighborhoodMap({
         collection: this.collection,
-        el: '#neighborhood-map'
+        el: '#neighborhood-map',
+        app: this.options.app
       }).render();
       return this;
     }
@@ -736,6 +833,21 @@ return __p
    * View for neighborhood
    */
   app.ViewNeighborhood = app.ViewBinding.extend({
+    
+    render: function() {
+      app.getTemplate('template-neighborhood', function(template) {
+        this.$el.html(template(this.model.toJSON()));
+      }, this);
+      
+      /*
+      this.neighborhoodMapView = new app.ViewNeighborhoodMap({
+        collection: this.collection,
+        el: '#neighborhood-map',
+        app: this.options.app
+      }).render();
+      return this;
+      */
+    }
   
   });
 
@@ -791,6 +903,7 @@ return __p
         
         layer.on('mouseover', thisView.bindMapFeatureMouseover, thisView);
         layer.on('mouseout', thisView.bindMapFeatureMouseout, thisView);
+        layer.on('click', thisView.bindMapFeatureClick, thisView);
       });
       
       this.map.fitBounds(this.FeatureGroup.getBounds());
@@ -839,6 +952,12 @@ return __p
       
       // Label
       this.$el.find('.map-label-container').hide();
+    },
+    
+    // How to handle click events
+    bindMapFeatureClick: function(e) {
+      var layer = e.layer._layers[e.layer._leaflet_id - 1];
+      this.options.app.navigate('/neighborhood/' + layer.feature.id, { trigger: true, replace: true });
     }
   });
 
