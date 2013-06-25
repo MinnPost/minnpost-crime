@@ -133,43 +133,9 @@
           this.bindUpdateCount($statEl, stat, model, options);
         }, this);
       }
-    }
-  });
-
-  /**
-   * View for city
-   */
-  app.ViewCity = app.ViewBinding.extend({
-    model: app.ModelCity,
-  
-    bindings: {
-      '.section-title': { observe: 'title', update: 'bindUpdateDocumentTitle' },
-      '.current-month-display': { 
-        observe: ['currentMonth', 'currentYear'], 
-        update: 'bindUpdateCurrentMonthDisplay'
-      },
-      '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
-      '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' },
-      '#chart-one': { observe: 'crimesByMonth', update: 'bindUpdateChartOne' },
-      '.city-category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' }
     },
     
-    bindUpdateCurrentMonthDisplay: function($el, val, model, options) {
-      var month = (val) ? moment(val.toString(), 'MM').format('MMMM') : '';
-      var year = model.get('currentYear');
-      this.bindUpdateFade($el, (month && year) ? month + ', ' + year : '', model, options);
-    },
-    
-    bindUpdateChartOne: function($el, val, model, options) {
-      var data1 = model.getLastYearData(1);
-      var data2 = model.getLastYearData(2);
-      
-      if (_.isArray(data1) && data1.length > 0) {
-        $.jqplot('chart-one', [data2, data1], this.cityPlotOptions);
-      }
-    },
-    
-    cityPlotOptions: {
+    plotOptions: {
       seriesColors: [ '#BCBCBC','#10517F' ],
       grid: {
         drawBorder: false,
@@ -204,6 +170,40 @@
         sizeAdjust: 7,
         tooltipAxes: 'y'
       }
+    }
+  });
+
+  /**
+   * View for city
+   */
+  app.ViewCity = app.ViewBinding.extend({
+    model: app.ModelCity,
+  
+    bindings: {
+      '.section-title': { observe: 'title', update: 'bindUpdateDocumentTitle' },
+      '.current-month-display': { 
+        observe: ['currentMonth', 'currentYear'], 
+        update: 'bindUpdateCurrentMonthDisplay'
+      },
+      '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
+      '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' },
+      '#chart-one': { observe: 'crimesByMonth', update: 'bindUpdateChartOne' },
+      '.city-category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' }
+    },
+    
+    bindUpdateCurrentMonthDisplay: function($el, val, model, options) {
+      var month = (val) ? moment(val.toString(), 'MM').format('MMMM') : '';
+      var year = model.get('currentYear');
+      this.bindUpdateFade($el, (month && year) ? month + ', ' + year : '', model, options);
+    },
+    
+    bindUpdateChartOne: function($el, val, model, options) {
+      var data1 = model.getLastYearData(1);
+      var data2 = model.getLastYearData(2);
+      
+      if (_.isArray(data1) && data1.length > 0) {
+        $.jqplot('chart-one', [data2, data1], this.plotOptions);
+      }
     },
     
     render: function() {
@@ -227,7 +227,17 @@
       '.section-title': { observe: 'title', update: 'bindUpdateDocumentTitle' },
       '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
       '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' },
-      '.city-category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' }
+      '.city-category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' },
+      '#chart-neighborhood-last-year': { observe: 'crimesByMonth', update: 'bindUpdateChartNeighborhoodLastYear' }
+    },
+    
+    bindUpdateChartNeighborhoodLastYear: function($el, val, model, options) {
+      var data1 = model.getLastYearData(1);
+      var data2 = model.getLastYearData(2);
+      
+      if (_.isArray(data1) && data1.length > 0) {
+        $.jqplot('chart-neighborhood-last-year', [data2, data1], this.plotOptions);
+      }
     },
     
     render: function() {
