@@ -10,20 +10,6 @@
     dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]',
     // See scraper for why this is needed
     dataCrimeQueryWhere: "notes NOT LIKE 'Added to%'",
-  
-    // Get most recent month and year
-    fetchRecentMonth: function(done, context) {
-      context = context || this;
-      var query = "SELECT month, year FROM swdata ORDER BY year || '-' || month DESC LIMIT 1";
-      var defer = $.jsonp({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
-      
-      if (_.isFunction(done)) {
-        $.when(defer).done(function(data) {
-          done.apply(context, [data[0].year, data[0].month]);
-        });
-      }
-      return defer;
-    },
     
     // We have population data from 2000 and 2010, so we abstract
     // that out to fill in years
@@ -40,16 +26,20 @@
       
       this.set('population', popData);
       return this;
-    }
-  });
-
-  /**
-   * Model for city level data
-   */
-  app.ModelCity = app.ModelCrime.extend({
-    initialize: function() {
-      this.set('categories', app.data['crime/categories']);
-      this.createPopulationYears();
+    },
+    
+    // Get last month, as it could be last year
+    setLastMonth: function() {
+      var month = this.get('currentMonth');
+      var year = this.get('currentYear');
+      var response = [year, month - 1];
+      
+      if (month == 1) {
+        response = [year - 1, 12];
+      }
+      this.set('lastMonthMonth', response[1]);
+      this.set('lastMonthYear', response[0]);
+      return this;
     },
   
     // Set stats values
@@ -126,51 +116,43 @@
       });
       
       return filtered;
-    },
-    
-    // Get last month, as it could be last year
-    setLastMonth: function() {
-      var month = this.get('currentMonth');
-      var year = this.get('currentYear');
-      var response = [year, month - 1];
-      
-      if (month == 1) {
-        response = [year - 1, 12];
-      }
-      this.set('lastMonthMonth', response[1]);
-      this.set('lastMonthYear', response[0]);
-      return this;
+    }
+  });
+
+  /**
+   * Model for city level data
+   */
+  app.ModelCity = app.ModelCrime.extend({
+    initialize: function() {
+      this.set('categories', app.data['crime/categories']);
+      this.set('currentYear', app.options.currentYear);
+      this.set('currentMonth', app.options.currentMonth);
+      this.setLastMonth();
+      this.createPopulationYears();
     },
   
     // Get all that sweet, sweet data
     fetchData: function(done, context) {
-      var thisModel = this;
       context = context || this;
-    
-      // First get the most recent month/year
-      this.fetchRecentMonth(function(year, month) {
-        var defers = [];
-        var lastMonth;
+      var thisModel = this;
+      var defers = [];
+      var lastMonth;
         
-        this.set('currentMonth', month);
-        this.set('currentYear', year);
-        this.setLastMonth();
-        
-        // Get data for various months (current, last, and last year)
-        defers.push(this.fetchDataPreviousYearsByMonth(year, month, 2));
-        $.when.apply($, defers).done(function() {
-          var data = thisModel.get('data') || {};
-          _.each(arguments[0], function(r) {
-            data[r.year] = data[r.year] || {};
-            data[r.year][r.month] = r;
-          });
-          thisModel.set('crimesByMonth', data);
-          thisModel.setStats();
-          
-          // Done and callback
-          done.apply(context, []);
+      // Get data for various months (current, last, and last year)
+      defers.push(this.fetchDataPreviousYearsByMonth(
+        this.get('currentYear'), this.get('currentMonth'), 2));
+      $.when.apply($, defers).done(function() {
+        var data = thisModel.get('crimesByMonth') || {};
+        _.each(arguments[0], function(r) {
+          data[r.year] = data[r.year] || {};
+          data[r.year][r.month] = r;
         });
-      }, this);
+        thisModel.set('crimesByMonth', data);
+        thisModel.setStats();
+        
+        // Done and callback
+        done.apply(context, []);
+      });
       return this;
     },
     
@@ -209,15 +191,51 @@
   
     initialize: function() {
       this.set('categories', app.data['crime/categories']);
+      this.set('currentYear', app.options.currentYear);
+      this.set('currentMonth', app.options.currentMonth);
+      this.setLastMonth();
       this.createPopulationYears();
     },
   
     // Get all that sweet, sweet data
     fetchData: function(done, context) {
-      var thisModel = this;
       context = context || this;
-    }
+      var thisModel = this;
+      var defers = [];
+      
+      defers.push(this.fetchDataAllData());
+      $.when.apply($, defers).done(function() {
+        var data = thisModel.get('crimesByMonth') || {};
+        _.each(arguments[0], function(r) {
+          data[r.year] = data[r.year] || {};
+          data[r.year][r.month] = r;
+        });
+        thisModel.set('crimesByMonth', data);
+        thisModel.setStats();
+        
+        // Done and callback
+        done.apply(context, []);
+      });
+      return this;
+    },
     
+    // Get all data for neighborhood
+    fetchDataAllData: function(done, context) {
+      var query = [];
+      
+      query.push("SELECT * FROM swdata WHERE " + this.dataCrimeQueryWhere);
+      query.push(" AND neighborhood_key = '" + this.get('key') + "' ");
+      query.push(" ORDER BY year DESC, month DESC");
+      
+      var defer = $.jsonp({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+  
+      if (_.isFunction(done)) {
+        $.when(defer).done(function(data) {
+          done.apply(context, [data[0]]);
+        });
+      }
+      return defer;
+    }
   });
 
 

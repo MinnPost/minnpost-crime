@@ -22,6 +22,7 @@
       
       // Set app options
       app.options = _.extend(app.defaultOptions, options);
+      app.options.originalTitle = document.title;
       
       // Create data structures and views
       this.createDataStructures();
@@ -42,10 +43,32 @@
     
     // Get initial data
     fetchData: function(done) {
+      var thisRouter = this;
+    
       // Get the compiled data
       app.getLocalData(this.defaultData).done(function() {
-        done();
+        thisRouter.fetchRecentMonth(function(year, month) {
+          app.options.currentYear = year;
+          app.options.currentMonth = month;
+        }).done(done);
       });
+    },
+    
+    // Get most recent month and year as this will
+    // be used throught the application
+    fetchRecentMonth: function(done, context) {
+      context = context || this;
+      var dataCrimeQueryBase = 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]';
+
+      var query = "SELECT month, year FROM swdata ORDER BY year || '-' || month DESC LIMIT 1";
+      var defer = $.jsonp({ url: dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
+      
+      if (_.isFunction(done)) {
+        $.when(defer).done(function(data) {
+          done.apply(context, [data[0].year, data[0].month]);
+        });
+      }
+      return defer;
     },
     
     // Parse initial data

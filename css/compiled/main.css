@@ -92,22 +92,22 @@
 .minnpost-application-container #city-map .map-label-container .map-label-inner-container {
   padding: .5em;
 }
-.minnpost-application-container .mc-city-container #chart-one {
-  height: 200px;
-  width: 100%;
-}
-.minnpost-application-container .mc-city-container .current-month-display {
+.minnpost-application-container .current-month-display {
   font-size: 2em;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
-.minnpost-application-container .mc-city-container .stat-value {
+.minnpost-application-container .stat-value {
   font-size: 3em;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
-.minnpost-application-container .mc-city-container .city-category-stats .stat-label {
+.minnpost-application-container .city-category-stats .stat-label {
   min-height: 3em;
 }
-.minnpost-application-container .mc-city-container .city-category-stats .stat-value {
+.minnpost-application-container .city-category-stats .stat-value {
   font-size: 1.5em;
   line-height: 1.15em;
+}
+.minnpost-application-container .mc-city-container #chart-one {
+  height: 200px;
+  width: 100%;
 }

@@ -116,6 +116,23 @@
       $el.fadeOut('fast', function() {
         $el.html(val).fadeIn('fast');
       });
+    },
+    
+    // Update document title as well
+    bindUpdateDocumentTitle: function($el, val, model, options) {
+      $el.html(val);
+      document.title = app.options.originalTitle + ' | ' + val;
+    },
+    
+    // Update crime categories based on last month
+    bindUpdateCategoryCrime: function($el, val, model, options) {
+      if (!_.isUndefined(model.get('crimesByMonth'))) {
+        _.each(model.get('categories'), function(cat, c) {
+          var stat = model.getMonthChange(model.get('lastMonthYear'), model.get('lastMonthMonth'), c);
+          var $statEl = $el.find('.city-category-stat-' + c + ' .stat-value');
+          this.bindUpdateCount($statEl, stat, model, options);
+        }, this);
+      }
     }
   });
 
@@ -126,21 +143,15 @@
     model: app.ModelCity,
   
     bindings: {
+      '.section-title': { observe: 'title', update: 'bindUpdateDocumentTitle' },
       '.current-month-display': { 
         observe: ['currentMonth', 'currentYear'], 
         update: 'bindUpdateCurrentMonthDisplay'
       },
       '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
       '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' },
-      '#chart-one': {
-        observe: 'crimesByMonth',
-        update: 'bindUpdateChartOne'
-      },
-      '.section-title': 'title',
-      '.city-category-stats': {
-        observe: 'crimesByMonth',
-        update: 'bindUpdateCategoryCrime'
-      }
+      '#chart-one': { observe: 'crimesByMonth', update: 'bindUpdateChartOne' },
+      '.city-category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' }
     },
     
     bindUpdateCurrentMonthDisplay: function($el, val, model, options) {
@@ -155,16 +166,6 @@
       
       if (_.isArray(data1) && data1.length > 0) {
         $.jqplot('chart-one', [data2, data1], this.cityPlotOptions);
-      }
-    },
-    
-    bindUpdateCategoryCrime: function($el, val, model, options) {
-      if (!_.isUndefined(model.get('crimesByMonth'))) {
-        _.each(model.get('categories'), function(cat, c) {
-          var stat = model.getMonthChange(model.get('lastMonthYear'), model.get('lastMonthMonth'), c);
-          var $statEl = $el.find('.city-category-stat-' + c + ' .stat-value');
-          this.bindUpdateCount($statEl, stat, model, options);
-        }, this);
       }
     },
     
@@ -206,7 +207,8 @@
     },
     
     render: function() {
-      var data = (_.isObject(this.model)) ? this.model.toJSON() : {};
+      var data = (_.isObject(this.model)) ? this.model.toJSON() : 
+        { categories: app.data['crime/categories'] };
     
       app.getTemplate('template-city', function(template) {
         this.$el.html(template(data));
@@ -222,11 +224,16 @@
     model: app.ModelNeighborhood,
   
     bindings: {
-      '.section-title': 'title'
+      '.section-title': { observe: 'title', update: 'bindUpdateDocumentTitle' },
+      '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
+      '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' },
+      '.city-category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' }
     },
     
     render: function() {
-      var data = (_.isObject(this.model)) ? this.model.toJSON() : {};
+      var data = (_.isObject(this.model)) ? this.model.toJSON() : 
+        { categories: app.data['crime/categories'] };
+      
       app.getTemplate('template-neighborhood', function(template) {
         this.$el.html(template(data));
       }, this);

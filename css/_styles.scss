@@ -83,32 +83,32 @@
       }
     }
   }
+    
+  .current-month-display {
+    font-size: 2em;
+    font-family: $sans-serif-font;
+  }
+  .stat-value {
+    font-size: 3em;
+    font-family: $sans-serif-font;
+  }
+  
+  .city-category-stats {
+    
+    .stat-label {
+      min-height: 3em;
+    }
+    .stat-value {
+      font-size: 1.5em;
+      line-height: 1.15em;
+    }
+  }
   
   .mc-city-container {
     
     #chart-one {
       height: 200px;
       width: 100%;
-    }
-    
-    .current-month-display {
-      font-size: 2em;
-      font-family: $sans-serif-font;
-    }
-    .stat-value {
-      font-size: 3em;
-      font-family: $sans-serif-font;
-    }
-    
-    .city-category-stats {
-      
-      .stat-label {
-        min-height: 3em;
-      }
-      .stat-value {
-        font-size: 1.5em;
-        line-height: 1.15em;
-      }
     }
   }
 }
