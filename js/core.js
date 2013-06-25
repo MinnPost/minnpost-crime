@@ -38,7 +38,14 @@ _.mixin({
    * Formats percentage
    */
   formatPercent: function(num) {
-    return (num * 100).toFixed(1).toString() + '%';
+    return _.formatNumber(num * 100, 1) + '%';
+  },
+  
+  /**
+   * Formats percent change
+   */
+  formatPercentChange: function(num) {
+    return ((num > 0) ? '+' : '') + _.formatPercent(num);
   }
 });
   

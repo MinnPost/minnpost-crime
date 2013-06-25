@@ -90,24 +90,28 @@
   app.ViewBinding = Backbone.View.extend({
     // Animate count to value
     bindUpdateCount: function($el, val, model, options) {
-      var number = (_.isNaN(parseInt($el.text(), 10))) ? 0 : parseInt($el.text(), 10);
-      var interval, intervalID;
-      
-      if (_.isNumber(val) && val != number) {
-        var greaterThan = (val > number);
-        interval = (val - number) / 40;
-        intervalID = setInterval(function() {
-          number = number + interval;
-          $el.html(_.formatPercent(number));
+      if (_.isNumber(val)) {
+        var number = (_.isNaN(parseInt($el.text(), 10))) ? 0 : 
+          (parseInt($el.text(), 10) / 100);
+        var interval, intervalID, greaterThan;
+        
+        if (_.isNumber(val) && val != number) {
+          greaterThan = (val > number);
+          interval = (val - number) / 40;
           
-          if ((greaterThan && number >= val) || (!greaterThan && number <= val)) {
-            $el.html(_.formatPercent(val));
-            clearInterval(intervalID);
-          }
-        }, 20);
-      }
-      else {
-        $el.html(val);
+          intervalID = setInterval(function() {
+            number = number + interval;
+            $el.html(_.formatPercentChange(number));
+            
+            if ((greaterThan && number >= val) || (!greaterThan && number <= val)) {
+              $el.html(_.formatPercentChange(val));
+              clearInterval(intervalID);
+            }
+          }, 20);
+        }
+        else {
+          $el.html(_.formatPercentChange(val));
+        }
       }
     },
     
@@ -202,7 +206,7 @@
       var data2 = model.getLastYearData(2);
       
       if (_.isArray(data1) && data1.length > 0) {
-        $.jqplot('chart-one', [data2, data1], this.plotOptions);
+        $.jqplot('chart-one', [data2, data1], this.plotOptions).redraw();
       }
     },
     
@@ -236,7 +240,7 @@
       var data2 = model.getLastYearData(2);
       
       if (_.isArray(data1) && data1.length > 0) {
-        $.jqplot('chart-neighborhood-last-year', [data2, data1], this.plotOptions);
+        $.jqplot('chart-neighborhood-last-year', [data2, data1], this.plotOptions).redraw();
       }
     },
     
