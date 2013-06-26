@@ -93,6 +93,10 @@
       if (_.isNumber(val)) {
         var number = (_.isNaN(parseInt($el.text(), 10))) ? 0 : 
           (parseInt($el.text(), 10) / 100);
+        var formatOption = (_.isObject(options.options)) ? options.options.formatter : 'formatPercentChange';
+        var formatArgument = (_.isObject(options.options)) ? options.options.argument : undefined;
+        var formatter = (_.isFunction(formatOption)) ? formatOption :
+          ((_.isFunction(_[formatOption])) ? _[formatOption] : function(v) { return v; } );
         var interval, intervalID, greaterThan;
         
         if (_.isNumber(val) && val != number) {
@@ -101,16 +105,16 @@
           
           intervalID = setInterval(function() {
             number = number + interval;
-            $el.html(_.formatPercentChange(number));
+            $el.html(formatter(number, formatArgument));
             
             if ((greaterThan && number >= val) || (!greaterThan && number <= val)) {
-              $el.html(_.formatPercentChange(val));
+              $el.html(formatter(val, formatArgument));
               clearInterval(intervalID);
             }
           }, 20);
         }
         else {
-          $el.html(_.formatPercentChange(val));
+          $el.html(formatter(val, formatArgument));
         }
       }
     },
@@ -139,6 +143,18 @@
       }
     },
     
+    // Update populations numbers
+    bindUpdatePopulation: function($el, val, model, options) {
+      var population = model.get('population');
+      options.options = { formatter: 'formatNumber', argument: 0 };
+      
+      if (_.isObject(population) && !_.isUndefined(population[2010])) {
+        this.bindUpdateCount($el.find('.population-2010'), population[2010], model, options);
+        this.bindUpdateCount($el.find('.population-2000'), population[2000], model, options);
+      }
+    },
+    
+    // Default chart options
     plotOptions: {
       seriesColors: [ '#BCBCBC','#10517F' ],
       grid: {
@@ -185,14 +201,23 @@
   
     bindings: {
       '.section-title': { observe: 'title', update: 'bindUpdateDocumentTitle' },
-      '.current-month-display': { 
-        observe: ['currentMonth', 'currentYear'], 
-        update: 'bindUpdateCurrentMonthDisplay'
+      '.population-numbers': { observe: 'population', update: 'bindUpdatePopulation' },
+      // Stats
+      '.stat-change-last-month .stat-value': { observe: 'statChangeLastMonth', update: 'bindUpdateCount' },
+      '.stat-change-month-last-year .stat-value': { observe: 'statChangeMonthLastYear', update: 'bindUpdateCount' },
+      '.stat-incidents-month .stat-value': {
+        observe: 'statIncidentsMonth', 
+        update: 'bindUpdateCount',
+        options: { formatter: 'formatNumber', argument: 0 }
       },
-      '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
-      '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' },
-      '#chart-one': { observe: 'crimesByMonth', update: 'bindUpdateChartOne' },
-      '.city-category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' }
+      '.stat-rate-month .stat-value': {
+        observe: 'statRateMonth',
+        update: 'bindUpdateCount',
+        options: { formatter: 'formatNumber' }
+      },
+      '.city-category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' },
+      // Charts
+      '#chart-one': { observe: 'crimesByMonth', update: 'bindUpdateChartOne' }
     },
     
     bindUpdateCurrentMonthDisplay: function($el, val, model, options) {
@@ -229,9 +254,23 @@
   
     bindings: {
       '.section-title': { observe: 'title', update: 'bindUpdateDocumentTitle' },
-      '.stat-last-month .stat-value': { observe: 'lastMonthChange', update: 'bindUpdateCount' },
-      '.stat-last-year .stat-value': { observe: 'lastYearMonthChange', update: 'bindUpdateCount' },
+      '.city-link': { observe: 'city', update: 'bindUpdateCityLink' },
+      '.population-numbers': { observe: 'population', update: 'bindUpdatePopulation' },
+      // Stats
+      '.stat-change-last-month .stat-value': { observe: 'statChangeLastMonth', update: 'bindUpdateCount' },
+      '.stat-change-month-last-year .stat-value': { observe: 'statChangeMonthLastYear', update: 'bindUpdateCount' },
+      '.stat-incidents-month .stat-value': {
+        observe: 'statIncidentsMonth', 
+        update: 'bindUpdateCount',
+        options: { formatter: 'formatNumber', argument: 0 }
+      },
+      '.stat-rate-month .stat-value': {
+        observe: 'statRateMonth',
+        update: 'bindUpdateCount',
+        options: { formatter: 'formatNumber' }
+      },
       '.city-category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' },
+      // Charts
       '#chart-neighborhood-last-year': { observe: 'crimesByMonth', update: 'bindUpdateChartNeighborhoodLastYear' }
     },
     
@@ -242,6 +281,15 @@
       if (_.isArray(data1) && data1.length > 0) {
         $.jqplot('chart-neighborhood-last-year', [data2, data1], this.plotOptions).redraw();
       }
+    },
+    
+    bindUpdateCityLink: function($el, val, model, options) {
+      var city = this.options.app.cities.get(val);
+      if (_.isObject(city)) {
+        $el.attr('href', '#city/' + city.id);
+        this.bindUpdateFade($el, city.get('title'), model, options);
+      }
+      $el.html(val);
     },
     
     render: function() {

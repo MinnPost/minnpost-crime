@@ -3,9 +3,9 @@
     <div class="row row-space">
       <div class="column width_1/1">
         <h2 class="section-title"><%= (typeof title != 'undefined') ? title : '' %></h2>
-        <% if (typeof city != 'undefined') { %>
-          <a href="#city/<%= city %>"><%= city %></a>
-        <% } %>
+        <a href="#city/<%= (typeof city != 'undefined') ? city : '' %>" class="city-link">
+          <%= (typeof city != 'undefined') ? city : '' %>
+        </a>
       </div>
     </div>
   
@@ -18,15 +18,22 @@
       </div>
       
       <div class="column width_1/2 last">
-        <h3>Current Month</h3>
-        <p class="current-month-display"></p>
-        
         <h3>Total Crime</h3>
       
         <div class="column width_1/2">
           <div class="inner-column-left">
-            <div class="stat-last-month">
-              <p>Change from last month</p>
+            <div class="stat-incidents-month">
+              <p>Incidents this month</p>
+              <span class="stat-value"></span>
+              <span class="stat-symbol"></span>
+            </div>
+          </div>
+        </div>
+      
+        <div class="column width_1/2">
+          <div class="">
+            <div class="stat-rate-month">
+              <p>Rate (per 1,000 people)</p>
               <span class="stat-value"></span>
               <span class="stat-symbol"></span>
             </div>
@@ -35,11 +42,30 @@
       
         <div class="column width_1/2">
           <div class="inner-column-left">
-            <div class="stat-last-year">
-              <p>Change from last year</p>
+            <div class="stat-change-last-month">
+              <p>Change from last month</p>
               <span class="stat-value"></span>
               <span class="stat-symbol"></span>
             </div>
+          </div>
+        </div>
+      
+        <div class="column width_1/2">
+          <div class="">
+            <div class="stat-change-month-last-year">
+              <p>Change from last year this month</p>
+              <span class="stat-value"></span>
+              <span class="stat-symbol"></span>
+            </div>
+          </div>
+        </div>
+      
+        <div class="column width_1/1">
+          <div class="population-numbers">
+            Population 2010:
+              <span class="population-2010"></span>
+            | 2000:
+              <span class="population-2000"></span>
           </div>
         </div>
         

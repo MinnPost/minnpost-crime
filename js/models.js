@@ -18,10 +18,12 @@
       var popData = {};
       var rate = (baseData[2010] - baseData[2000]) / 10;
       var year = 2000;
+      var estimate;
       
       for (year; year <= 2020; year++) {
-        // Estimate population based on year
-        popData[year] = baseData[2000] + (rate * (year - 2000));
+        // Estimate population based on year, but don't go below 0
+        estimate = baseData[2000] + (rate * (year - 2000));
+        popData[year] = (estimate < 0) ? 0 : estimate;
       }
       
       this.set('population', popData);
@@ -41,22 +43,18 @@
       this.set('lastMonthYear', response[0]);
       return this;
     },
-  
-    // Set stats values
-    setStats: function(stat) {
-      stat = stat || 'total';
-      
-      this.set('lastMonthChange', this.getMonthChange(
-        this.get('lastMonthYear'), this.get('lastMonthMonth'), stat));
-      this.set('lastYearMonthChange', this.getMonthChange(
-        this.get('currentYear') - 1, this.get('currentMonth'), stat));
-      return this;
+    
+    // Category can be defined a few ways
+    getCategory: function(category) {
+    category = category || 'total';
+      return category;
     },
     
     // Gets years data relative to current month
-    getLastYearData: function(years, stat) {
+    getLastYearData: function(years, category) {
       years = years || 1;
-      stat = stat || 'total';
+      category = this.getCategory(category);
+      
       var data = [];
       var count = 0;
       
@@ -67,7 +65,7 @@
 
         _.each(filtered, function(year, y) {
           _.each(year, function(month, m) {
-            data.push([moment(m.toString(), 'MM').format('MMM'), month[stat]]);
+            data.push([moment(m.toString(), 'MM').format('MMM'), month[category]]);
           });
         });
       }
@@ -76,25 +74,40 @@
     },
   
     // Determine change between two months
-    getMonthChange: function(year1, month1, stat, year2, month2) {
+    getMonthChange: function(year1, month1, category, year2, month2) {
       year2 = year2 || this.get('currentYear');
       month2 = month2 || this.get('currentMonth');
-      stat = stat || 'total';
+      category = this.getCategory(category);
     
-      var crime1 = this.getCrimeByMonth(year1, month1, stat);
-      var crime2 = this.getCrimeByMonth(year2, month2, stat);
+      var crime1 = this.getCrimeByMonth(year1, month1, category);
+      var crime2 = this.getCrimeByMonth(year2, month2, category);
+      
       // Can't divide by zero, so percentage difference from
       // zero is actually subject, we choose a value so that a 1
       // change would be 100%
       // (1 - x) / x = 1
-      
       return (crime2 - crime1) / ((crime1 === 0) ? 0.5 : crime1);
     },
     
-    // Get a crime state for month
-    getCrimeByMonth: function(year, month, stat) {
-      stat = stat || 'total';
-      return this.get('crimesByMonth')[year][month][stat];
+    // Get crime inciendents for a specific month and year
+    getCrimeByMonth: function(year, month, category) {
+      year = year || this.get('currentYear');
+      month = month || this.get('currentMonth');
+      category = this.getCategory(category);
+      return this.get('crimesByMonth')[year][month][category];
+    },
+    
+    // Get crime rate (crimes / population / 1000) for a specific month
+    getCrimeRateByMonth: function(year, month, category) {
+      year = year || this.get('currentYear');
+      month = month || this.get('currentMonth');
+      category = this.getCategory(category);
+      
+      var population = this.get('population')[year];
+      var crimes = this.get('crimesByMonth')[year][month][category];
+      population = (!population) ? 1 : population;
+      
+      return (crimes / (population / 1000));
     },
     
     // Filter crimes
@@ -129,6 +142,36 @@
       this.set('currentMonth', app.options.currentMonth);
       this.setLastMonth();
       this.createPopulationYears();
+      this.on('change:crimesByMonth', function(e) {
+        this.setStats();
+      });
+    },
+  
+  
+    // Set stats values
+    setStats: function(category) {
+      category = this.getCategory(category);
+      
+      // Check if there are indeed data available
+      var data = this.get('crimesByMonth');
+      if (!_.isObject(data)) {
+        return this;
+      }
+      
+      // Incidents and rate
+      this.set('statIncidentsMonth', this.getCrimeByMonth());
+      this.set('statRateMonth', this.getCrimeRateByMonth());
+      
+      // Change from last month and last year
+      this.set('statChangeLastMonth', this.getMonthChange(
+        this.get('lastMonthYear'), this.get('lastMonthMonth'), category));
+      this.set('statChangeMonthLastYear', this.getMonthChange(
+        this.get('currentYear') - 1, this.get('currentMonth'), category));
+        
+      // Stats that are not dependent on category
+      
+      
+      return this;
     },
   
     // Get all that sweet, sweet data
@@ -137,22 +180,27 @@
       var thisModel = this;
       var defers = [];
       var lastMonth;
-        
-      // Get data for various months (current, last, and last year)
-      defers.push(this.fetchDataPreviousYearsByMonth(
-        this.get('currentYear'), this.get('currentMonth'), 2));
-      $.when.apply($, defers).done(function() {
-        var data = thisModel.get('crimesByMonth') || {};
-        _.each(arguments[0], function(r) {
-          data[r.year] = data[r.year] || {};
-          data[r.year][r.month] = r;
+      
+      if (!this.get('fetched')) {
+        // Get data for various months (current, last, and last year)
+        defers.push(this.fetchDataPreviousYearsByMonth(
+          this.get('currentYear'), this.get('currentMonth'), 2));
+        $.when.apply($, defers).done(function() {
+          var data = thisModel.get('crimesByMonth') || {};
+          _.each(arguments[0], function(r) {
+            data[r.year] = data[r.year] || {};
+            data[r.year][r.month] = r;
+          });
+          thisModel.set('crimesByMonth', data);
+          thisModel.setStats();
+          
+          done.apply(context, []);
         });
-        thisModel.set('crimesByMonth', data);
-        thisModel.setStats();
-        
-        // Done and callback
+        this.set('fetched', true);
+      }
+      else {
         done.apply(context, []);
-      });
+      }
       return this;
     },
     
@@ -193,8 +241,39 @@
       this.set('categories', app.data['crime/categories']);
       this.set('currentYear', app.options.currentYear);
       this.set('currentMonth', app.options.currentMonth);
+      this.set('fetched', false);
       this.setLastMonth();
       this.createPopulationYears();
+      this.on('change:crimesByMonth', function(e) {
+        this.setStats();
+      });
+    },
+  
+  
+    // Set stats values
+    setStats: function(category) {
+      category = this.getCategory(category);
+      
+      // Check if there are indeed data available
+      var data = this.get('crimesByMonth');
+      if (!_.isObject(data)) {
+        return this;
+      }
+      
+      // Incidents and rate
+      this.set('statIncidentsMonth', this.getCrimeByMonth());
+      this.set('statRateMonth', this.getCrimeRateByMonth());
+      
+      // Change from last month and last year
+      this.set('statChangeLastMonth', this.getMonthChange(
+        this.get('lastMonthYear'), this.get('lastMonthMonth'), category));
+      this.set('statChangeMonthLastYear', this.getMonthChange(
+        this.get('currentYear') - 1, this.get('currentMonth'), category));
+        
+      // Stats that are not dependent on category
+      
+      
+      return this;
     },
   
     // Get all that sweet, sweet data
@@ -203,19 +282,22 @@
       var thisModel = this;
       var defers = [];
       
-      defers.push(this.fetchDataAllData());
-      $.when.apply($, defers).done(function() {
-        var data = thisModel.get('crimesByMonth') || {};
-        _.each(arguments[0], function(r) {
-          data[r.year] = data[r.year] || {};
-          data[r.year][r.month] = r;
+      if (!this.get('fetched')) {
+        defers.push(this.fetchDataAllData());
+        $.when.apply($, defers).done(function() {
+          var data = thisModel.get('crimesByMonth') || {};
+          _.each(arguments[0], function(r) {
+            data[r.year] = data[r.year] || {};
+            data[r.year][r.month] = r;
+          });
+          thisModel.set('crimesByMonth', data);
+          done.apply(context, []);
         });
-        thisModel.set('crimesByMonth', data);
-        thisModel.setStats();
-        
-        // Done and callback
+        this.set('fetched', true);
+      }
+      else {
         done.apply(context, []);
-      });
+      }
       return this;
     },
     
