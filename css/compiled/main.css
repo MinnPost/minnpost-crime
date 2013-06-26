@@ -92,8 +92,12 @@
 .minnpost-application-container #city-map .map-label-container .map-label-inner-container {
   padding: .5em;
 }
-.minnpost-application-container .current-month-display {
+.minnpost-application-container .month-display {
+  width: 40%;
+  float: right;
+  text-align: right;
   font-size: 2em;
+  line-height: 2em;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 .minnpost-application-container .stat-value {

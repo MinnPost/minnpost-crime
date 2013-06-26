@@ -44,10 +44,22 @@
       return this;
     },
     
+    // Set category
+    setCategory: function(category) {
+      if (_.isObject(this.get('categories')[category])) {
+        this.set('currentCategory', category);
+        this.set('currentCategoryTitle', this.get('categories')[category].title);
+      }
+      
+      if (_.isUndefined(this.get('currentCategory'))) {
+        this.setCategory('total');
+      }
+      return this;
+    },
+    
     // Category can be defined a few ways
     getCategory: function(category) {
-    category = category || 'total';
-      return category;
+      return category || this.get('currentCategory') || 'total';
     },
     
     // Gets years data relative to current month
@@ -171,6 +183,7 @@
       this.set('currentMonth', app.options.currentMonth);
       this.setLastMonth();
       this.setPopulationYears();
+      this.setCategory(this.get('currentCategory'));
       this.on('change:crimesByMonth', function(e) {
         this.setStats();
       });
@@ -293,6 +306,7 @@
       this.set('fetched', false);
       this.setLastMonth();
       this.setPopulationYears();
+      this.setCategory(this.get('currentCategory'));
       this.on('change:crimesByMonth', function(e) {
         this.setStats();
       });

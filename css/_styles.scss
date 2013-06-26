@@ -84,10 +84,15 @@
     }
   }
     
-  .current-month-display {
+  .month-display {
+    width: 40%;
+    float: right;
+    text-align: right;
     font-size: 2em;
+    line-height: 2em;
     font-family: $sans-serif-font;
   }
+  
   .stat-value {
     font-size: 3em;
     font-family: $sans-serif-font;

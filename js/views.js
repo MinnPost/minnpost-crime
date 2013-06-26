@@ -119,16 +119,25 @@
       }
     },
     
+    // Update current month
+    bindUpdateCurrentMonthDisplay: function($el, val, model, options) {
+      var month = (val) ? moment(val.toString(), 'MM').format('MMMM') : '';
+      var year = model.get('currentYear');
+      this.bindUpdateFade($el, (month && year) ? month + ', ' + year : '', model, options);
+    },
+    
     // Fade out then in
     bindUpdateFade: function($el, val, model, options) {
-      $el.fadeOut('fast', function() {
-        $el.html(val).fadeIn('fast');
-      });
+      if ($el.text() !== val && $el.html() !== val) {
+        $el.fadeOut('fast', function() {
+          $el.html(val).fadeIn('fast');
+        });
+      }
     },
     
     // Update document title as well
     bindUpdateDocumentTitle: function($el, val, model, options) {
-      $el.html(val);
+      this.bindUpdateFade($el, val, model, options);
       document.title = app.options.originalTitle + ' | ' + val;
     },
     
@@ -140,7 +149,7 @@
       
         _.each(model.get('categories'), function(cat, c) {
           var stat, $statEl;
-        
+          
           // Incidents
           stat = model.getCrimeByMonth(model.get('currentYear'), model.get('currentMonth'), c);
           $statEl = $el.find('.category-stat-' + c + ' .stat-incidents');
@@ -234,6 +243,9 @@
     bindings: {
       '.section-title': { observe: 'title', update: 'bindUpdateDocumentTitle' },
       '.population-numbers': { observe: 'population', update: 'bindUpdatePopulation' },
+      '.month-display-update': { observe: 'currentMonth', update: 'bindUpdateCurrentMonthDisplay' },
+      // Categories
+      '.category-title': { observe: 'currentCategoryTitle', update: 'bindUpdateFade' },
       // Stats
       '.stat-change-last-month .stat-value': { observe: 'statChangeLastMonth', update: 'bindUpdateCount' },
       '.stat-change-month-last-year .stat-value': { observe: 'statChangeMonthLastYear', update: 'bindUpdateCount' },
@@ -252,12 +264,6 @@
       '#chart-city-last-year': { observe: 'crimesByMonth', update: 'bindUpdateChartLast12Months' },
       '#chart-city-incidents-this-year-history': { 
         observe: 'crimesByMonth', update: 'bindUpdateIncidentsThisYearHistory' }
-    },
-    
-    bindUpdateCurrentMonthDisplay: function($el, val, model, options) {
-      var month = (val) ? moment(val.toString(), 'MM').format('MMMM') : '';
-      var year = model.get('currentYear');
-      this.bindUpdateFade($el, (month && year) ? month + ', ' + year : '', model, options);
     },
     
     render: function() {
@@ -281,6 +287,9 @@
       '.section-title': { observe: 'title', update: 'bindUpdateDocumentTitle' },
       '.city-link': { observe: 'city', update: 'bindUpdateCityLink' },
       '.population-numbers': { observe: 'population', update: 'bindUpdatePopulation' },
+      '.month-display-update': { observe: 'currentMonth', update: 'bindUpdateCurrentMonthDisplay' },
+      // Categories
+      '.category-title': { observe: 'currentCategoryTitle', update: 'bindUpdateFade' },
       // Stats
       '.stat-change-last-month .stat-value': { observe: 'statChangeLastMonth', update: 'bindUpdateCount' },
       '.stat-change-month-last-year .stat-value': { observe: 'statChangeMonthLastYear', update: 'bindUpdateCount' },
@@ -307,7 +316,6 @@
         $el.attr('href', '#city/' + city.id);
         this.bindUpdateFade($el, city.get('title'), model, options);
       }
-      $el.html(val);
     },
     
     render: function() {
