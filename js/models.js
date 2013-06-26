@@ -137,15 +137,24 @@
       category = this.getCategory(category);
       var cMonth = this.get('currentMonth');
       var data = [];
+      var minYear = 9999;
+      
+      // Find the minimum year that has a full years
+      // worth of data
+      _.each(this.get('crimesByMonth'), function(year, y) {
+        minYear = (_.size(year) === 12 && y < minYear) ? y : minYear;
+      });
       
       _.each(this.get('crimesByMonth'), function(year, y) {
         var incidents = 0;
         
-        // Get incidents for previous months
-        _.each(year, function(month, m) {
-          incidents += (m <= cMonth) ? month[category] : 0;
-        });
-        data.push([y.toString(), incidents]);
+        if (y >= minYear) {
+          // Get incidents for previous months
+          _.each(year, function(month, m) {
+            incidents += (m <= cMonth) ? month[category] : 0;
+          });
+          data.push([y.toString(), incidents]);
+        }
       });
       
       return data;
