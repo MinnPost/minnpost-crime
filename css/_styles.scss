@@ -93,30 +93,30 @@
     font-family: $sans-serif-font;
   }
   
-  .city-category-stats {
+  .category-stats .category-stat {
+    text-align: center;
     
     .stat-label {
       min-height: 3em;
     }
-    .stat-value {
+    .stat-incidents {
       font-size: 1.5em;
       line-height: 1.15em;
     }
+    .stat-change {
+      font-size: .75em;
+      line-height: 1.15em;
+    }
+  }
+    
+  .chart {
+    height: 225px;
+    width: 100%;
   }
   
   .mc-city-container {
-    
-    #chart-one {
-      height: 200px;
-      width: 100%;
-    }
   }
   
   .mc-neighborhood-container {
-    
-    #chart-neighborhood-last-year {
-      height: 200px;
-      width: 100%;
-    }
   }
 }

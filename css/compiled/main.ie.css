@@ -100,18 +100,21 @@
   font-size: 3em;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
-.minnpost-application-container .city-category-stats .stat-label {
+.minnpost-application-container .category-stats .category-stat {
+  text-align: center;
+}
+.minnpost-application-container .category-stats .category-stat .stat-label {
   min-height: 3em;
 }
-.minnpost-application-container .city-category-stats .stat-value {
+.minnpost-application-container .category-stats .category-stat .stat-incidents {
   font-size: 1.5em;
   line-height: 1.15em;
 }
-.minnpost-application-container .mc-city-container #chart-one {
-  height: 200px;
-  width: 100%;
+.minnpost-application-container .category-stats .category-stat .stat-change {
+  font-size: .75em;
+  line-height: 1.15em;
 }
-.minnpost-application-container .mc-neighborhood-container #chart-neighborhood-last-year {
-  height: 200px;
+.minnpost-application-container .chart {
+  height: 225px;
   width: 100%;
 }

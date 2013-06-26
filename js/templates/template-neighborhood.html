@@ -72,22 +72,30 @@
       </div>
     </div>
     
-    <div class="row row-space city-category-stats">
-      <h4>Crime changes from last month</h4>
+    <div class="row row-space category-stats">
+      <h4>Incidents this month per category</h4>
       <% if (typeof categories != 'undefined') { %>
         <% _.each(categories, function(cat, c) { if (c !== 'total') { %>
-          <div class="city-category-stat city-category-stat-<%= c %> column width_1/<%= (_.size(categories) - 1) %>">
+          <div class="category-stat category-stat-<%= c %> column width_1/<%= (_.size(categories) - 1) %>">
             <div class="stat-label"><%= cat.title %></div>
-            <div class="stat-value"></div>
+            <div class="stat-value stat-incidents"></div>
+            <div class="stat-value stat-change"></div>
           </div>
         <% }}) %>
       <% } %>
     </div>
     
+    <div class="row row-space">
+      <div class="column width_1/1 last">
+        <h4>Historic trends of incidents so far this year</h4>
+        <div id="chart-neighborhood-incidents-this-year-history" class="chart"></div>
+      </div>
+    </div>
+    
     <div class="row">
       <div class="column width_1/1 last">
-        <h4>Crime over the past year (compared to year before)</h4>
-        <div id="chart-neighborhood-last-year"></div>
+        <h4>Incidents over the past 12 months (compared to 12 months prior)</h4>
+        <div id="chart-neighborhood-last-year" class="chart"></div>
       </div>
     </div>
   </div>

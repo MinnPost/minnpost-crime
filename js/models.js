@@ -13,7 +13,7 @@
     
     // We have population data from 2000 and 2010, so we abstract
     // that out to fill in years
-    createPopulationYears: function() {
+    setPopulationYears: function() {
       var baseData = this.get('population');
       var popData = {};
       var rate = (baseData[2010] - baseData[2000]) / 10;
@@ -129,6 +129,26 @@
       });
       
       return filtered;
+    },
+    
+    // Get series of incidents so far this year going back
+    // each year
+    getIncidentsThisYearHistory: function(category) {
+      category = this.getCategory(category);
+      var cMonth = this.get('currentMonth');
+      var data = [];
+      
+      _.each(this.get('crimesByMonth'), function(year, y) {
+        var incidents = 0;
+        
+        // Get incidents for previous months
+        _.each(year, function(month, m) {
+          incidents += (m <= cMonth) ? month[category] : 0;
+        });
+        data.push([y.toString(), incidents]);
+      });
+      
+      return data;
     }
   });
 
@@ -141,7 +161,7 @@
       this.set('currentYear', app.options.currentYear);
       this.set('currentMonth', app.options.currentMonth);
       this.setLastMonth();
-      this.createPopulationYears();
+      this.setPopulationYears();
       this.on('change:crimesByMonth', function(e) {
         this.setStats();
       });
@@ -243,7 +263,7 @@
       this.set('currentMonth', app.options.currentMonth);
       this.set('fetched', false);
       this.setLastMonth();
-      this.createPopulationYears();
+      this.setPopulationYears();
       this.on('change:crimesByMonth', function(e) {
         this.setStats();
       });

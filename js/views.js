@@ -135,9 +135,20 @@
     // Update crime categories based on last month
     bindUpdateCategoryCrime: function($el, val, model, options) {
       if (!_.isUndefined(model.get('crimesByMonth'))) {
+        var incidentOptions = _.extend(_.clone(options), 
+          { options: { formatter: 'formatNumber', argument: 0 }});
+      
         _.each(model.get('categories'), function(cat, c) {
-          var stat = model.getMonthChange(model.get('lastMonthYear'), model.get('lastMonthMonth'), c);
-          var $statEl = $el.find('.city-category-stat-' + c + ' .stat-value');
+          var stat, $statEl;
+        
+          // Incidents
+          stat = model.getCrimeByMonth(model.get('currentYear'), model.get('currentMonth'), c);
+          $statEl = $el.find('.category-stat-' + c + ' .stat-incidents');
+          this.bindUpdateCount($statEl, stat, model, incidentOptions);
+        
+          // Change
+          stat = model.getMonthChange(model.get('lastMonthYear'), model.get('lastMonthMonth'), c);
+          $statEl = $el.find('.category-stat-' + c + ' .stat-change');
           this.bindUpdateCount($statEl, stat, model, options);
         }, this);
       }
@@ -190,6 +201,27 @@
         sizeAdjust: 7,
         tooltipAxes: 'y'
       }
+    },
+    
+    // Chart showing last 12 months
+    bindUpdateChartLast12Months: function($el, val, model, options) {
+      var data1 = model.getLastYearData(1);
+      var data2 = model.getLastYearData(2);
+      
+      if (_.isArray(data1) && data1.length > 0) {
+        $.jqplot($el.attr('id'), [data2, data1], this.plotOptions).redraw();
+      }
+    },
+    
+    // Chart to show how many incidents this year with history
+    bindUpdateIncidentsThisYearHistory: function($el, val, model, options) {
+      var data = model.getIncidentsThisYearHistory();
+      var plotOptions = _.clone(this.plotOptions);
+      plotOptions.seriesColors = [ '#10517F' ];
+      
+      if (_.isArray(data) && data.length > 0) {
+        $.jqplot($el.attr('id'), [data], plotOptions).redraw();
+      }
     }
   });
 
@@ -215,24 +247,15 @@
         update: 'bindUpdateCount',
         options: { formatter: 'formatNumber' }
       },
-      '.city-category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' },
+      '.category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' },
       // Charts
-      '#chart-one': { observe: 'crimesByMonth', update: 'bindUpdateChartOne' }
+      '#chart-city-last-year': { observe: 'crimesByMonth', update: 'bindUpdateChartLast12Months' }
     },
     
     bindUpdateCurrentMonthDisplay: function($el, val, model, options) {
       var month = (val) ? moment(val.toString(), 'MM').format('MMMM') : '';
       var year = model.get('currentYear');
       this.bindUpdateFade($el, (month && year) ? month + ', ' + year : '', model, options);
-    },
-    
-    bindUpdateChartOne: function($el, val, model, options) {
-      var data1 = model.getLastYearData(1);
-      var data2 = model.getLastYearData(2);
-      
-      if (_.isArray(data1) && data1.length > 0) {
-        $.jqplot('chart-one', [data2, data1], this.plotOptions).redraw();
-      }
     },
     
     render: function() {
@@ -269,18 +292,11 @@
         update: 'bindUpdateCount',
         options: { formatter: 'formatNumber' }
       },
-      '.city-category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' },
+      '.category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' },
       // Charts
-      '#chart-neighborhood-last-year': { observe: 'crimesByMonth', update: 'bindUpdateChartNeighborhoodLastYear' }
-    },
-    
-    bindUpdateChartNeighborhoodLastYear: function($el, val, model, options) {
-      var data1 = model.getLastYearData(1);
-      var data2 = model.getLastYearData(2);
-      
-      if (_.isArray(data1) && data1.length > 0) {
-        $.jqplot('chart-neighborhood-last-year', [data2, data1], this.plotOptions).redraw();
-      }
+      '#chart-neighborhood-last-year': { observe: 'crimesByMonth', update: 'bindUpdateChartLast12Months' },
+      '#chart-neighborhood-incidents-this-year-history': { 
+        observe: 'crimesByMonth', update: 'bindUpdateIncidentsThisYearHistory' }
     },
     
     bindUpdateCityLink: function($el, val, model, options) {
