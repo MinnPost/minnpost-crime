@@ -212,8 +212,7 @@
       
       if (!this.get('fetched')) {
         // Get data for various months (current, last, and last year)
-        defers.push(this.fetchDataPreviousYearsByMonth(
-          this.get('currentYear'), this.get('currentMonth'), 2));
+        defers.push(this.fetchAllDataByMonth());
         $.when.apply($, defers).done(function() {
           var data = thisModel.get('crimesByMonth') || {};
           _.each(arguments[0], function(r) {
@@ -231,6 +230,27 @@
         done.apply(context, []);
       }
       return this;
+    },
+    
+    // Get all data aggregated
+    fetchAllDataByMonth: function(done, context) {
+      var query = [];
+      
+      query.push("SELECT year, month");
+      _.each(this.get('categories'), function(category, c) {
+        query.push(", SUM(" + c + ") AS " + c);
+      });
+      query.push(" FROM swdata WHERE " + this.dataCrimeQueryWhere);
+      query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
+      
+      var defer = $.jsonp({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+  
+      if (_.isFunction(done)) {
+        $.when(defer).done(function(data) {
+          done.apply(context, [data[0]]);
+        });
+      }
+      return defer;
     },
     
     // Get data aggregate by month for previous years

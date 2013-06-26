@@ -249,7 +249,9 @@
       },
       '.category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' },
       // Charts
-      '#chart-city-last-year': { observe: 'crimesByMonth', update: 'bindUpdateChartLast12Months' }
+      '#chart-city-last-year': { observe: 'crimesByMonth', update: 'bindUpdateChartLast12Months' },
+      '#chart-city-incidents-this-year-history': { 
+        observe: 'crimesByMonth', update: 'bindUpdateIncidentsThisYearHistory' }
     },
     
     bindUpdateCurrentMonthDisplay: function($el, val, model, options) {
