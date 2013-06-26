@@ -246,6 +246,7 @@
       '.month-display-update': { observe: 'currentMonth', update: 'bindUpdateCurrentMonthDisplay' },
       // Categories
       '.category-title': { observe: 'currentCategoryTitle', update: 'bindUpdateFade' },
+      '.category-select': { observe: 'currentCategory' },
       // Stats
       '.stat-change-last-month .stat-value': { observe: 'statChangeLastMonth', update: 'bindUpdateCount' },
       '.stat-change-month-last-year .stat-value': { observe: 'statChangeMonthLastYear', update: 'bindUpdateCount' },
@@ -261,9 +262,10 @@
       },
       '.category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' },
       // Charts
-      '#chart-city-last-year': { observe: 'crimesByMonth', update: 'bindUpdateChartLast12Months' },
+      '#chart-city-last-year': { 
+        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartLast12Months' },
       '#chart-city-incidents-this-year-history': { 
-        observe: 'crimesByMonth', update: 'bindUpdateIncidentsThisYearHistory' }
+        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateIncidentsThisYearHistory' }
     },
     
     render: function() {
@@ -290,6 +292,7 @@
       '.month-display-update': { observe: 'currentMonth', update: 'bindUpdateCurrentMonthDisplay' },
       // Categories
       '.category-title': { observe: 'currentCategoryTitle', update: 'bindUpdateFade' },
+      '.category-select': { observe: 'currentCategory' },
       // Stats
       '.stat-change-last-month .stat-value': { observe: 'statChangeLastMonth', update: 'bindUpdateCount' },
       '.stat-change-month-last-year .stat-value': { observe: 'statChangeMonthLastYear', update: 'bindUpdateCount' },
@@ -305,9 +308,10 @@
       },
       '.category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' },
       // Charts
-      '#chart-neighborhood-last-year': { observe: 'crimesByMonth', update: 'bindUpdateChartLast12Months' },
+      '#chart-neighborhood-last-year': { 
+        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartLast12Months' },
       '#chart-neighborhood-incidents-this-year-history': { 
-        observe: 'crimesByMonth', update: 'bindUpdateIncidentsThisYearHistory' }
+        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateIncidentsThisYearHistory' }
     },
     
     bindUpdateCityLink: function($el, val, model, options) {

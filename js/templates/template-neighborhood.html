@@ -23,6 +23,16 @@
       
       <div class="column width_1/2 last">
         <h3><span class="category-title"></span> incidents</h3>
+        <form>
+          <select class="category-select">
+            <% if (typeof categories != 'undefined') { %>
+              <% var currentCategory = currentCategory || 'total' %>
+              <% _.each(categories, function(cat, c) { %>
+                <option value="<%= c %>" <% if (currentCategory === c) { %>selected="true"<% } %>><%= cat.title %></option>
+              <% }) %>
+            <% } %>
+          </select>
+        </form>
       
         <div class="column width_1/2">
           <div class="inner-column-left">
@@ -91,14 +101,14 @@
     
     <div class="row row-space">
       <div class="column width_1/1 last">
-        <h4>Historic trends of incidents so far this year</h4>
+        <h4><span class="category-title"></span> incidents historic trends so far each year</h4>
         <div id="chart-neighborhood-incidents-this-year-history" class="chart"></div>
       </div>
     </div>
     
     <div class="row">
       <div class="column width_1/1 last">
-        <h4>Incidents over the past 12 months (compared to 12 months prior)</h4>
+        <h4><span class="category-title"></span> incidents over the past 12 months (compared to 12 months prior)</h4>
         <div id="chart-neighborhood-last-year" class="chart"></div>
       </div>
     </div>

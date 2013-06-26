@@ -187,6 +187,10 @@
       this.on('change:crimesByMonth', function(e) {
         this.setStats();
       });
+      this.on('change:currentCategory', function(e) {
+        this.setCategory(this.get('currentCategory'));
+        this.setStats();
+      });
     },
   
   
@@ -308,6 +312,10 @@
       this.setPopulationYears();
       this.setCategory(this.get('currentCategory'));
       this.on('change:crimesByMonth', function(e) {
+        this.setStats();
+      });
+      this.on('change:currentCategory', function(e) {
+        this.setCategory(this.get('currentCategory'));
         this.setStats();
       });
     },
