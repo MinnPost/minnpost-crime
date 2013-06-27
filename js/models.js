@@ -109,14 +109,31 @@
       return this.get('crimesByMonth')[year][month][category];
     },
     
+    // Get total crime inciendents for a specific year
+    getCrimeByYear: function(year, category) {
+      year = year || this.get('currentYear');
+      category = this.getCategory(category);
+      
+      return _.reduce(this.get('crimesByMonth')[year], function(memo, month) {
+        return memo + month[category];
+      }, 0);
+    },
+    
+    // Get crime rate (crimes / population / 1000) for a specific year
+    getCrimeRateByYear: function(year, category) {
+      year = year || this.get('currentYear');
+      var population = this.get('population')[year];
+      var crimes = this.getCrimeByYear(year, category);
+      population = (!population) ? 1 : population;
+      
+      return (crimes / (population / 1000));
+    },
+    
     // Get crime rate (crimes / population / 1000) for a specific month
     getCrimeRateByMonth: function(year, month, category) {
       year = year || this.get('currentYear');
-      month = month || this.get('currentMonth');
-      category = this.getCategory(category);
-      
       var population = this.get('population')[year];
-      var crimes = this.get('crimesByMonth')[year][month][category];
+      var crimes = this.getCrimeByMonth(year, month, category);
       population = (!population) ? 1 : population;
       
       return (crimes / (population / 1000));
@@ -166,6 +183,32 @@
             incidents += (m <= cMonth) ? month[category] : 0;
           });
           data.push([y.toString(), incidents]);
+        }
+      });
+      
+      return data;
+    },
+    
+    // Get incident rate per year
+    getIncidentRatesPerYear: function(category) {
+      category = this.getCategory(category);
+      var thisModel = this;
+      var data = [];
+      var minYear = 9999;
+      var maxYear = this.get('currentYear') - 1;
+      
+      // Find the minimum year that has a full years
+      // worth of data
+      _.each(this.get('crimesByMonth'), function(year, y) {
+        minYear = (_.size(year) === 12 && y < minYear) ? y : minYear;
+      });
+      
+      // Unless its December, use last year as max
+      maxYear = (this.get('currentMonth') === 12) ? this.get('currentYear') : maxYear;
+      
+      _.each(this.get('crimesByMonth'), function(year, y) {
+        if (y >= minYear && y <= maxYear) {
+          data.push([y.toString(), thisModel.getCrimeRateByYear(y, category)]);
         }
       });
       

@@ -215,7 +215,7 @@
     
     // Default chart options
     plotOptions: {
-      seriesColors: [ '#BCBCBC','#10517F' ],
+      seriesColors: ['#10517F'],
       grid: {
         drawBorder: false,
         background: '#fafafa',
@@ -255,17 +255,27 @@
     bindUpdateChartLast12Months: function($el, val, model, options) {
       var data1 = model.getLastYearData(1);
       var data2 = model.getLastYearData(2);
+      var plotOptions = _.clone(this.plotOptions);
+      plotOptions.seriesColors = ['#BCBCBC', '#10517F'];
       
       if (_.isArray(data1) && data1.length > 0) {
-        $.jqplot($el.attr('id'), [data2, data1], this.plotOptions).redraw();
+        $.jqplot($el.attr('id'), [data2, data1], plotOptions).redraw();
       }
     },
     
     // Chart to show how many incidents this year with history
     bindUpdateIncidentsThisYearHistory: function($el, val, model, options) {
       var data = model.getIncidentsThisYearHistory();
+      
+      if (_.isArray(data) && data.length > 0) {
+        $.jqplot($el.attr('id'), [data], this.plotOptions).redraw();
+      }
+    },
+    
+    bindUpdateChartIncidentRatePerYear: function($el, val, model, options) {
+      var data = model.getIncidentRatesPerYear();
       var plotOptions = _.clone(this.plotOptions);
-      plotOptions.seriesColors = [ '#10517F' ];
+      plotOptions.axes.yaxis.tickOptions = {};
       
       if (_.isArray(data) && data.length > 0) {
         $.jqplot($el.attr('id'), [data], plotOptions).redraw();
@@ -289,7 +299,9 @@
       '#chart-city-last-year': { 
         observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartLast12Months' },
       '#chart-city-incidents-this-year-history': { 
-        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateIncidentsThisYearHistory' }
+        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateIncidentsThisYearHistory' },
+      '#chart-city-incident-rate-per-year': { 
+        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartIncidentRatePerYear' }
     },
     
     render: function() {
@@ -319,6 +331,8 @@
       // Charts
       '#chart-neighborhood-last-year': { 
         observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartLast12Months' },
+      '#chart-neighborhood-incident-rate-per-year': { 
+        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartIncidentRatePerYear' },
       '#chart-neighborhood-incidents-this-year-history': { 
         observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateIncidentsThisYearHistory' }
     },
