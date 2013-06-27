@@ -3,7 +3,7 @@
     <div class="row row-space">
       <div class="column width_1/1">
         <div class="month-display">
-          <span class="month-display-update"></span>
+          <span class="current-month"></span>, <span class="current-year"></span>
         </div>
       
         <h2 class="section-title"><%= (typeof title != 'undefined') ? title : '' %></h2>
@@ -85,20 +85,22 @@
     
     <div class="row row-space category-stats">
       <h4>Incidents this month per category</h4>
+      <p class="note">The following are incident totals per category for the given month, below each number is the percent change from the prior month.</p>
       <% if (typeof categories != 'undefined') { %>
-        <% _.each(categories, function(cat, c) { if (c !== 'total') { %>
-          <div class="category-stat category-stat-<%= c %> column width_1/<%= (_.size(categories) - 1) %>">
+        <% _.each(categories, function(cat, c) { %>
+          <div class="category-stat category-stat-<%= c %> column width_1/<%= _.size(categories) %>">
             <div class="stat-label"><%= cat.title %></div>
             <div class="stat-value stat-incidents"></div>
             <div class="stat-value stat-change"></div>
           </div>
-        <% }}) %>
+        <% }) %>
       <% } %>
     </div>
     
     <div class="row row-space">
       <div class="column width_1/1 last">
-        <h4><span class="category-title"></span> incidents historic trends so far each year</h4>
+        <h4><span class="category-title"></span> incidents each year up to <span class="current-month"></span></h4>
+        <p class="note">As crime rates vary significantly each month, this chart shows the total number of incidents of a particular category of crime up to the current month for each year.</p>
         <div id="chart-city-incidents-this-year-history" class="chart"></div>
       </div>
     </div>
@@ -106,7 +108,8 @@
     <div class="row">
       <div class="column width_1/1 last">
         <h4><span class="category-title"></span> incidents over the past 12 months (compared to 12 months prior)</h4>
-        <div id="chart-city-last-year"></div>
+        <p class="note">This chart shows the total number of incidents of a particular category of crime for each month for the past 12 months, compared to the same time period the year prior.</p>
+        <div id="chart-city-last-year" class="chart"></div>
       </div>
     </div>
   </div>

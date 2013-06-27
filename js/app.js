@@ -197,11 +197,14 @@
         }
         this.neighborhood = neighborhood;
         
-        // Render
+        // Render and get both the city and the neighborhood data.
+        // The city data will be used for some comparisons
         this.applicationView.renderNeighborhood(this.neighborhood, this.city);
-        this.neighborhood.fetchData(function() {
-          thisRouter.applicationView.renderStopGeneralLoading();
-        });
+        this.city.fetchData(function() {
+          this.neighborhood.fetchData(function() {
+            this.applicationView.renderStopGeneralLoading();
+          }, this);
+        }, this);
       }
     }
   });

@@ -88,6 +88,36 @@
    * View that holds common binding functions
    */
   app.ViewBinding = Backbone.View.extend({
+  
+    commonBindings: {
+      '.section-title': { observe: 'title', update: 'bindUpdateDocumentTitle' },
+      '.population-numbers': { observe: 'population', update: 'bindUpdatePopulation' },
+      '.current-month': { observe: 'currentMonth', update: 'bindUpdateSlide', onGet: 'bindSetFormatMonth' },
+      '.current-year': { observe: 'currentYear', update: 'bindUpdateSlide' },
+      // Categories
+      '.category-title': { observe: 'currentCategoryTitle', update: 'bindUpdateSlide' },
+      '.category-select': { observe: 'currentCategory' },
+      // Stats
+      '.stat-change-last-month .stat-value': { observe: 'statChangeLastMonth', update: 'bindUpdateCount' },
+      '.stat-change-month-last-year .stat-value': { observe: 'statChangeMonthLastYear', update: 'bindUpdateCount' },
+      '.stat-incidents-month .stat-value': {
+        observe: 'statIncidentsMonth', 
+        update: 'bindUpdateCount',
+        options: { formatter: 'formatNumber', argument: 0 }
+      },
+      '.stat-rate-month .stat-value': {
+        observe: 'statRateMonth',
+        update: 'bindUpdateCount',
+        options: { formatter: 'formatNumber' }
+      },
+      '.category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' }
+    },
+    
+    // Format month
+    bindSetFormatMonth: function(val, options) {
+      return (val) ? moment(val.toString(), 'MM').format('MMMM') : '';
+    },
+    
     // Animate count to value
     bindUpdateCount: function($el, val, model, options) {
       if (_.isNumber(val)) {
@@ -131,6 +161,15 @@
       if ($el.text() !== val && $el.html() !== val) {
         $el.fadeOut('fast', function() {
           $el.html(val).fadeIn('fast');
+        });
+      }
+    },
+    
+    // Slide up, slide down
+    bindUpdateSlide: function($el, val, model, options) {
+      if ($el.text() !== val && $el.html() !== val) {
+        $el.slideUp('fast', function() {
+          $el.html(val).slideDown('fast');
         });
       }
     },
@@ -239,28 +278,13 @@
    */
   app.ViewCity = app.ViewBinding.extend({
     model: app.ModelCity,
+    
+    initialize: function() {
+      this.bindings = this.bindings || {};
+      this.bindings = _.extend(this.commonBindings, this.bindings);
+    },
   
     bindings: {
-      '.section-title': { observe: 'title', update: 'bindUpdateDocumentTitle' },
-      '.population-numbers': { observe: 'population', update: 'bindUpdatePopulation' },
-      '.month-display-update': { observe: 'currentMonth', update: 'bindUpdateCurrentMonthDisplay' },
-      // Categories
-      '.category-title': { observe: 'currentCategoryTitle', update: 'bindUpdateFade' },
-      '.category-select': { observe: 'currentCategory' },
-      // Stats
-      '.stat-change-last-month .stat-value': { observe: 'statChangeLastMonth', update: 'bindUpdateCount' },
-      '.stat-change-month-last-year .stat-value': { observe: 'statChangeMonthLastYear', update: 'bindUpdateCount' },
-      '.stat-incidents-month .stat-value': {
-        observe: 'statIncidentsMonth', 
-        update: 'bindUpdateCount',
-        options: { formatter: 'formatNumber', argument: 0 }
-      },
-      '.stat-rate-month .stat-value': {
-        observe: 'statRateMonth',
-        update: 'bindUpdateCount',
-        options: { formatter: 'formatNumber' }
-      },
-      '.category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' },
       // Charts
       '#chart-city-last-year': { 
         observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartLast12Months' },
@@ -284,29 +308,14 @@
    */
   app.ViewNeighborhood = app.ViewBinding.extend({
     model: app.ModelNeighborhood,
+    
+    initialize: function() {
+      this.bindings = this.bindings || {};
+      this.bindings = _.extend(this.commonBindings, this.bindings);
+    },
   
     bindings: {
-      '.section-title': { observe: 'title', update: 'bindUpdateDocumentTitle' },
       '.city-link': { observe: 'city', update: 'bindUpdateCityLink' },
-      '.population-numbers': { observe: 'population', update: 'bindUpdatePopulation' },
-      '.month-display-update': { observe: 'currentMonth', update: 'bindUpdateCurrentMonthDisplay' },
-      // Categories
-      '.category-title': { observe: 'currentCategoryTitle', update: 'bindUpdateFade' },
-      '.category-select': { observe: 'currentCategory' },
-      // Stats
-      '.stat-change-last-month .stat-value': { observe: 'statChangeLastMonth', update: 'bindUpdateCount' },
-      '.stat-change-month-last-year .stat-value': { observe: 'statChangeMonthLastYear', update: 'bindUpdateCount' },
-      '.stat-incidents-month .stat-value': {
-        observe: 'statIncidentsMonth', 
-        update: 'bindUpdateCount',
-        options: { formatter: 'formatNumber', argument: 0 }
-      },
-      '.stat-rate-month .stat-value': {
-        observe: 'statRateMonth',
-        update: 'bindUpdateCount',
-        options: { formatter: 'formatNumber' }
-      },
-      '.category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' },
       // Charts
       '#chart-neighborhood-last-year': { 
         observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartLast12Months' },

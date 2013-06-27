@@ -72,6 +72,10 @@
 .minnpost-application-container .row-space {
   margin-bottom: 1em;
 }
+.minnpost-application-container .note {
+  font-size: .85em;
+  color: #787878;
+}
 .minnpost-application-container #neighborhood-map,
 .minnpost-application-container #city-map {
   height: 350px;
@@ -121,4 +125,5 @@
 .minnpost-application-container .chart {
   height: 225px;
   width: 100%;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
