@@ -6,10 +6,27 @@
   /**
    * Basic model for other crime models
    */
-  app.ModelCrime = Backbone.Model.extend({
+  app.ModelCrimeArea = Backbone.Model.extend({
     dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]',
     // See scraper for why this is needed
     dataCrimeQueryWhere: "notes NOT LIKE 'Added to%'",
+    
+    // Common initalize
+    initialize: function() {
+      this.set('categories', app.data['crime/categories']);
+      this.set('currentYear', app.options.currentYear);
+      this.set('currentMonth', app.options.currentMonth);
+      this.setLastMonth();
+      this.setPopulationYears();
+      this.setCategory(this.get('currentCategory'));
+      this.on('change:crimesByMonth', function(e) {
+        this.setStats();
+      });
+      this.on('change:currentCategory', function(e) {
+        this.setCategory(this.get('currentCategory'));
+        this.setStats();
+      });
+    },
     
     // We have population data from 2000 and 2010, so we abstract
     // that out to fill in years
@@ -219,23 +236,11 @@
   /**
    * Model for city level data
    */
-  app.ModelCity = app.ModelCrime.extend({
-    initialize: function() {
-      this.set('categories', app.data['crime/categories']);
-      this.set('currentYear', app.options.currentYear);
-      this.set('currentMonth', app.options.currentMonth);
-      this.setLastMonth();
-      this.setPopulationYears();
-      this.setCategory(this.get('currentCategory'));
-      this.on('change:crimesByMonth', function(e) {
-        this.setStats();
-      });
-      this.on('change:currentCategory', function(e) {
-        this.setCategory(this.get('currentCategory'));
-        this.setStats();
-      });
-    },
+  app.ModelCity = app.ModelCrimeArea.extend({
   
+    initialize: function() {
+      app.ModelCity.__super__.initialize.apply(this, arguments);
+    },
   
     // Set stats values
     setStats: function(category) {
@@ -344,23 +349,10 @@
   /**
    * Model for neighborhood level data
    */
-  app.ModelNeighborhood = app.ModelCrime.extend({
+  app.ModelNeighborhood = app.ModelCrimeArea.extend({
   
     initialize: function() {
-      this.set('categories', app.data['crime/categories']);
-      this.set('currentYear', app.options.currentYear);
-      this.set('currentMonth', app.options.currentMonth);
-      this.set('fetched', false);
-      this.setLastMonth();
-      this.setPopulationYears();
-      this.setCategory(this.get('currentCategory'));
-      this.on('change:crimesByMonth', function(e) {
-        this.setStats();
-      });
-      this.on('change:currentCategory', function(e) {
-        this.setCategory(this.get('currentCategory'));
-        this.setStats();
-      });
+      app.ModelNeighborhood.__super__.initialize.apply(this, arguments);
     },
   
   
