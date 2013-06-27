@@ -98,6 +98,16 @@
     font-family: $sans-serif-font;
   }
   
+  .population-numbers {
+    margin-top: 4em;
+    
+    .population-2010,
+    .population-2000 {
+      font-family: $sans-serif-font;
+      
+    }
+  }
+  
   .stat-value {
     font-size: 3em;
     font-family: $sans-serif-font;

@@ -104,6 +104,13 @@
   line-height: 2em;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
+.minnpost-application-container .population-numbers {
+  margin-top: 4em;
+}
+.minnpost-application-container .population-numbers .population-2010,
+.minnpost-application-container .population-numbers .population-2000 {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
 .minnpost-application-container .stat-value {
   font-size: 3em;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
