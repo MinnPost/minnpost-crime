@@ -30,6 +30,12 @@
     // Render City view
     renderCity: function(cityModel) {
       var thisView = this;
+      var stickit = false;
+      
+      if (_.isUndefined(this.options.app.cityView.model) || 
+        this.options.app.cityView.model.cid != cityModel.cid) {
+        stickit = true;
+      }
     
       this.options.app.cityView.model = cityModel;
       this.options.app.cityView.$el.slideDown(function() {
@@ -37,7 +43,7 @@
       });
       this.options.app.neighborhoodView.$el.slideUp();
       
-      if (!_.isObject(this.options.app.cityView._modelBindings)) {
+      if (!_.isObject(this.options.app.cityView._modelBindings) || stickit) {
         this.options.app.cityView.stickit();
       }
       
@@ -47,14 +53,23 @@
     // Render Neighborhood view
     renderNeighborhood: function(neighborhoodModel, cityModel) {
       var thisView = this;
+      var stickit = false;
+      
+      if (_.isUndefined(this.options.app.neighborhoodView.model) || 
+        this.options.app.neighborhoodView.model.cid != neighborhoodModel.cid) {
+        stickit = true;
+      }
       
       this.options.app.neighborhoodView.model = neighborhoodModel;
-      this.options.app.neighborhoodView.stickit();
       this.options.app.neighborhoodView.$el.slideDown(function() {
         thisView.options.app.neighborhoodMapView.renderMap(false);
         thisView.options.app.neighborhoodMapView.mapFocusNeighborhood(neighborhoodModel);
       });
       this.options.app.cityView.$el.slideUp();
+      
+      if (!_.isObject(this.options.app.neighborhoodView._modelBindings) || stickit) {
+        this.options.app.neighborhoodView.stickit();
+      }
       
       return this;
     },
@@ -185,7 +200,7 @@
       if (!_.isUndefined(model.get('crimesByMonth'))) {
         var incidentOptions = _.extend(_.clone(options), 
           { options: { formatter: 'formatNumber', argument: 0 }});
-      
+          
         _.each(model.get('categories'), function(cat, c) {
           var stat, $statEl;
           
@@ -290,8 +305,14 @@
     model: app.ModelCity,
     
     initialize: function() {
+      var thisView = this;
       this.bindings = this.bindings || {};
       this.bindings = _.extend(this.commonBindings, this.bindings);
+      
+      // Trigger color change
+      this.options.app.neighborhoods.on('fetchedRecentData', function(e) {
+        thisView.updateMap();
+      });
     },
   
     bindings: {
@@ -301,9 +322,12 @@
       '#chart-city-incidents-this-year-history': { 
         observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateIncidentsThisYearHistory' },
       '#chart-city-incident-rate-per-year': { 
-        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartIncidentRatePerYear' }
+        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartIncidentRatePerYear' },
+      // Map
+      '#city-map': { observe: 'currentCategory', update: 'bindUpdateMapVisualization' }
     },
     
+    // Main render container
     render: function() {
       var data = (_.isObject(this.model)) ? this.model.toJSON() : 
         { categories: app.data['crime/categories'] };
@@ -311,6 +335,33 @@
       app.getTemplate('template-city', function(template) {
         this.$el.html(template(data));
       }, this);
+      return this;
+    },
+    
+    //
+    bindUpdateMapVisualization: function($el, val, model, options) {
+      this.updateMap(val);
+    },
+    
+    // Update the coloring of the map based on category
+    updateMap: function(category) {
+      category = category || this.model.get('currentCategory');
+      categoryObject = this.model.get('categories')[category];
+    
+      if (!this.options.app.neighborhoods.fetchedRecentData) {
+        return;
+      }
+    
+      // Since we use the same neighborhood models
+      // for city view and individual eighborhood view,
+      // we don't want to step on toes and set
+      // the category, unnecessarily
+      this.options.app.neighborhoods.each(function(n) {
+        n.set('cityMapValue', n.getCrimeRateByMonth(undefined, undefined, category));
+      });
+      this.options.app.cityMapView.mapVisualizeNeighborhoods(
+        'cityMapValue', categoryObject.title + ' incident rate');
+      
       return this;
     }
   });
@@ -365,23 +416,23 @@
     
     styleDefault: {
       stroke: true,
-      color: '#107F3E',
+      color: '#424242',
       weight: 1,
-      opacity: 0.5,
+      opacity: 0.8,
       fill: true,
-      fillColor: '#107F3E',
-      fillOpacity: 0.2
+      fillColor: '#DFDFDF', //#107F3E
+      fillOpacity: 0.7
     },
     
     initialize: function() {
+      this.mapRendered = false;
+      
       // Get hover template.  This should be use
       // with a callback
       app.getTemplate('template-map-label', function(template) {
         this.templates = this.templates || {};
         this.templates['template-map-label'] = template;
       }, this);
-      
-      this.mapRendered = false;
     },
     
     // Renders out collection
@@ -430,6 +481,39 @@
       return this;
     },
     
+    // Render/visualize neighborhoods based on a property
+    mapVisualizeNeighborhoods: function(property, label, formatter, exceptions) {
+      var thisView = this;
+      exceptions = exceptions || ['northeast_park', 'mid_city_industrial', 'camden_industrial', 'humboldt_industrial_area', 'downtown_west'];
+      this.visualProperty = property || 'statRateMonth';
+      this.visualLabel = label || 'Incident rate';
+      this.visualFormatter = formatter || _.formatNumber;
+      var data, colorScale;
+      
+      if (_.isUndefined(this.featureGroup)) {
+        return;
+      }
+      
+      // Remove any exceptions from data range
+      data = this.collection.filter(function(n) {
+        return (exceptions.indexOf(n.get('key')) === -1);
+      });
+      data = _.map(data, function(e) { return e.get(thisView.visualProperty); });
+      // Create color scale.  k-means minus exceptions seems to be the best
+      // visual
+      colorScale = chroma.scale('YlGnBu')  //['#107F3E', '#B61673'] ['#107F3E', '#76107F']
+        .domain(data, 9, 'k-means')
+        .mode('lab');
+      
+      // Reset mouseover
+      this.collection.each(function(m) {
+        var layer = thisView.getLayerByModel(m);
+        var options = layer.options;
+        options.fillColor = colorScale(m.get(thisView.visualProperty)).hex();
+        layer.setStyle(options);
+      });
+    },
+    
     // Focus on neighnorhood
     mapFocusNeighborhood: function(model) {
       this.model = (_.isObject(model)) ? model : this.model;
@@ -439,7 +523,7 @@
       // TODO: Need to reset weight on other layers
       if (_.isObject(this.model)) {
         this.featureGroup.setStyle({ weight: this.styleDefault.weight });
-        layer = this.getLayerByModelID();
+        layer = this.getLayerByModel();
         options = layer._layers[layer._leaflet_id - 1].options;
         options.weight = options.weight + 8;
         layer.setStyle(options);
@@ -479,7 +563,10 @@
       // Label
       this.$el.find('.map-label-container').html(
         this.templates['template-map-label']({
-          title: neighborhood.get('title')
+          title: neighborhood.get('title'),
+          property: neighborhood.get(this.visualProperty),
+          label: this.visualLabel,
+          formatter: this.visualFormatter
         })
       ).show();
     },
@@ -502,7 +589,7 @@
     },
     
     // Get layer by nieghborhod id
-    getLayerByModelID: function(model) {
+    getLayerByModel: function(model) {
       var searchModel = model || this.model;
       var topLayer = _.find(this.featureGroup._layers, function(l, i) {
         return (l._layers[l._leaflet_id - 1].feature.id == searchModel.id);

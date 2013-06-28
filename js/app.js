@@ -172,8 +172,11 @@
         // Render
         this.applicationView.renderCity(this.city);
         this.city.fetchData(function() {
-          thisRouter.applicationView.renderStopGeneralLoading();
-        });
+          // We also need to get recent neighborhood data
+          this.neighborhoods.fetchRecentData(function() {
+            this.applicationView.renderStopGeneralLoading();
+          }, this);
+        }, this);
       }
     },
   

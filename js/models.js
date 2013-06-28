@@ -149,6 +149,7 @@
     // Get crime rate (crimes / population / 1000) for a specific month
     getCrimeRateByMonth: function(year, month, category) {
       year = year || this.get('currentYear');
+      month = month || this.get('currentMonth');
       var population = this.get('population')[year];
       var crimes = this.getCrimeByMonth(year, month, category);
       population = (!population) ? 1 : population;
@@ -371,10 +372,16 @@
       this.set('statRateMonth', this.getCrimeRateByMonth());
       
       // Change from last month and last year
-      this.set('statChangeLastMonth', this.getMonthChange(
-        this.get('lastMonthYear'), this.get('lastMonthMonth'), category));
-      this.set('statChangeMonthLastYear', this.getMonthChange(
-        this.get('currentYear') - 1, this.get('currentMonth'), category));
+      if (_.isObject(data[this.get('lastMonthYear')]) && 
+        _.isObject(data[this.get('lastMonthYear')][this.get('lastMonthMonth')])) {
+        this.set('statChangeLastMonth', this.getMonthChange(
+          this.get('lastMonthYear'), this.get('lastMonthMonth'), category));
+      }
+      if (_.isObject(data[this.get('currentYear') - 1]) && 
+        _.isObject(data[this.get('currentYear') - 1][this.get('lastMonthMonth')])) {
+        this.set('statChangeMonthLastYear', this.getMonthChange(
+          this.get('currentYear') - 1, this.get('currentMonth'), category));
+      }
         
       // Stats that are not dependent on category
       
