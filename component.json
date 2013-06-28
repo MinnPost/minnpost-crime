@@ -11,7 +11,8 @@
     "backbone": "~1.0.0",
     "jquery-jsonp": "~2.4.0",
     "underscore": "~1.4.4",
-    "jqplot": "https://bitbucket.org/cleonello/jqplot/downloads/jquery.jqplot.1.0.8r1250.zip"
+    "jqplot": "https://bitbucket.org/cleonello/jqplot/downloads/jquery.jqplot.1.0.8r1250.zip",
+    "chroma-js": "~0.4.8"
   },
   "ignore": [
     "**/.*",

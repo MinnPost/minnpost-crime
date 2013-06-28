@@ -97,14 +97,12 @@ module.exports = function(grunt) {
           'components/topojson/topojson.js', 
           'components/moment/min/moment.min.js',
           'components/leaflet/dist/leaflet.js', 
+          'components/chroma-js/chroma.min.js',
           'components/jqplot/excanvas.min.js', 
           'components/jqplot/jquery.jqplot.min.js', 
           'components/jqplot/plugins/jqplot.barRenderer.min.js', 
-          'components/jqplot/plugins/jqplot.dateAxisRenderer.min.js', 
-          'components/jqplot/plugins/jqplot.canvasTextRenderer.min.js', 
-          'components/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js', 
-          'components/jqplot/plugins/jqplot.categoryAxisRenderer.min.js', 
-          'components/jqplot/plugins/jqplot.barRenderer.min.js'
+          'components/jqplot/plugins/jqplot.highlighter.min.js', 
+          'components/jqplot/plugins/jqplot.categoryAxisRenderer.min.js'
         ],
         dest: 'dist/<%= pkg.name %>.libs.js',
         options: {
