@@ -39,6 +39,7 @@
     
       this.options.app.cityView.model = cityModel;
       this.options.app.cityView.$el.slideDown(function() {
+        thisView.options.app.cityMapView.model = cityModel;
         thisView.options.app.cityMapView.renderMap();
       });
       this.options.app.neighborhoodView.$el.slideUp();
@@ -55,6 +56,7 @@
       var thisView = this;
       var stickit = false;
       
+      this.options.app.cityView.model = cityModel;
       if (_.isUndefined(this.options.app.neighborhoodView.model) || 
         this.options.app.neighborhoodView.model.cid != neighborhoodModel.cid) {
         stickit = true;
@@ -62,6 +64,7 @@
       
       this.options.app.neighborhoodView.model = neighborhoodModel;
       this.options.app.neighborhoodView.$el.slideDown(function() {
+        thisView.options.app.neighborhoodMapView.model = neighborhoodModel;
         thisView.options.app.neighborhoodMapView.renderMap(false);
         thisView.options.app.neighborhoodMapView.mapFocusNeighborhood(neighborhoodModel);
       });
@@ -273,7 +276,7 @@
       var plotOptions = _.clone(this.plotOptions);
       plotOptions.seriesColors = ['#BCBCBC', '#10517F'];
       
-      if (_.isArray(data1) && data1.length > 0) {
+      if (_.isArray(data1) && data1.length > 0 && _.isArray(data2) && data2.length > 0) {
         $.jqplot($el.attr('id'), [data2, data1], plotOptions).redraw();
       }
     },
@@ -295,6 +298,29 @@
       if (_.isArray(data) && data.length > 0) {
         $.jqplot($el.attr('id'), [data], plotOptions).redraw();
       }
+    },
+    
+    // Update the coloring of the map based on category
+    updateMapVisualization: function(category, mapView) {
+      if (!this.options.app.neighborhoods.fetchedRecentData || _.isUndefined(this.model)) {
+        return;
+      }
+      
+      mapView = mapView || 'cityMapView';
+      category = category || this.model.get('currentCategory');
+      categoryObject = this.model.get('categories')[category];
+    
+      // Since we use the same neighborhood models
+      // for city view and individual eighborhood view,
+      // we don't want to step on toes and set
+      // the category, unnecessarily
+      this.options.app.neighborhoods.each(function(n) {
+        n.set('cityMapValue', n.getCrimeRateByMonth(undefined, undefined, category));
+      });
+      this.options.app[mapView].mapVisualizeNeighborhoods(
+        'cityMapValue', categoryObject.title + ' incident rate');
+      
+      return this;
     }
   });
 
@@ -311,7 +337,7 @@
       
       // Trigger color change
       this.options.app.neighborhoods.on('fetchedRecentData', function(e) {
-        thisView.updateMap();
+        thisView.updateMapVisualization(undefined, 'cityMapView');
       });
     },
   
@@ -338,31 +364,9 @@
       return this;
     },
     
-    //
+    // Binder for map visulization update
     bindUpdateMapVisualization: function($el, val, model, options) {
-      this.updateMap(val);
-    },
-    
-    // Update the coloring of the map based on category
-    updateMap: function(category) {
-      category = category || this.model.get('currentCategory');
-      categoryObject = this.model.get('categories')[category];
-    
-      if (!this.options.app.neighborhoods.fetchedRecentData) {
-        return;
-      }
-    
-      // Since we use the same neighborhood models
-      // for city view and individual eighborhood view,
-      // we don't want to step on toes and set
-      // the category, unnecessarily
-      this.options.app.neighborhoods.each(function(n) {
-        n.set('cityMapValue', n.getCrimeRateByMonth(undefined, undefined, category));
-      });
-      this.options.app.cityMapView.mapVisualizeNeighborhoods(
-        'cityMapValue', categoryObject.title + ' incident rate');
-      
-      return this;
+      this.updateMapVisualization(val, 'cityMapView');
     }
   });
 
@@ -373,8 +377,14 @@
     model: app.ModelNeighborhood,
     
     initialize: function() {
+      var thisView = this;
       this.bindings = this.bindings || {};
       this.bindings = _.extend(this.commonBindings, this.bindings);
+      
+      // Trigger color change
+      this.options.app.neighborhoods.on('fetchedRecentData', function(e) {
+        thisView.updateMapVisualization(undefined, 'neighborhoodMapView');
+      });
     },
   
     bindings: {
@@ -385,7 +395,9 @@
       '#chart-neighborhood-incident-rate-per-year': { 
         observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartIncidentRatePerYear' },
       '#chart-neighborhood-incidents-this-year-history': { 
-        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateIncidentsThisYearHistory' }
+        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateIncidentsThisYearHistory' },
+      // Map
+      '#neighborhood-map': { observe: 'currentCategory', update: 'bindUpdateMapVisualization' }
     },
     
     bindUpdateCityLink: function($el, val, model, options) {
@@ -394,6 +406,11 @@
         $el.attr('href', '#city/' + city.id);
         this.bindUpdateFade($el, city.get('title'), model, options);
       }
+    },
+    
+    // Binder for map visulization update
+    bindUpdateMapVisualization: function($el, val, model, options) {
+      this.updateMapVisualization(val, 'neighborhoodMapView');
     },
     
     render: function() {
