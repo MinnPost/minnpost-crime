@@ -72,6 +72,7 @@
   #city-map {
     height: 350px;
     width: 100%;
+    margin-bottom: 1em;
     
     .map-label-container {
       min-width: 10em;
@@ -86,6 +87,26 @@
       .map-label-inner-container {
         padding: .5em;
       }
+    }
+  }
+  
+  .map-legend .legend-item {
+    float: left;
+    font-size: .75em;
+    font-family: $sans-serif-font;
+    width: 20%;
+    margin-bottom: .5em;
+    
+    .legend-value {
+      width: auto;
+      border-left: 1px solid #BDBDBD;
+      padding: .5em .25em .25em .25em;
+    }
+    
+    .legend-color {
+      width: 100%;
+      height: 25px;
+      box-shadow: 2px 0 0 -1px #BDBDBD inset;
     }
   }
     
@@ -104,7 +125,6 @@
     .population-2010,
     .population-2000 {
       font-family: $sans-serif-font;
-      
     }
   }
   

@@ -1,0 +1,14 @@
+<div class="map-legend-inner clearfix">
+  <% _.each(legend, function(l, i) { %>
+    <div class="legend-item" style="width: <%= (100 / _.size(legend)) %>%;">
+      <div class="legend-color" style="background-color: <%= l.color %>">
+      </div>
+      
+      <div class="legend-value">
+        <%= _.formatNumber(l.value) %>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+<p class="note">The scaling is automated using a version of <a href="http://en.wikipedia.org/wiki/K-means_clustering" target="_blank">k-means clustering</a>.</p>

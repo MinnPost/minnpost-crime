@@ -443,6 +443,7 @@
     
     initialize: function() {
       this.mapRendered = false;
+      this.templates = this.templates || {};
       
       // Get hover template.  This should be use
       // with a callback
@@ -450,6 +451,22 @@
         this.templates = this.templates || {};
         this.templates['template-map-label'] = template;
       }, this);
+      
+      // Get legend template.
+      app.getTemplate('template-map-legend', function(template) {
+        this.templates['template-map-legend'] = template;
+      }, this);
+      
+      // Set legend element
+    },
+     
+    // Get legend element
+    getLegendEl: function() {
+      if (_.isUndefined(this.$legendEl) || !_.isObject(this.$legendEl) || 
+        this.$legendEl.length === 0) {
+        this.$legendEl = this.$el.parent().find('.map-legend');
+      }
+      return this.$legendEl;
     },
     
     // Renders out collection
@@ -505,6 +522,7 @@
       this.visualProperty = property || 'statRateMonth';
       this.visualLabel = label || 'Incident rate';
       this.visualFormatter = formatter || _.formatNumber;
+      var legend = [];
       var data, colorScale;
       
       if (_.isUndefined(this.featureGroup)) {
@@ -516,13 +534,20 @@
         return (exceptions.indexOf(n.get('key')) === -1);
       });
       data = _.map(data, function(e) { return e.get(thisView.visualProperty); });
+      
       // Create color scale.  k-means minus exceptions seems to be the best
       // visual
       colorScale = chroma.scale('YlGnBu')  //['#107F3E', '#B61673'] ['#107F3E', '#76107F']
         .domain(data, 9, 'k-means')
         .mode('lab');
       
-      // Reset mouseover
+      // Create legend data
+      _.each(chroma.limits(data, 'k-means', 9), function(l) {
+        legend.push({ value: l, color: colorScale(l).hex() });
+      });
+      this.getLegendEl().html(this.templates['template-map-legend']({ legend: legend }));
+      
+      // Color each layer
       this.collection.each(function(m) {
         var layer = thisView.getLayerByModel(m);
         var options = layer.options;
