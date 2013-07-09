@@ -37,10 +37,16 @@
         stickit = true;
       }
       
+      // Render map
+      this.options.app.cityMapView.model = cityModel;
+      this.options.app.cityMapView.renderMap();
+      
+      // Set model for view
       this.options.app.cityView.model = cityModel;
+      
+      // Animate transition
       this.options.app.cityView.$el.slideDown(function() {
-        thisView.options.app.cityMapView.model = cityModel;
-        thisView.options.app.cityMapView.renderMap();
+        thisView.options.app.cityMapView.updateMapView();
       });
       this.options.app.neighborhoodView.$el.slideUp();
       
@@ -63,10 +69,16 @@
         stickit = true;
       }
       
+      // Render/update mao
+      thisView.options.app.neighborhoodMapView.model = neighborhoodModel;
+      thisView.options.app.neighborhoodMapView.renderMap(false);
+      
+      // Handle view
       this.options.app.neighborhoodView.model = neighborhoodModel;
+      
+      // Animate
       this.options.app.neighborhoodView.$el.slideDown(function() {
-        thisView.options.app.neighborhoodMapView.model = neighborhoodModel;
-        thisView.options.app.neighborhoodMapView.renderMap(false);
+        thisView.options.app.neighborhoodMapView.updateMapView(false);
         thisView.options.app.neighborhoodMapView.mapFocusNeighborhood(neighborhoodModel);
       });
       this.options.app.cityView.$el.slideUp();
@@ -368,7 +380,7 @@
     
     // Binder for map visulization update
     bindUpdateMapVisualization: function($el, val, model, options) {
-      this.updateMapVisualization(val, 'cityMapView');
+      this.updateMapVisualization(model.getCategory(), 'cityMapView');
     }
   });
 
@@ -507,14 +519,27 @@
           layer.on('click', thisView.bindMapFeatureClick, thisView);
           thisView.map.addLayer(layer);
         });
-        
-        if (fitGroup) {
-          this.map.fitBounds(this.featureGroup.getBounds());
-        }
         this.mapRendered = true;
+      }
+        
+      if (fitGroup) {
+        this.map.fitBounds(this.featureGroup.getBounds());
       }
       
       return this;
+    },
+    
+    // Update the map view
+    updateMapView: function(fitGroup) {
+      fitGroup = (_.isUndefined(fitGroup)) ? true : false;
+    
+      if (!_.isUndefined(this.map)) {
+        this.map.invalidateSize({ pan: false });
+        
+        if (!_.isUndefined(this.featureGroup) && fitGroup) {
+          this.map.fitBounds(this.featureGroup.getBounds());
+        }
+      }
     },
     
     // Render/visualize neighborhoods based on a property

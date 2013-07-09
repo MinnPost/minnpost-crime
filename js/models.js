@@ -289,6 +289,7 @@
           done.apply(context, []);
         });
         this.set('fetched', true);
+        this.trigger('fetched');
       }
       else {
         done.apply(context, []);
@@ -404,6 +405,7 @@
           done.apply(context, []);
         });
         this.set('fetched', true);
+        this.trigger('fetched');
       }
       else {
         done.apply(context, []);
