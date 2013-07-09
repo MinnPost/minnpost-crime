@@ -53,7 +53,8 @@
                   crimesByMonth[d.year][d.month] = d;
                 }
               });
-              m.set('crimesByMonth', crimesByMonth);
+              
+              m.set('crimesByMonth', crimesByMonth, { silent: true });
             });
             
             if (_.isFunction(done)) {

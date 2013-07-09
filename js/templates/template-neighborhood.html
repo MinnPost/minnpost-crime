@@ -16,6 +16,7 @@
     <div class="row row-space">
       <div class="column width_1/2">
         <div class="inner-column-left">
+          <p>Select a neighborhood from the map to see details.</p>
           <div id="neighborhood-map">
           </div>
           
@@ -25,9 +26,9 @@
       </div>
       
       <div class="column width_1/2 last">
-        <h3><span class="category-title"></span> incidents</h3>
         <form>
-          <select class="category-select">
+          <label for="category-select-neighborhood">Select the category of incident:</label>
+          <select class="category-select" id="category-select-neighborhood">
             <% if (typeof categories != 'undefined') { %>
               <% var currentCategory = currentCategory || 'total' %>
               <% _.each(categories, function(cat, c) { %>
@@ -35,7 +36,10 @@
               <% }) %>
             <% } %>
           </select>
+          <p>&nbsp;</p>
         </form>
+          
+        <h3><span class="category-title"></span> incidents</h3>
       
         <div class="column width_1/2">
           <div class="inner-column-left">

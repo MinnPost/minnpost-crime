@@ -32,11 +32,11 @@
       var thisView = this;
       var stickit = false;
       
-      if (_.isUndefined(this.options.app.cityView.model) || 
+      if (!_.isUndefined(this.options.app.cityView.model) && 
         this.options.app.cityView.model.cid != cityModel.cid) {
         stickit = true;
       }
-    
+      
       this.options.app.cityView.model = cityModel;
       this.options.app.cityView.$el.slideDown(function() {
         thisView.options.app.cityMapView.model = cityModel;
@@ -44,6 +44,7 @@
       });
       this.options.app.neighborhoodView.$el.slideUp();
       
+      // If the model has changed or if the model had not been stuck
       if (!_.isObject(this.options.app.cityView._modelBindings) || stickit) {
         this.options.app.cityView.stickit();
       }
@@ -57,7 +58,7 @@
       var stickit = false;
       
       this.options.app.cityView.model = cityModel;
-      if (_.isUndefined(this.options.app.neighborhoodView.model) || 
+      if (!_.isUndefined(this.options.app.neighborhoodView.model) && 
         this.options.app.neighborhoodView.model.cid != neighborhoodModel.cid) {
         stickit = true;
       }
@@ -70,6 +71,7 @@
       });
       this.options.app.cityView.$el.slideUp();
       
+      // If the model has changed or if the model had not been stuck
       if (!_.isObject(this.options.app.neighborhoodView._modelBindings) || stickit) {
         this.options.app.neighborhoodView.stickit();
       }
@@ -275,7 +277,7 @@
       var data2 = model.getLastYearData(2);
       var plotOptions = _.clone(this.plotOptions);
       plotOptions.seriesColors = ['#BCBCBC', '#10517F'];
-      
+
       if (_.isArray(data1) && data1.length > 0 && _.isArray(data2) && data2.length > 0) {
         $.jqplot($el.attr('id'), [data2, data1], plotOptions).redraw();
       }
@@ -381,7 +383,7 @@
       this.bindings = this.bindings || {};
       this.bindings = _.extend(this.commonBindings, this.bindings);
       
-      // Trigger color change
+      // Trigger color change when all neighborhood data comes in
       this.options.app.neighborhoods.on('fetchedRecentData', function(e) {
         thisView.updateMapVisualization(undefined, 'neighborhoodMapView');
       });
@@ -569,6 +571,7 @@
         options = layer._layers[layer._leaflet_id - 1].options;
         options.weight = options.weight + 8;
         layer.setStyle(options);
+        layer.bringToFront();
         this.map.fitBounds(layer.getBounds());
       }
       

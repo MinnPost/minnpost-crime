@@ -23,7 +23,7 @@
         this.setStats();
       });
       this.on('change:currentCategory', function(e) {
-        this.setCategory(this.get('currentCategory'));
+        this.setCategory(this.getCategory());
         this.setStats();
       });
     },
@@ -280,14 +280,12 @@
         // Get data for various months (current, last, and last year)
         defers.push(this.fetchAllDataByMonth());
         $.when.apply($, defers).done(function() {
-          var data = thisModel.get('crimesByMonth') || {};
+          var data = _.clone(thisModel.get('crimesByMonth')) || {};
           _.each(arguments[0], function(r) {
             data[r.year] = data[r.year] || {};
             data[r.year][r.month] = r;
           });
           thisModel.set('crimesByMonth', data);
-          thisModel.setStats();
-          
           done.apply(context, []);
         });
         this.set('fetched', true);
@@ -385,7 +383,6 @@
         
       // Stats that are not dependent on category
       
-      
       return this;
     },
   
@@ -398,7 +395,7 @@
       if (!this.get('fetched')) {
         defers.push(this.fetchDataAllData());
         $.when.apply($, defers).done(function() {
-          var data = thisModel.get('crimesByMonth') || {};
+          var data = _.clone(thisModel.get('crimesByMonth')) || {};
           _.each(arguments[0], function(r) {
             data[r.year] = data[r.year] || {};
             data[r.year][r.month] = r;
