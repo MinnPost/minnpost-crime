@@ -118,10 +118,6 @@
     
     // Create sub views
     createViews: function() {
-      this.applicationView = new app.ViewContainer({
-        el: app.options.el,
-        app: this
-      });
       this.cityView = new app.ViewCity({
         model: this.city,
         app: this,
@@ -211,6 +207,59 @@
             }, this);
           }, this);
         }, this);
+      }
+    },
+    
+    // Route based on geolocation
+    routeGeolocate: function(done, context) {
+      var thisRouter = this;
+    
+      navigator.geolocation.getCurrentPosition(function(position) {
+        if (_.isObject(position.coords)) {
+          thisRouter.routeGeoCoordinate([position.coords.longitude, position.coords.latitude], 
+            done, context);
+        }
+      }, function(err) {
+        // Handle error
+      });
+    },
+    
+    // Route based on address
+    routeAddress: function(address, done, context) {
+      var thisRouter = this;
+      var latlng;
+      var url = app.options.mapQuestQuery.replace('[[[KEY]]]', app.options.mapQuestKey)
+        .replace('[[[ADDRESS]]]', encodeURI(address));
+        
+      $.getJSON(url, function(response) {
+        latlng = response.results[0].locations[0].latLng;
+        if (latlng) {
+          thisRouter.routeGeoCoordinate([latlng.lng, latlng.lat], done, context);
+        }
+        else {
+          // Handle error
+        }
+      });
+    },
+    
+    // Route based on geo point
+    routeGeoCoordinate: function(lonlat, done, context) {
+      if (!_.isArray(lonlat)) {
+        return;
+      }
+      var map, found;
+      
+      // Not sure which map has rendered, so try both
+      view = (!_.isUndefined(this.cityMapView.map)) ? this.cityMapView :
+        ((!_.isUndefined(this.neighborhoodMapView.map)) ? this.neighborhoodMapView : false);
+      if (_.isObject(view)) {
+        // Find neighborhood layer
+        found = this.neighborhoods.find(function(n) {
+          return app.pip(lonlat, n.get('geoJSON')['geometry']['coordinates'][0]);
+        });
+        if (found) {
+          this.navigate('/neighborhood/' + found.id, { trigger: true });
+        }
       }
     }
   });

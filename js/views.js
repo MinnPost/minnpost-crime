@@ -7,11 +7,20 @@
    * Main application view
    */
   app.ViewContainer = Backbone.View.extend({
+    initialize: function() {
+      this.templates = this.templates || {};
+    },
+    
+    events: {
+      'click .location-geolocate': 'handleGeolocate',
+      'submit .location-search-form': 'handleAddressSearch'
+    },
     
     // Main template render
     render: function() {
       // Render container
       app.getTemplate('template-application-container', function(template) {
+        this.templates['template-application-container'] = template;
         $(this.el).html(template({ }));
       }, this);
       return this;
@@ -24,6 +33,15 @@
       this.options.app.cityMapView.render();
       this.options.app.neighborhoodView.render();
       this.options.app.neighborhoodMapView.render();
+      
+      // Render location search
+      app.getTemplate('template-location-search', function(template) {
+        this.templates['template-location-search'] = template;
+        $(this.el).find('.location-search-container').html(template({
+          geolocation: (_.isObject(window.navigator) && _.isObject(window.navigator.geolocation))
+        }));
+      }, this);
+      
       return this;
     },
     
@@ -113,7 +131,23 @@
         $(this).remove();
       });
       return this;
-    }
+    },
+    
+    // Handle geolocation event.  The map needs to be loaded 
+    handleGeolocate: function(e) {
+      e.preventDefault();
+      this.options.app.routeGeolocate();
+    },
+    
+    // Handle address search event
+    handleAddressSearch: function(e) {
+      e.preventDefault();
+      var val = this.$el.find('.address-search').val();
+      
+      if (val) {
+        this.options.app.routeAddress(val);
+      }
+    },
   });
 
   /**
