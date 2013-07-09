@@ -25,6 +25,14 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
+      options: {
+        curly: true,
+        //es3: true,
+        forin: true,
+        latedef: true,
+        //maxlen: 80,
+        indent: 2
+      },
       files: ['Gruntfile.js', 'js/*.js', 'data-processing/*.js']
     },
     sass: {
@@ -71,20 +79,25 @@ module.exports = function(grunt) {
         dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.js'
       },
       dist_latest: {
-        src: ['<%= concat.dist.src %>'], dest: 'dist/<%= pkg.name %>.latest.js'
+        src: ['<%= concat.dist.src %>'], 
+        dest: 'dist/<%= pkg.name %>.latest.js'
       },
       // CSS application
       dist_css: {
-        src: ['css/compiled/main.min.css'], dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.css'
+        src: ['css/compiled/main.min.css'], 
+        dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.css'
       },
       dist_css_latest: {
-        src: ['css/compiled/main.min.css'], dest: 'dist/<%= pkg.name %>.latest.css'
+        src: ['css/compiled/main.min.css'], 
+        dest: 'dist/<%= pkg.name %>.latest.css'
       },
       dist_css_ie: {
-        src: ['css/compiled/main.ie.min.css'], dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.ie.css'
+        src: ['css/compiled/main.ie.min.css'], 
+        dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.ie.css'
       },
       dist_css_latest_ie: {
-        src: ['css/compiled/main.ie.min.css'], dest: 'dist/<%= pkg.name %>.latest.ie.css'
+        src: ['css/compiled/main.ie.min.css'], 
+        dest: 'dist/<%= pkg.name %>.latest.ie.css'
       },
       // JS libs
       libs: {

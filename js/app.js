@@ -255,7 +255,7 @@
       if (_.isObject(view)) {
         // Find neighborhood layer
         found = this.neighborhoods.find(function(n) {
-          return app.pip(lonlat, n.get('geoJSON')['geometry']['coordinates'][0]);
+          return app.pip(lonlat, n.get('geoJSON').geometry.coordinates[0]);
         });
         if (found) {
           this.navigate('/neighborhood/' + found.id, { trigger: true });

@@ -147,7 +147,7 @@
       if (val) {
         this.options.app.routeAddress(val);
       }
-    },
+    }
   });
 
   /**
@@ -392,13 +392,22 @@
     bindings: {
       // Charts
       '#chart-city-last-year': { 
-        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartLast12Months' },
+        observe: ['crimesByMonth', 'currentCategory'], 
+        update: 'bindUpdateChartLast12Months'
+      },
       '#chart-city-incidents-this-year-history': { 
-        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateIncidentsThisYearHistory' },
+        observe: ['crimesByMonth', 'currentCategory'], 
+        update: 'bindUpdateIncidentsThisYearHistory'
+      },
       '#chart-city-incident-rate-per-year': { 
-        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartIncidentRatePerYear' },
+        observe: ['crimesByMonth', 'currentCategory'],
+        update: 'bindUpdateChartIncidentRatePerYear'
+      },
       // Map
-      '#city-map': { observe: 'currentCategory', update: 'bindUpdateMapVisualization' }
+      '#city-map': {
+        observe: 'currentCategory', 
+        update: 'bindUpdateMapVisualization'
+      }
     },
     
     // Main render container
@@ -439,13 +448,22 @@
       '.city-link': { observe: 'city', update: 'bindUpdateCityLink' },
       // Charts
       '#chart-neighborhood-last-year': { 
-        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartLast12Months' },
+        observe: ['crimesByMonth', 'currentCategory'], 
+        update: 'bindUpdateChartLast12Months'
+      },
       '#chart-neighborhood-incident-rate-per-year': { 
-        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateChartIncidentRatePerYear' },
+        observe: ['crimesByMonth', 'currentCategory'], 
+        update: 'bindUpdateChartIncidentRatePerYear'
+      },
       '#chart-neighborhood-incidents-this-year-history': { 
-        observe: ['crimesByMonth', 'currentCategory'], update: 'bindUpdateIncidentsThisYearHistory' },
+        observe: ['crimesByMonth', 'currentCategory'],
+        update: 'bindUpdateIncidentsThisYearHistory'
+      },
       // Map
-      '#neighborhood-map': { observe: 'currentCategory', update: 'bindUpdateMapVisualization' }
+      '#neighborhood-map': {
+        observe: 'currentCategory', 
+        update: 'bindUpdateMapVisualization'
+      }
     },
     
     bindUpdateCityLink: function($el, val, model, options) {

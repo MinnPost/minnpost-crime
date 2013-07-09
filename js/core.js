@@ -163,9 +163,11 @@ if (_.isFunction(Backbone.$.jsonp)) {
       var xi = vs[i][0], yi = vs[i][1];
       var xj = vs[j][0], yj = vs[j][1];
       
-      var intersect = ((yi > y) != (yj > y))
-        && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-      if (intersect) inside = !inside;
+      var intersect = ((yi > y) != (yj > y)) && 
+        (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+      if (intersect) {
+        inside = !inside;
+      }
     }
     
     return inside;
