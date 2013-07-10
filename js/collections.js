@@ -54,7 +54,7 @@
                 }
               });
               
-              m.set('crimesByMonth', crimesByMonth, { silent: true });
+              m.set('crimesByMonth', crimesByMonth);
             });
             
             if (_.isFunction(done)) {

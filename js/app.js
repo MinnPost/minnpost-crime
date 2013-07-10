@@ -5,8 +5,8 @@
 
   app.Application = Backbone.Router.extend({
     routes: {
-      'city/:city': 'routeCity',
-      'neighborhood/:city/:neighborhood': 'routeNeighborhood',
+      'city/:city/:category': 'routeCity',
+      'neighborhood/:city/:neighborhood/:category': 'routeNeighborhood',
       '*defaultR': 'routeDefault'
     },
     
@@ -15,10 +15,13 @@
       'crime/categories',
       'cities/cities'
     ],
+    
+    // Default category
+    defaultCategory: 'total',
   
     initialize: function(options) {
       var thisRouter = this;
-      _.bindAll(this);
+      this.category = this.defaultCategory;
       
       // Set app options
       app.options = _.extend(app.defaultOptions, options);
@@ -78,7 +81,9 @@
       // Add cities to collections
       _.each(app.data['cities/cities'], function(c, id) {
         c.id = id;
-        thisRouter.cities.add(new app.ModelCity(c));
+        thisRouter.cities.add(new app.ModelCity(c, {
+          app: thisRouter
+        }));
       });
     
       // Add neighborhoods to collection
@@ -95,7 +100,9 @@
           model.geoJSON.id = model.id;
           
           // Make id based on city as well
-          thisRouter.neighborhoods.add(new app.ModelNeighborhood(model));
+          thisRouter.neighborhoods.add(new app.ModelNeighborhood(model, {
+            app: thisRouter
+          }));
         }
       );
       
@@ -104,8 +111,12 @@
     
     // Create data structures
     createDataStructures: function() {
-      this.cities = new app.CollectionCities();
-      this.neighborhoods = new app.CollectionNeighborhoods();
+      this.cities = new app.CollectionCities([], {
+        app: this
+      });
+      this.neighborhoods = new app.CollectionNeighborhoods([], {
+        app: this
+      });
     },
     
     // Create main view
@@ -146,14 +157,24 @@
     start: function() {
       Backbone.history.start();
     },
+    
+    // Set category
+    setCategory: function(category) {
+      var oldCat = _.clone(this.category);
+      this.category = category;
+      if (oldCat != category) {
+        this.trigger('change:category');
+      }
+    },
   
     // Default route
     routeDefault: function() {
-      this.navigate('/city/minneapolis', { trigger: true, replace: true });
+      this.navigate('/city/minneapolis/total', { trigger: true, replace: true });
     },
   
     // City route
-    routeCity: function(city) {
+    routeCity: function(city, category) {
+      category = category || this.defaultCategory;
       var thisRouter = this;
       
       // Load up city
@@ -164,6 +185,7 @@
       }
       else {
         this.city = city;
+        this.setCategory(category);
         
         // Render
         this.applicationView.renderCity(this.city);
@@ -177,7 +199,8 @@
     },
   
     // Neightborhood route
-    routeNeighborhood: function(city, neighborhood) {
+    routeNeighborhood: function(city, neighborhood, category) {
+      category = category || this.defaultCategory;
       var thisRouter = this;
       
       // Load up city
@@ -188,6 +211,7 @@
       }
       else {
         this.city = city;
+        this.setCategory(category);
         
         // Load up neighborhood
         neighborhood = this.neighborhoods.get(this.city.id + '/' + neighborhood);
@@ -258,7 +282,8 @@
           return app.pip(lonlat, n.get('geoJSON').geometry.coordinates[0]);
         });
         if (found) {
-          this.navigate('/neighborhood/' + found.id, { trigger: true });
+          this.navigate('/neighborhood/' + found.id 
+            + '/' + this.category, { trigger: true });
         }
       }
     }

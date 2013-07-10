@@ -154,29 +154,106 @@
    * View that holds common binding functions
    */
   app.ViewBinding = Backbone.View.extend({
+    
+    // Default chart options
+    plotOptions: {
+      seriesColors: ['#10517F'],
+      grid: {
+        drawBorder: false,
+        background: '#fafafa',
+        gridLineColor: '#dddddd',
+        shadow: false
+      },
+      seriesDefaults: {
+        shadow: false,
+        markerOptions: {
+          size: 6,
+          shadow: false
+        },
+        rendererOptions: {
+          barPadding: 0,
+          barMargin: 2 
+        }
+      },
+      axes: {
+        xaxis: {
+          renderer: $.jqplot.CategoryAxisRenderer
+        },
+        yaxis: {
+          min: 0,
+          tickOptions: {
+            formatter: function(format, value) { return _.formatNumber(value, 0); } 
+          }
+        }
+      },
+      highlighter: {
+        show: true,
+        sizeAdjust: 7,
+        tooltipAxes: 'y'
+      }
+    },
   
     commonBindings: {
-      '.section-title': { observe: 'title', update: 'bindUpdateDocumentTitle' },
-      '.population-numbers': { observe: 'population', update: 'bindUpdatePopulation' },
-      '.current-month': { observe: 'currentMonth', update: 'bindUpdateSlide', onGet: 'bindSetFormatMonth' },
-      '.current-year': { observe: 'currentYear', update: 'bindUpdateSlide' },
+      '.section-title': {
+        observe: 'title', 
+        update: 'bindUpdateDocumentTitle'
+      },
+      '.population-numbers': {
+        observe: 'population', 
+        update: 'bindUpdatePopulation'
+      },
+      '.current-month': {
+        observe: 'currentMonth', 
+        update: 'bindUpdateSlide', 
+        onGet: 'bindSetFormatMonth'
+      },
+      '.current-year': {
+        observe: 'currentYear', 
+        update: 'bindUpdateSlide'
+      },
+      
       // Categories
-      '.category-title': { observe: 'currentCategoryTitle', update: 'bindUpdateSlide' },
-      '.category-select': { observe: 'currentCategory' },
+      '.category-title': {
+        observe: 'appCategory', 
+        update: 'bindUpdateSlide',
+        onGet: 'bindSetFormatCategoryTitle'
+      },
+      '.category-select': {
+        observe: 'appCategory'
+      },
+      '.category-stats': {
+        observe: 'crimesByMonth', 
+        update: 'bindUpdateCategoryCrime'
+      },
+      
       // Stats
-      '.stat-change-last-month .stat-value': { observe: 'statChangeLastMonth', update: 'bindUpdateCount' },
-      '.stat-change-month-last-year .stat-value': { observe: 'statChangeMonthLastYear', update: 'bindUpdateCount' },
       '.stat-incidents-month .stat-value': {
-        observe: 'statIncidentsMonth', 
-        update: 'bindUpdateCount',
-        options: { formatter: 'formatNumber', argument: 0 }
+        observe: 'stats', 
+        update: 'bindUpdateStat',
+        options: { 
+          stat: 'incidentsMonth',
+          formatter: 'formatNumber', 
+          argument: 0
+        }
       },
       '.stat-rate-month .stat-value': {
-        observe: 'statRateMonth',
-        update: 'bindUpdateCount',
-        options: { formatter: 'formatNumber' }
+        observe: 'stats', 
+        update: 'bindUpdateStat',
+        options: { 
+          stat: 'rateMonth',
+          formatter: 'formatNumber'
+        }
       },
-      '.category-stats': { observe: 'crimesByMonth', update: 'bindUpdateCategoryCrime' }
+      '.stat-change-last-month .stat-value': {
+        observe: 'stats', 
+        update: 'bindUpdateStat',
+        options: { stat: 'changeLastMonth' }
+      },
+      '.stat-change-month-last-year .stat-value': {
+        observe: 'stats', 
+        update: 'bindUpdateStat',
+        options: { stat: 'changeMonthLastYear' }
+      }
     },
     
     // Format month
@@ -184,17 +261,26 @@
       return (val) ? moment(val.toString(), 'MM').format('MMMM') : '';
     },
     
+    // Format category title
+    bindSetFormatCategoryTitle: function(val, options) {
+      return (val && _.isObject(this.model)) ? this.model.get('categories')[val].title : '';
+    },
+    
     // Animate count to value
     bindUpdateCount: function($el, val, model, options) {
       if (_.isNumber(val)) {
+      
+        // Determine number and formatting
         var number = (_.isNaN(parseInt($el.text(), 10))) ? 0 : 
           (parseInt($el.text(), 10) / 100);
-        var formatOption = (_.isObject(options.options)) ? options.options.formatter : 'formatPercentChange';
+        var formatOption = (_.isObject(options.options) && options.options.formatter) ? 
+          options.options.formatter : 'formatPercentChange';
         var formatArgument = (_.isObject(options.options)) ? options.options.argument : undefined;
         var formatter = (_.isFunction(formatOption)) ? formatOption :
           ((_.isFunction(_[formatOption])) ? _[formatOption] : function(v) { return v; } );
         var interval, intervalID, greaterThan;
         
+        // If different, start counting
         if (_.isNumber(val) && val != number) {
           greaterThan = (val > number);
           interval = (val - number) / 40;
@@ -256,15 +342,25 @@
           var stat, $statEl;
           
           // Incidents
-          stat = model.getCrimeByMonth(model.get('currentYear'), model.get('currentMonth'), c);
+          stat = model.getCrimeByMonth(c, model.get('currentYear'), model.get('currentMonth'));
           $statEl = $el.find('.category-stat-' + c + ' .stat-incidents');
           this.bindUpdateCount($statEl, stat, model, incidentOptions);
         
           // Change
-          stat = model.getMonthChange(model.get('lastMonthYear'), model.get('lastMonthMonth'), c);
+          stat = model.getMonthChange(c, model.get('lastMonthYear'), model.get('lastMonthMonth'));
           $statEl = $el.find('.category-stat-' + c + ' .stat-change');
           this.bindUpdateCount($statEl, stat, model, options);
         }, this);
+      }
+    },
+    
+    // Update a stat value
+    bindUpdateStat: function($el, val, model, options) {
+      var stat = (_.isObject(options.options)) ? options.options.stat : false;
+      var stats = model.get('stats');
+      
+      if (stat && stats && stats[model.get('appCategory')][stat]) {
+        this.bindUpdateCount($el, stats[model.get('appCategory')][stat], model, options);
       }
     },
     
@@ -279,48 +375,10 @@
       }
     },
     
-    // Default chart options
-    plotOptions: {
-      seriesColors: ['#10517F'],
-      grid: {
-        drawBorder: false,
-        background: '#fafafa',
-        gridLineColor: '#dddddd',
-        shadow: false
-      },
-      seriesDefaults: {
-        shadow: false,
-        markerOptions: {
-          size: 6,
-          shadow: false
-        },
-        rendererOptions: {
-          barPadding: 0,
-          barMargin: 2 
-        }
-      },
-      axes: {
-        xaxis: {
-          renderer: $.jqplot.CategoryAxisRenderer
-        },
-        yaxis: {
-          min: 0,
-          tickOptions: {
-            formatter: function(format, value) { return _.formatNumber(value, 0); } 
-          }
-        }
-      },
-      highlighter: {
-        show: true,
-        sizeAdjust: 7,
-        tooltipAxes: 'y'
-      }
-    },
-    
     // Chart showing last 12 months
     bindUpdateChartLast12Months: function($el, val, model, options) {
-      var data1 = model.getLastYearData(1);
-      var data2 = model.getLastYearData(2);
+      var data1 = model.getLastYearData(model.get('appCategory'), 1);
+      var data2 = model.getLastYearData(model.get('appCategory'), 2);
       var plotOptions = _.clone(this.plotOptions);
       plotOptions.seriesColors = ['#BCBCBC', '#10517F'];
 
@@ -355,7 +413,7 @@
       }
       
       mapView = mapView || 'cityMapView';
-      category = category || this.model.get('currentCategory');
+      category = this.model.getCategory();
       categoryObject = this.model.get('categories')[category];
     
       // Since we use the same neighborhood models
@@ -363,7 +421,7 @@
       // we don't want to step on toes and set
       // the category, unnecessarily
       this.options.app.neighborhoods.each(function(n) {
-        n.set('cityMapValue', n.getCrimeRateByMonth(undefined, undefined, category));
+        n.set('cityMapValue', n.getCrimeRateByMonth(category));
       });
       this.options.app[mapView].mapVisualizeNeighborhoods(
         'cityMapValue', categoryObject.title + ' incident rate');
@@ -392,20 +450,20 @@
     bindings: {
       // Charts
       '#chart-city-last-year': { 
-        observe: ['crimesByMonth', 'currentCategory'], 
+        observe: ['crimesByMonth', 'appCategory'], 
         update: 'bindUpdateChartLast12Months'
       },
       '#chart-city-incidents-this-year-history': { 
-        observe: ['crimesByMonth', 'currentCategory'], 
+        observe: ['crimesByMonth', 'appCategory'], 
         update: 'bindUpdateIncidentsThisYearHistory'
       },
       '#chart-city-incident-rate-per-year': { 
-        observe: ['crimesByMonth', 'currentCategory'],
+        observe: ['crimesByMonth', 'appCategory'],
         update: 'bindUpdateChartIncidentRatePerYear'
       },
       // Map
       '#city-map': {
-        observe: 'currentCategory', 
+        observe: 'appCategory', 
         update: 'bindUpdateMapVisualization'
       }
     },
@@ -445,7 +503,14 @@
     },
   
     bindings: {
-      '.city-link': { observe: 'city', update: 'bindUpdateCityLink' },
+      '.city-link': {
+        observe: 'city', 
+        update: 'bindUpdateCityLink'
+      },
+      '.stat-rate-month-rank .stat-value': {
+        observer: 'statRateMonthRank',
+        update: 'bindUpdateSlide'
+      },
       // Charts
       '#chart-neighborhood-last-year': { 
         observe: ['crimesByMonth', 'currentCategory'], 
@@ -479,6 +544,7 @@
       this.updateMapVisualization(val, 'neighborhoodMapView');
     },
     
+    // Initial render (probably won't have fetched data)
     render: function() {
       var data = (_.isObject(this.model)) ? this.model.toJSON() : 
         { categories: app.data['crime/categories'] };
