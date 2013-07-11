@@ -7,6 +7,7 @@
         </div>
       
         <h2 class="section-title"><%= (typeof title != 'undefined') ? title : '' %></h2>
+        <span class="document-title"></span>
       </div>
     </div>
   
@@ -23,19 +24,6 @@
       </div>
       
       <div class="column width_1/2 last">
-        <form>
-          <label for="category-select-city">Select the category of incident:</label>
-          <select class="category-select" id="category-select-city">
-            <% if (typeof categories != 'undefined') { %>
-              <% var currentCategory = currentCategory || 'total' %>
-              <% _.each(categories, function(cat, c) { %>
-                <option value="<%= c %>" <% if (currentCategory === c) { %>selected="true"<% } %>><%= cat.title %></option>
-              <% }) %>
-            <% } %>
-          </select>
-          <p>&nbsp;</p>
-        </form>
-        
         <h3><span class="category-title"></span> incidents</h3>
       
         <div class="column width_1/2">

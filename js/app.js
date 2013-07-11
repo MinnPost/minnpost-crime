@@ -5,8 +5,8 @@
 
   app.Application = Backbone.Router.extend({
     routes: {
-      'city/:city/:category': 'routeCity',
-      'neighborhood/:city/:neighborhood/:category': 'routeNeighborhood',
+      'city/:city(/:category)': 'routeCity',
+      'neighborhood/:city/:neighborhood(/:category)': 'routeNeighborhood',
       '*defaultR': 'routeDefault'
     },
     
@@ -174,7 +174,7 @@
   
     // City route
     routeCity: function(city, category) {
-      category = category || this.defaultCategory;
+      category = category || this.category || this.defaultCategory;
       var thisRouter = this;
       
       // Load up city
@@ -184,8 +184,9 @@
         this.routeDefault();
       }
       else {
-        this.city = city;
+        this.city = this.currentModel = city;
         this.setCategory(category);
+        this.navigate('/city/' + this.city.id + '/' + this.category, { replace: true });
         
         // Render
         this.applicationView.renderCity(this.city);
@@ -200,7 +201,7 @@
   
     // Neightborhood route
     routeNeighborhood: function(city, neighborhood, category) {
-      category = category || this.defaultCategory;
+      category = category || this.category || this.defaultCategory;
       var thisRouter = this;
       
       // Load up city
@@ -218,7 +219,8 @@
         if (!neighborhood) {
           this.routeDefault();
         }
-        this.neighborhood = neighborhood;
+        this.neighborhood = this.currentModel = neighborhood;
+        this.navigate('/neighborhood/' + this.neighborhood.id + '/' + this.category, { replace: true });
         
         // Render and get both the city and the neighborhood data.
         // The city data will be used for some comparisons

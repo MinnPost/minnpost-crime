@@ -10,6 +10,7 @@
         <a href="#city/<%= (typeof city != 'undefined') ? city : '' %>" class="city-link">
           <%= (typeof city != 'undefined') ? city : '' %>
         </a>
+        <span class="document-title"></span>
       </div>
     </div>
   
@@ -26,19 +27,6 @@
       </div>
       
       <div class="column width_1/2 last">
-        <form>
-          <label for="category-select-neighborhood">Select the category of incident:</label>
-          <select class="category-select" id="category-select-neighborhood">
-            <% if (typeof categories != 'undefined') { %>
-              <% var currentCategory = currentCategory || 'total' %>
-              <% _.each(categories, function(cat, c) { %>
-                <option value="<%= c %>" <% if (currentCategory === c) { %>selected="true"<% } %>><%= cat.title %></option>
-              <% }) %>
-            <% } %>
-          </select>
-          <p>&nbsp;</p>
-        </form>
-          
         <h3><span class="category-title"></span> incidents</h3>
       
         <div class="column width_1/2">

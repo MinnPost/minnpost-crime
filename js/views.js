@@ -13,7 +13,8 @@
     
     events: {
       'click .location-geolocate': 'handleGeolocate',
-      'submit .location-search-form': 'handleAddressSearch'
+      'submit .location-search-form': 'handleAddressSearch',
+      'change #category-select': 'handleCategoryChange'
     },
     
     // Main template render
@@ -39,6 +40,15 @@
         this.templates['template-location-search'] = template;
         $(this.el).find('.location-search-container').html(template({
           geolocation: (_.isObject(window.navigator) && _.isObject(window.navigator.geolocation))
+        }));
+      }, this);
+      
+      // Render category select
+      app.getTemplate('template-category-select', function(template) {
+        this.templates['template-category-select'] = template;
+        $(this.el).find('.category-select-container').html(template({
+          categories: app.data['crime/categories'],
+          currentCategory: this.options.app.category
         }));
       }, this);
       
@@ -70,6 +80,8 @@
       
       // If the model has changed or if the model had not been stuck
       if (!_.isObject(this.options.app.cityView._modelBindings) || stickit) {
+        this.options.app.neighborhoodView.unstickit();
+        this.options.app.cityView.unstickit();
         this.options.app.cityView.stickit();
       }
       
@@ -102,7 +114,8 @@
       this.options.app.cityView.$el.slideUp();
       
       // If the model has changed or if the model had not been stuck
-      if (!_.isObject(this.options.app.neighborhoodView._modelBindings) || stickit) {
+      if (!_.isObject(this.options.app.neighborhoodView._modelBindings) || stickit) 
+        this.options.app.neighborhoodView.unstickit();
         this.options.app.neighborhoodView.stickit();
       }
       
@@ -131,6 +144,12 @@
         $(this).remove();
       });
       return this;
+    },
+    
+    // Handle if category select changes
+    handleCategoryChange: function(e) {
+      e.preventDefault();
+      this.options.app.setCategory($(e.currentTarget).val());
     },
     
     // Handle geolocation event.  The map needs to be loaded 
@@ -196,6 +215,10 @@
     commonBindings: {
       '.section-title': {
         observe: 'title', 
+        update: 'bindUpdateFade'
+      },
+      '.document-title': {
+        observe: ['title', 'appCategory'], 
         update: 'bindUpdateDocumentTitle'
       },
       '.population-numbers': {
@@ -228,7 +251,7 @@
       
       // Stats
       '.stat-incidents-month .stat-value': {
-        observe: 'stats', 
+        observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
         options: { 
           stat: 'incidentsMonth',
@@ -237,7 +260,7 @@
         }
       },
       '.stat-rate-month .stat-value': {
-        observe: 'stats', 
+        observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
         options: { 
           stat: 'rateMonth',
@@ -245,12 +268,12 @@
         }
       },
       '.stat-change-last-month .stat-value': {
-        observe: 'stats', 
+        observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
         options: { stat: 'changeLastMonth' }
       },
       '.stat-change-month-last-year .stat-value': {
-        observe: 'stats', 
+        observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
         options: { stat: 'changeMonthLastYear' }
       }
@@ -326,10 +349,11 @@
       }
     },
     
-    // Update document title as well
+    // Update document title
     bindUpdateDocumentTitle: function($el, val, model, options) {
-      this.bindUpdateFade($el, val, model, options);
-      document.title = app.options.originalTitle + ' | ' + val;
+      var cat = model.get('categories')[model.get('appCategory')].title;
+      document.title = app.options.originalTitle + ' | ' + 
+        model.get('title') + ' | ' + cat;
     },
     
     // Update crime categories based on last month
@@ -359,7 +383,7 @@
       var stat = (_.isObject(options.options)) ? options.options.stat : false;
       var stats = model.get('stats');
       
-      if (stat && stats && stats[model.get('appCategory')][stat]) {
+      if (stat && stats && _.isNumber(stats[model.get('appCategory')][stat])) {
         this.bindUpdateCount($el, stats[model.get('appCategory')][stat], model, options);
       }
     },
@@ -380,30 +404,23 @@
       var data1 = model.getLastYearData(model.get('appCategory'), 1);
       var data2 = model.getLastYearData(model.get('appCategory'), 2);
       var plotOptions = _.clone(this.plotOptions);
+      var plot;
+      
       plotOptions.seriesColors = ['#BCBCBC', '#10517F'];
-
-      if (_.isArray(data1) && data1.length > 0 && _.isArray(data2) && data2.length > 0) {
-        $.jqplot($el.attr('id'), [data2, data1], plotOptions).redraw();
-      }
+      this.drawGraph($el.attr('id'), [data2, data1], plotOptions);
     },
     
     // Chart to show how many incidents this year with history
     bindUpdateIncidentsThisYearHistory: function($el, val, model, options) {
       var data = model.getIncidentsThisYearHistory();
-      
-      if (_.isArray(data) && data.length > 0) {
-        $.jqplot($el.attr('id'), [data], this.plotOptions).redraw();
-      }
+      this.drawGraph($el.attr('id'), [data], this.plotOptions);
     },
     
     bindUpdateChartIncidentRatePerYear: function($el, val, model, options) {
       var data = model.getIncidentRatesPerYear();
       var plotOptions = _.clone(this.plotOptions);
       plotOptions.axes.yaxis.tickOptions = {};
-      
-      if (_.isArray(data) && data.length > 0) {
-        $.jqplot($el.attr('id'), [data], plotOptions).redraw();
-      }
+      this.drawGraph($el.attr('id'), [data], plotOptions);
     },
     
     // Update the coloring of the map based on category
@@ -427,6 +444,28 @@
         'cityMapValue', categoryObject.title + ' incident rate');
       
       return this;
+    },
+    
+    // Abstract draw graph
+    drawGraph: function(id, data, options) {
+      var dataPresent = true;
+      var plot;
+      
+      // Check data
+      _.each(data, function(dataSet) {
+        if (!_.isArray(dataSet) || dataSet.length <= 0) {
+          dataPresent = false;
+        }
+      });
+      
+      // If data present element exists
+      if (dataPresent && $('#' + id).length > 0) {
+        plot = $.jqplot(id, data, options);
+        // Hack to only redraw if worth it
+        if (plot._drawCount) {
+          plot.redraw();
+        }
+      }
     }
   });
 
@@ -508,25 +547,30 @@
         update: 'bindUpdateCityLink'
       },
       '.stat-rate-month-rank .stat-value': {
-        observer: 'statRateMonthRank',
-        update: 'bindUpdateSlide'
+        observe: ['stats', 'appCategory'], 
+        update: 'bindUpdateStat',
+        options: { 
+          stat: 'rateMonthRank',
+          formatter: 'formatNumber', 
+          argument: 0
+        }
       },
       // Charts
       '#chart-neighborhood-last-year': { 
-        observe: ['crimesByMonth', 'currentCategory'], 
+        observe: ['crimesByMonth', 'appCategory'], 
         update: 'bindUpdateChartLast12Months'
       },
       '#chart-neighborhood-incident-rate-per-year': { 
-        observe: ['crimesByMonth', 'currentCategory'], 
+        observe: ['crimesByMonth', 'appCategory'], 
         update: 'bindUpdateChartIncidentRatePerYear'
       },
       '#chart-neighborhood-incidents-this-year-history': { 
-        observe: ['crimesByMonth', 'currentCategory'],
+        observe: ['crimesByMonth', 'appCategory'],
         update: 'bindUpdateIncidentsThisYearHistory'
       },
       // Map
       '#neighborhood-map': {
-        observe: 'currentCategory', 
+        observe: 'appCategory', 
         update: 'bindUpdateMapVisualization'
       }
     },

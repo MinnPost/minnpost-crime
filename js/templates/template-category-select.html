@@ -1,0 +1,12 @@
+
+<form class="category-select-form">
+  <label for="category-select">Select the category of incident:</label>
+  <select id="category-select">
+    <% if (typeof categories != 'undefined') { %>
+      <% var currentCategory = currentCategory || 'total' %>
+      <% _.each(categories, function(cat, c) { %>
+        <option value="<%= c %>" <% if (currentCategory === c) { %>selected="true"<% } %>><%= cat.title %></option>
+      <% }) %>
+    <% } %>
+  </select>
+</form>
