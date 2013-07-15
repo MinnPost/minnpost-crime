@@ -162,9 +162,11 @@
     setCategory: function(category) {
       var oldCat = _.clone(this.category);
       this.category = category;
+      
       if (oldCat != category) {
         this.trigger('change:category');
       }
+      this.applicationView.updateCategory(category);
     },
   
     // Default route
@@ -284,8 +286,8 @@
           return app.pip(lonlat, n.get('geoJSON').geometry.coordinates[0]);
         });
         if (found) {
-          this.navigate('/neighborhood/' + found.id 
-            + '/' + this.category, { trigger: true });
+          this.navigate('/neighborhood/' + found.id + 
+            '/' + this.category, { trigger: true });
         }
       }
     }

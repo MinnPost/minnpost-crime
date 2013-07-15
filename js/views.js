@@ -58,12 +58,6 @@
     // Render City view
     renderCity: function(cityModel) {
       var thisView = this;
-      var stickit = false;
-      
-      if (!_.isUndefined(this.options.app.cityView.model) && 
-        this.options.app.cityView.model.cid != cityModel.cid) {
-        stickit = true;
-      }
       
       // Render map
       this.options.app.cityMapView.model = cityModel;
@@ -78,12 +72,8 @@
       });
       this.options.app.neighborhoodView.$el.slideUp();
       
-      // If the model has changed or if the model had not been stuck
-      if (!_.isObject(this.options.app.cityView._modelBindings) || stickit) {
-        this.options.app.neighborhoodView.unstickit();
-        this.options.app.cityView.unstickit();
-        this.options.app.cityView.stickit();
-      }
+      this.options.app.cityView.unstickit();
+      this.options.app.cityView.stickit();
       
       return this;
     },
@@ -91,19 +81,12 @@
     // Render Neighborhood view
     renderNeighborhood: function(neighborhoodModel, cityModel) {
       var thisView = this;
-      var stickit = false;
-      
-      this.options.app.cityView.model = cityModel;
-      if (!_.isUndefined(this.options.app.neighborhoodView.model) && 
-        this.options.app.neighborhoodView.model.cid != neighborhoodModel.cid) {
-        stickit = true;
-      }
       
       // Render/update mao
       thisView.options.app.neighborhoodMapView.model = neighborhoodModel;
       thisView.options.app.neighborhoodMapView.renderMap(false);
       
-      // Handle view
+      // Set model
       this.options.app.neighborhoodView.model = neighborhoodModel;
       
       // Animate
@@ -113,11 +96,8 @@
       });
       this.options.app.cityView.$el.slideUp();
       
-      // If the model has changed or if the model had not been stuck
-      if (!_.isObject(this.options.app.neighborhoodView._modelBindings) || stickit) 
-        this.options.app.neighborhoodView.unstickit();
-        this.options.app.neighborhoodView.stickit();
-      }
+      this.options.app.neighborhoodView.unstickit();
+      this.options.app.neighborhoodView.stickit();
       
       return this;
     },
@@ -146,10 +126,24 @@
       return this;
     },
     
+    // Update category change.  This is needed as we don't have
+    // a two way connection between the select and the category
+    // value
+    updateCategory: function(category) {
+      this.$el.find('#category-select').val(category);
+    },
+    
     // Handle if category select changes
     handleCategoryChange: function(e) {
       e.preventDefault();
-      this.options.app.setCategory($(e.currentTarget).val());
+      var category = $(e.currentTarget).val();
+      var prefix = (Backbone.history) ? Backbone.history.fragment : false;
+      var model = this.options.app.currentModel;
+      
+      if (category && prefix && model) {
+        this.options.app.navigate(prefix.split('/')[0] + '/' + 
+          model.id + '/' + category, { trigger: true });
+      }
     },
     
     // Handle geolocation event.  The map needs to be loaded 
@@ -240,9 +234,6 @@
         observe: 'appCategory', 
         update: 'bindUpdateSlide',
         onGet: 'bindSetFormatCategoryTitle'
-      },
-      '.category-select': {
-        observe: 'appCategory'
       },
       '.category-stats': {
         observe: 'crimesByMonth', 
