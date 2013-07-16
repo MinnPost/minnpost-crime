@@ -76,6 +76,22 @@
   font-size: .85em;
   color: #787878;
 }
+.minnpost-application-container .location-search-container {
+  width: 50%;
+  text-align: center;
+  margin: 0 auto 1.5em auto;
+}
+.minnpost-application-container .location-search-container a {
+  font-weight: bold;
+}
+.minnpost-application-container .category-select-container {
+  width: 50%;
+  text-align: center;
+  margin: 0 auto 1.5em auto;
+}
+.minnpost-application-container .category-select-container label {
+  font-family: inherit;
+}
 .minnpost-application-container #neighborhood-map,
 .minnpost-application-container #city-map {
   height: 350px;
