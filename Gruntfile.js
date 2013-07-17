@@ -203,6 +203,13 @@ module.exports = function(grunt) {
         ]
       }
     },
+    connect: {
+      server: {
+        options: {
+          port: 8899
+        }
+      }
+    },
     watch: {
       files: ['<%= jshint.files %>', 'css/*.scss'],
       tasks: 'lint-watch'
@@ -218,6 +225,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jst');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-s3');
   
 
@@ -242,8 +250,9 @@ module.exports = function(grunt) {
   // Default build task
   grunt.registerTask('default', ['jshint', 'sass', 'clean', 'data_embed', 'jst', 'concat', 'uglify', 'copy']);
 
-  // Watch dask
+  // Watch tasks
   grunt.registerTask('lint-watch', ['jshint', 'sass:dev']);
+  grunt.registerTask('server-watch', ['connect', 'watch']);
   
   // Deploy tasks
   grunt.registerTask('mp-deploy', ['s3']);

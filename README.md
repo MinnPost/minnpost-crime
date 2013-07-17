@@ -10,7 +10,6 @@ An application that explores crime in Minnesota.
 1. Install [NodeJS](http://nodejs.org/).  On Mac with Homebrew: `brew install node`
 1. Install [Grunt](http://gruntjs.com/): `npm install -g grunt-cli`
 1. Install [Bower](http://bower.io/): `npm install -g bower`
-1. Install [http-server](https://github.com/nodeapps/http-server): `npm install -g http-server`
 
 ### Get the code
 
@@ -24,9 +23,8 @@ An application that explores crime in Minnesota.
 
 ### Run
 
-1. Run the simple http server: `http-server ./`
-1. Go to `[localhost:8080/index.html](http://localhost:8080/index.html)` in your browser.
-1. This application uses SASS so utilizing `grunt watch` to compile SASS on the fly is recommended.  You may need to open up a new Terminal to do this.
+1. Us grunt to watch files for changes and server the files with: `grunt server-watch`
+1. Go to `[localhost:8080/index.html](http://localhost:8899/index.html)` in your browser.
 
 ## Build
 
