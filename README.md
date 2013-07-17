@@ -9,7 +9,22 @@ An application that explores crime in Minnesota.
 
 ## Development
 
-You should utilize the `index-src.html` file to do development.  This application uses SASS so utilizing `grunt watch` to compile SASS on the fly is recommended.
+### Perquisites
+
+1. Install [Git](http://git-scm.com/).  On Mac with Homebrew: `brew install git`
+1. Install [NodeJS](http://nodejs.org/).  On Mac with Homebrew: `brew install node`
+1. Install [Grunt](http://gruntjs.com/): `npm install -g grunt-cli`
+1. Install [Bower](http://bower.io/): `npm install -g bower`
+
+### Install libraries
+
+1. `npm install`
+1. `bower install`
+
+### Run
+
+1. Go to `index.html` in your browser.
+1. This application uses SASS so utilizing `grunt watch` to compile SASS on the fly is recommended.
 
 ## Build
 
