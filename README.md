@@ -24,7 +24,7 @@ An application that explores crime in Minnesota.
 ### Run
 
 1. Us grunt to watch files for changes and server the files with: `grunt server-watch`
-1. Go to `[localhost:8080/index.html](http://localhost:8899/index.html)` in your browser.
+1. Go to [localhost:8080/index.html](http://localhost:8899/index.html) in your browser.
 
 ## Build
 
