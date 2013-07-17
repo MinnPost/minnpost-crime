@@ -2,12 +2,7 @@
 
 An application that explores crime in Minnesota.
 
-## Install
-
-1. For data processing and deploying: `npm install`
-1. To view application: `bower install`
-
-## Development
+## Development and Install
 
 ### Perquisites
 
@@ -17,7 +12,7 @@ An application that explores crime in Minnesota.
 1. Install [Bower](http://bower.io/): `npm install -g bower`
 1. Install [http-server](https://github.com/nodeapps/http-server): `npm install -g http-server`
 
-## Get the code
+### Get the code
 
 1. Clone the repository with something like: `git clone git@github.com:MinnPost/minnpost-crime.git`
 1. Go into the code directory: `cd minnpost-crime`
