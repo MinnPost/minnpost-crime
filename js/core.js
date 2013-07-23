@@ -149,6 +149,25 @@ if (_.isFunction(Backbone.$.jsonp)) {
   };
   
   /**
+   * Get remote data.  Provides a wrapper around
+   * getting a remote data source, to use a proxy
+   * if needed, such as using a cache.
+   */
+  app.getRemoteData = function(options) {
+    if (app.options.remoteProxy) {
+      options.url = options.url + '&callback=proxied_jqjsp';
+      options.url = app.options.remoteProxy + encodeURIComponent(options.url);
+      options.callback = 'proxied_jqjsp';
+      options.cache = true;
+    }
+    else {
+      options.url = options.url + '&callback=?';
+    }
+    
+    return $.jsonp(options);
+  };
+  
+  /**
    * Point in polygon search from
    * https://github.com/substack/point-in-polygon
    */

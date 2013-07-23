@@ -61,10 +61,10 @@
     // be used throught the application
     fetchRecentMonth: function(done, context) {
       context = context || this;
-      var dataCrimeQueryBase = 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]';
+      var dataCrimeQueryBase = 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&query=[[[QUERY]]]';
 
       var query = "SELECT month, year FROM swdata ORDER BY year || '-' || month DESC LIMIT 1";
-      var defer = $.jsonp({ url: dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
+      var defer = app.getRemoteData({ url: dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
       
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {

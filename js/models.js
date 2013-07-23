@@ -7,7 +7,7 @@
    * Basic model for other crime models
    */
   app.ModelCrimeArea = Backbone.Model.extend({
-    dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]',
+    dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&query=[[[QUERY]]]',
     // See scraper for why this is needed
     dataCrimeQueryWhere: "notes NOT LIKE 'Added to%'",
     
@@ -45,9 +45,10 @@
     },
     
     // Stats shared across models
+    statsSetGlobal: false,
     setStats: function() {
       var thisModel = this;
-      var data = this.get('crimesByMonth');
+      var data = _.clone(this.get('crimesByMonth'));
       var stats;
       
       // There's no need to do this more than once
@@ -274,7 +275,9 @@
   
     // Set stats values
     setStats: function() {
+      var thisModel = this;
       app.ModelCity.__super__.setStats.apply(this, arguments);
+      
       return this;
     },
   
@@ -320,7 +323,7 @@
       query.push(" FROM swdata WHERE " + this.dataCrimeQueryWhere);
       query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
       
-      var defer = $.jsonp({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = app.getRemoteData({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
@@ -347,7 +350,7 @@
       query.push(" OR (year = " + (year - years) + " AND month >= " + month + "))");
       query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
       
-      var defer = $.jsonp({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = app.getRemoteData({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
@@ -410,7 +413,7 @@
       query.push(" AND neighborhood_key = '" + this.get('key') + "' ");
       query.push(" ORDER BY year DESC, month DESC");
       
-      var defer = $.jsonp({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = app.getRemoteData({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {

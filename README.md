@@ -10,6 +10,7 @@ An application that explores crime in Minnesota.
 1. Install [NodeJS](http://nodejs.org/).  On Mac with Homebrew: `brew install node`
 1. Install [Grunt](http://gruntjs.com/): `npm install -g grunt-cli`
 1. Install [Bower](http://bower.io/): `npm install -g bower`
+1. Install [Sass](http://sass-lang.com/): `gem install sass`
 
 ### Get the code
 

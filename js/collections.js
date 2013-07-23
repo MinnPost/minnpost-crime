@@ -40,13 +40,13 @@
         query.push(" OR (year = " + model.get('lastMonthYear') + "");
         query.push(" AND month = " + model.get('lastMonthMonth') + "))");
         query.push(" ORDER BY year DESC, month DESC");
-        defer = $.jsonp({ url: model.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+        defer = app.getRemoteData({ url: model.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
     
         if (_.isFunction(done)) {
           $.when(defer).done(function(data) {
             // Put data into the models
             thisCollection.each(function(m) {
-              var crimesByMonth = m.get('crimesByMonth') || {};
+              var crimesByMonth = _.clone(m.get('crimesByMonth')) || {};
               _.each(data, function(d) {
                 if (d.neighborhood_key === m.get('key')) {
                   crimesByMonth[d.year] = crimesByMonth[d.year] || {};
@@ -56,6 +56,12 @@
               
               m.set('crimesByMonth', crimesByMonth);
             });
+            // Some stats are relative to the whole
+            /*
+            thisCollection.each(function(m) {
+              m.setStats();
+            });
+            */
             
             if (_.isFunction(done)) {
               done.apply(context, [data[0]]);
