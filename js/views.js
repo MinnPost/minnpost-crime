@@ -407,11 +407,23 @@
       this.drawGraph($el.attr('id'), [data], this.plotOptions);
     },
     
+    // Show incident rate per full year
     bindUpdateChartIncidentRatePerYear: function($el, val, model, options) {
       var data = model.getIncidentRatesPerYear();
       var plotOptions = _.clone(this.plotOptions);
       plotOptions.axes.yaxis.tickOptions = {};
       this.drawGraph($el.attr('id'), [data], plotOptions);
+    },
+    
+    // Show incident rate for 12 month intervals
+    bindUpdateChart12MonthHistory: function($el, val, model, options) {
+      var data = model.get12MonthIntervalsPerYear();
+      var plotOptions = _.clone(this.plotOptions);
+      plotOptions.axes.yaxis.tickOptions = {};
+      
+      if (data && _.size(data) > 0) {
+        this.drawGraph($el.attr('id'), [data], plotOptions);
+      }
     },
     
     // Update the coloring of the map based on category
@@ -547,6 +559,10 @@
         }
       },
       // Charts
+      '#chart-neighborhood-incidents-12-month-history': { 
+        observe: ['crimesByMonth', 'appCategory'], 
+        update: 'bindUpdateChart12MonthHistory'
+      },
       '#chart-neighborhood-last-year': { 
         observe: ['crimesByMonth', 'appCategory'], 
         update: 'bindUpdateChartLast12Months'

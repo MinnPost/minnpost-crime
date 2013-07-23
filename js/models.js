@@ -261,6 +261,57 @@
       });
       
       return data;
+    },
+    
+    // Get dataset of 12 month intervals per years
+    get12MonthIntervalsPerYear: function(category) {
+      var thisModel = this;
+      var data = [];
+      var monthData = _.clone(this.get('crimesByMonth'));
+      var cYear = this.get('currentYear');
+      var cMonth = this.get('currentMonth');
+      var cDate = moment(cYear + '-' + cMonth + '-01', 'YYYY-MM-DD');
+      var months = 0;
+      var intervals = 0;
+      var i, m, iS, iE, rate, date, count, x, dS, dE;
+      
+      // Find number of months in data and get intervals
+      _.each(this.get('crimesByMonth'), function(year, y) {
+        months += _.size(year);
+      });
+      intervals = Math.floor(months / 12) - 1;
+      
+      // Make sure there are intervals
+      if (intervals <= 0) {
+        return data;
+      }
+      
+      // Go through intervals.  moment.month is 0 based!!!
+      for (i = intervals; i >= 1; i--) {
+        iS = (i * 12) - 1;
+        iE = (i * 12) - 12;
+        rate = 0;
+        count = 0;
+        
+        // Go through months to get an average
+        for (m = iS; m >= iE; m--) {
+          date = moment(cDate);
+          date.subtract('months', m);
+          
+          // Check if data is there, as there are some holes here and there
+          if (_.isObject(monthData[date.year()]) && !_.isUndefined(monthData[date.year()][date.month() + 1])) {
+            rate += this.getCrimeRateByMonth(category, date.year(), date.month() + 1);
+            count++;
+          }
+        }
+        rate = rate / count;
+        dS = moment(cDate).subtract('months', iS);
+        dE = moment(cDate).subtract('months', iE);
+        x = '' + dS.year() + '/' + (dS.month() + 1) + '-' + dE.year() + '/' + (dE.month() + 1);
+        data.push([x, rate]);
+      }
+      
+      return data;
     }
   });
 
