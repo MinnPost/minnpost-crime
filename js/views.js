@@ -729,7 +729,7 @@
       this.visualLabel = label || 'Incident rate';
       this.visualFormatter = formatter || _.formatNumber;
       var legend = [];
-      var data, colorScale;
+      var data, colorScale, currentValue;
       
       if (_.isUndefined(this.featureGroup)) {
         return;
@@ -747,11 +747,18 @@
         .domain(data, 9, 'k-means')
         .mode('lab');
       
-      // Create legend data
-      _.each(chroma.limits(data, 'k-means', 9), function(l) {
-        legend.push({ value: l, color: colorScale(l).hex() });
+      // Create legend data, mark the current part we are looking at
+      currentValue = colorScale(this.model.get(this.visualProperty));
+      _.each(chroma.limits(data, 'k-means', 9), function(l, i) {
+        legend.push({
+          value: l,
+          color: colorScale(l).hex()
+        });
       });
-      this.getLegendEl().html(this.templates['template-map-legend']({ legend: legend }));
+      this.getLegendEl().html(this.templates['template-map-legend']({
+        legend: legend,
+        display: currentValue.hex()
+      }));
       
       // Color each layer
       this.collection.each(function(m) {

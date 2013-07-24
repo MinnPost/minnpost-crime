@@ -1,6 +1,6 @@
 <div class="map-legend-inner clearfix">
   <% _.each(legend, function(l, i) { %>
-    <div class="legend-item" style="width: <%= (100 / _.size(legend)) %>%;">
+    <div class="legend-item<% if (l.color === display) { %> active-display<% } %>" style="width: <%= (100 / _.size(legend)) %>%;">
       <div class="legend-color" style="background-color: <%= l.color %>">
       </div>
       
