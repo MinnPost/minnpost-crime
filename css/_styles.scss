@@ -23,17 +23,26 @@
   }
   
   .messaging-container {
-    min-height: 3em;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999999;
   }
   
   .loading {
-    width: 100%;
+    width: 20%;
+    margin: 0 auto;
     text-align: center;
-    padding: .5em 2em;
-    color: #ABABAB;
+    padding: .5em 1em 1.5em 1em;
+    color: #BCBCBC;
     vertical-align: middle;
-    height: 100%;
-    line-height: 100%;
+    height: 1em;
+    line-height: 1.5em;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #BCBCBC;
+    border-right: 1px solid #BCBCBC;
+    border-left: 1px solid #BCBCBC;
 
     span {
       padding: 10px 5px 10px 40px;
