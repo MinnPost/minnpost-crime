@@ -111,11 +111,7 @@ module.exports = function(grunt) {
           'components/moment/min/moment.min.js',
           'components/leaflet/dist/leaflet.js', 
           'components/chroma-js/chroma.min.js',
-          'components/jqplot/excanvas.min.js', 
-          'components/jqplot/jquery.jqplot.min.js', 
-          'components/jqplot/plugins/jqplot.barRenderer.min.js', 
-          'components/jqplot/plugins/jqplot.highlighter.min.js', 
-          'components/jqplot/plugins/jqplot.categoryAxisRenderer.min.js'
+          'components/highcharts/highcharts.js'
         ],
         dest: 'dist/<%= pkg.name %>.libs.js',
         options: {
@@ -126,8 +122,7 @@ module.exports = function(grunt) {
       libs_css: {
         src: [
           'components/flurid/dist/flurid.min.css', 
-          'components/leaflet/dist/leaflet.css',
-          'components/jqplot/jquery.jqplot.min.css'
+          'components/leaflet/dist/leaflet.css'
         ], 
         dest: 'dist/<%= pkg.name %>.libs.css'
       },
