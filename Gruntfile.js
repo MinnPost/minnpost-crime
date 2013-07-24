@@ -124,7 +124,11 @@ module.exports = function(grunt) {
       },
       // CSS libs
       libs_css: {
-        src: ['components/flurid/dist/flurid.min.css', 'components/leaflet/dist/leaflet.css'], 
+        src: [
+          'components/flurid/dist/flurid.min.css', 
+          'components/leaflet/dist/leaflet.css',
+          'components/jqplot/jquery.jqplot.min.css'
+        ], 
         dest: 'dist/<%= pkg.name %>.libs.css'
       },
       libs_css_ie: {
