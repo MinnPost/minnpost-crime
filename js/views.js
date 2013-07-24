@@ -395,7 +395,6 @@
       var data1 = model.getLastYearData(model.get('appCategory'), 1);
       var data2 = model.getLastYearData(model.get('appCategory'), 2);
       var plotOptions = _.clone(this.plotOptions);
-      var plot;
       
       plotOptions.seriesColors = ['#BCBCBC', '#10517F'];
       this.drawGraph($el.attr('id'), [data2, data1], plotOptions);
@@ -417,12 +416,20 @@
     
     // Show incident rate for 12 month intervals
     bindUpdateChart12MonthHistory: function($el, val, model, options) {
-      var data = model.get12MonthIntervalsPerYear();
+      var data1 = model.get12MonthIntervalsPerYear();
+      var plot = [data1];
+      var city;
       var plotOptions = _.clone(this.plotOptions);
-      plotOptions.axes.yaxis.tickOptions = {};
       
-      if (data && _.size(data) > 0) {
-        this.drawGraph($el.attr('id'), [data], plotOptions);
+      // Get city line as well
+      if (model.get('city')) {
+        city = model.options.app.cities.get(model.get('city'));
+        plot = [city.get12MonthIntervalsPerYear(), data1];
+        plotOptions.seriesColors = ['#BCBCBC', '#10517F'];
+      }
+      
+      if (data1 && _.size(data1) > 0) {
+        this.drawGraph($el.attr('id'), plot, plotOptions);
       }
     },
     

@@ -279,7 +279,7 @@
       _.each(this.get('crimesByMonth'), function(year, y) {
         months += _.size(year);
       });
-      intervals = Math.floor(months / 12) - 1;
+      intervals = Math.floor(months / 12);
       
       // Make sure there are intervals
       if (intervals <= 0) {
