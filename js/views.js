@@ -560,13 +560,12 @@
         observe: 'city', 
         update: 'bindUpdateCityLink'
       },
-      '.stat-rate-month-rank .stat-value': {
+      '.stat-rate-city .stat-value': {
         observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
         options: { 
-          stat: 'rateMonthRank',
-          formatter: 'formatNumber', 
-          argument: 0
+          stat: 'rateCity',
+          formatter: 'formatNumber'
         }
       },
       // Charts

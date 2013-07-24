@@ -49,7 +49,7 @@
     setStats: function() {
       var thisModel = this;
       var data = _.clone(this.get('crimesByMonth'));
-      var stats;
+      var stats, city;
       
       // There's no need to do this more than once
       if (this.get('statsSetGlobal') || !_.isObject(data)) {
@@ -59,6 +59,7 @@
       // Put stats into object with each category
       stats = _.clone(this.get('stats'));
       stats = stats || {};
+      city = (this.get('city')) ? this.options.app.cities.get(this.get('city')) : null;
       
       // Make stats for each category.
       _.each(this.get('categories'), function(cat, c) {
@@ -70,6 +71,10 @@
           thisModel.get('lastMonthYear'), thisModel.get('lastMonthMonth'));
         stats[c].changeMonthLastYear = thisModel.getMonthChange(c, 
           thisModel.get('currentYear') - 1, thisModel.get('currentMonth'));
+        
+        if (city) {
+          stats[c].rateCity = city.getCrimeRateByMonth(c);
+        }
       });
       
       this.set('stats', stats);
@@ -326,9 +331,7 @@
   
     // Set stats values
     setStats: function() {
-      var thisModel = this;
       app.ModelCity.__super__.setStats.apply(this, arguments);
-      
       return this;
     },
   
@@ -422,6 +425,7 @@
     },
   
     // Set stats values
+    statsSet: false,
     setStats: function() {
       app.ModelCity.__super__.setStats.apply(this, arguments);
       return this;

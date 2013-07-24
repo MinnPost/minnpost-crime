@@ -153,6 +153,21 @@
     font-family: $sans-serif-font;
   }
   
+  .stat-rate-month,
+  .stat-rate-city {
+    display: inline;
+  }
+  
+  .stat-rate-city {
+    color: #BCBCBC;
+    font-size: 2em;
+    margin-left: 1em;
+    
+    .stat-value {
+      font-size: 1em;
+    }
+  }
+  
   .category-stats .category-stat {
     text-align: center;
     

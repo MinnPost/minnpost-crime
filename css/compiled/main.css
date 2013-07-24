@@ -149,6 +149,18 @@
   font-size: 3em;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
+.minnpost-application-container .stat-rate-month,
+.minnpost-application-container .stat-rate-city {
+  display: inline;
+}
+.minnpost-application-container .stat-rate-city {
+  color: #BCBCBC;
+  font-size: 2em;
+  margin-left: 1em;
+}
+.minnpost-application-container .stat-rate-city .stat-value {
+  font-size: 1em;
+}
 .minnpost-application-container .category-stats .category-stat {
   text-align: center;
 }
