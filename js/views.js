@@ -206,7 +206,7 @@
                 enabled: true
               }
             }
-          },
+          }
         }
       },
       xAxis: {
