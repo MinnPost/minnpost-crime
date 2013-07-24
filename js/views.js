@@ -498,6 +498,10 @@
   
     bindings: {
       // Charts
+      '#chart-city-incidents-12-month-history': { 
+        observe: ['crimesByMonth', 'appCategory'], 
+        update: 'bindUpdateChart12MonthHistory'
+      },
       '#chart-city-last-year': { 
         observe: ['crimesByMonth', 'appCategory'], 
         update: 'bindUpdateChartLast12Months'
