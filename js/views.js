@@ -169,40 +169,72 @@
   app.ViewBinding = Backbone.View.extend({
     
     // Default chart options
-    plotOptions: {
-      seriesColors: ['#10517F'],
-      grid: {
-        drawBorder: false,
-        background: '#fafafa',
-        gridLineColor: '#dddddd',
-        shadow: false
-      },
-      seriesDefaults: {
-        shadow: false,
-        markerOptions: {
-          size: 6,
-          shadow: false
-        },
-        rendererOptions: {
-          barPadding: 0,
-          barMargin: 2 
+    chartOptions: {
+      chart: {
+        type: 'line',
+        style: {
+          fontFamily: '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',
+          color: '#BCBCBC'
         }
       },
-      axes: {
-        xaxis: {
-          renderer: $.jqplot.CategoryAxisRenderer
-        },
-        yaxis: {
-          min: 0,
-          tickOptions: {
-            formatter: function(format, value) { return _.formatNumber(value, 0); } 
+      credits: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+        text: ''
+      },
+      legend: {
+        borderWidth: 0
+      },
+      plotOptions: {
+        line: {
+          lineWidth: 4,
+          states: {
+            hover: {
+              lineWidth: 5
+            }
+          },
+          marker: {
+            fillColor: '#ffffff',
+            lineWidth: 2,
+            lineColor: null,
+            symbol: 'circle',
+            enabled: false,
+            states: {
+              hover: {
+                enabled: true
+              }
+            }
+          },
+        }
+      },
+      xAxis: {
+        title: { },
+        type: 'category'
+      },
+      yAxis: {
+        title: {
+          enabled: false,
+          text: 'Incident rate<br />(per 1,000 residents)',
+          margin: 40,
+          style: {
+            color: 'inherit',
+            fontWeight: 'normal'
           }
-        }
+        },
+        min: 0,
+        gridLineColor: '#BCBCBC'
       },
-      highlighter: {
-        show: true,
-        sizeAdjust: 7,
-        tooltipAxes: 'y'
+      tooltip: {
+        //shadow: false,
+        //borderRadius: 0,
+        //borderWidth: 0,
+        style: {},
+        useHTML: true,
+        formatter: function() {
+          return '<strong>' + this.series.name +'</strong><br/>' + _.formatNumber(this.y, 2);
+        }
       }
     },
   
@@ -394,42 +426,46 @@
     bindUpdateChartLast12Months: function($el, val, model, options) {
       var data1 = model.getLastYearData(model.get('appCategory'), 1);
       var data2 = model.getLastYearData(model.get('appCategory'), 2);
-      var plotOptions = _.clone(this.plotOptions);
+      var chartOptions = _.clone(this.chartOptions);
       
-      plotOptions.seriesColors = ['#BCBCBC', '#10517F'];
-      this.drawGraph($el.attr('id'), [data2, data1], plotOptions);
+      chartOptions.seriesColors = ['#BCBCBC', '#10517F'];
+      this.drawGraph($el.attr('id'), [data2, data1], chartOptions);
     },
     
     // Chart to show how many incidents this year with history
     bindUpdateIncidentsThisYearHistory: function($el, val, model, options) {
       var data = model.getIncidentsThisYearHistory();
-      this.drawGraph($el.attr('id'), [data], this.plotOptions);
+      this.drawGraph($el.attr('id'), [data], this.chartOptions);
     },
     
     // Show incident rate per full year
     bindUpdateChartIncidentRatePerYear: function($el, val, model, options) {
       var data = model.getIncidentRatesPerYear();
-      var plotOptions = _.clone(this.plotOptions);
-      plotOptions.axes.yaxis.tickOptions = {};
-      this.drawGraph($el.attr('id'), [data], plotOptions);
+      var chartOptions = _.clone(this.chartOptions);
+      chartOptions.axes.yaxis.tickOptions = {};
+      this.drawGraph($el.attr('id'), [data], chartOptions);
     },
     
     // Show incident rate for 12 month intervals
     bindUpdateChart12MonthHistory: function($el, val, model, options) {
-      var data1 = model.get12MonthIntervalsPerYear();
-      var plot = [data1];
+      var series = [{
+        name: 'Rate for ' + model.get('title'),
+        data: model.get12MonthIntervalsPerYear()
+      }];
+      var chartOptions = _.clone(this.chartOptions);
       var city;
-      var plotOptions = _.clone(this.plotOptions);
       
       // Get city line as well
       if (model.get('city')) {
         city = model.options.app.cities.get(model.get('city'));
-        plot = [city.get12MonthIntervalsPerYear(), data1];
-        plotOptions.seriesColors = ['#BCBCBC', '#10517F'];
+        series.push({
+          name: 'Rate for ' + city.get('title'),
+          data: city.get12MonthIntervalsPerYear()
+        });
       }
       
-      if (data1 && _.size(data1) > 0) {
-        this.drawGraph($el.attr('id'), plot, plotOptions);
+      if (series[0].data && _.size(series[0].data) > 0) {
+        this.drawGraph($el.attr('id'), series, chartOptions);
       }
     },
     
@@ -463,18 +499,15 @@
       
       // Check data
       _.each(data, function(dataSet) {
-        if (!_.isArray(dataSet) || dataSet.length <= 0) {
+        if (!_.isObject(dataSet) || !_.isArray(dataSet.data) || dataSet.data.length <= 0) {
           dataPresent = false;
         }
       });
       
       // If data present element exists
       if (dataPresent && $('#' + id).length > 0) {
-        plot = $.jqplot(id, data, options);
-        // Hack to only redraw if worth it
-        if (plot._drawCount) {
-          plot.redraw();
-        }
+        options.series = data;
+        $('#' + id).highcharts(options);
       }
     }
   });

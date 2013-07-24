@@ -17,7 +17,7 @@ _.mixin({
    * Formats number 
    */
   formatNumber: function(num, decimals) {
-    decimals = (_.isUndefined(decimals)) ? 2 : 0;
+    decimals = (_.isUndefined(decimals)) ? 2 : decimals;
     var rgx = (/(\d+)(\d{3})/);
     split = num.toFixed(decimals).toString().split('.');
     
