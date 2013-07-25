@@ -177,6 +177,7 @@
           color: '#BCBCBC'
         }
       },
+      colors: ['#225ea8', '#BCBCBC'],
       credits: {
         enabled: false
       },
@@ -449,7 +450,7 @@
     // Show incident rate for 12 month intervals
     bindUpdateChart12MonthHistory: function($el, val, model, options) {
       var series = [{
-        name: 'Rate for ' + model.get('title'),
+        name: model.get('title'),
         data: model.get12MonthIntervalsPerYear()
       }];
       var chartOptions = _.clone(this.chartOptions);
@@ -459,7 +460,7 @@
       if (model.get('city')) {
         city = model.options.app.cities.get(model.get('city'));
         series.push({
-          name: 'Rate for ' + city.get('title'),
+          name: city.get('title'),
           data: city.get12MonthIntervalsPerYear()
         });
       }
