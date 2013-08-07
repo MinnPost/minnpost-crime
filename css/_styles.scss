@@ -5,6 +5,7 @@
   max-width: 960px;
   margin: 0 auto;
   padding-top: 1em;
+  font-family: $sans-serif-font;
 
   .clear {
     clear: both;
@@ -18,7 +19,7 @@
     font-style: italic;
     color: #414141;
     margin-top: 3em;
-    border-top: 1px solid #BCBCBC;
+    border-top: 1px solid $color-light-grey;
     padding-top: 1em;
   }
   
@@ -40,9 +41,9 @@
     height: 1em;
     line-height: 1.5em;
     background-color: #FFFFFF;
-    border-bottom: 1px solid #BCBCBC;
-    border-right: 1px solid #BCBCBC;
-    border-left: 1px solid #BCBCBC;
+    border-bottom: 1px solid $color-light-grey;
+    border-right: 1px solid $color-light-grey;
+    border-left: 1px solid $color-light-grey;
 
     span {
       padding: 10px 5px 10px 40px;
@@ -54,27 +55,31 @@
   }
   
   h2 {
-    font-size: 3em;
+    font-size: 1em;
     line-height: 1.15em;
+    font-weight: bold;
+    color: $color-dark-grey;
   }
   
   .placeholder {
-    border: 1px solid #222222;
-    background-color: #DDDDDD; 
+    border: 1px solid $color-dark-grey;
+    background-color: $color-light-grey; 
     width: 100%;   
-  }
-  
-  .inner-column-left {
-    margin-right: $space;
-  }
-  
-  .row-space {
-    margin-bottom: $space;
   }
   
   .note {
     font-size: .85em;
-    color: #787878;
+    color: $color-medium-grey;
+  }
+  
+  .bottom-space {
+    margin-bottom: 1em;
+  }
+  
+  .force-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
   
   .location-search-container {
@@ -107,9 +112,12 @@
       min-width: 10em;
       max-width: 18em;
       min-height: 2em;
+      -moz-border-radius: 4px;
       -webkit-border-radius: 4px;
       border-radius: 4px;
       background-color: rgba(255, 255, 255, 0.9);
+      -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+      -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
       border: 1px solid #888;
     
@@ -122,63 +130,35 @@
   .map-legend .legend-item {
     float: left;
     font-size: .75em;
-    font-family: $sans-serif-font;
     width: 20%;
     margin-bottom: .5em;
     
     .legend-value {
       width: auto;
-      border-left: 1px solid #BDBDBD;
+      border-left: 1px solid $color-light-grey;
       padding: .5em .25em .25em .25em;
     }
     
     .legend-color {
       width: 100%;
       height: 25px;
-      border-top: 4px solid #FFFFFF;
-      box-shadow: 2px 0 0 -1px #BDBDBD inset;
+      border-top: 4px solid $color-white;
+      -moz-box-shadow: 2px 0 0 -1px $color-light-grey inset;
+      -webkit-box-shadow: 2px 0 0 -1px $color-light-grey inset;
+      box-shadow: 2px 0 0 -1px $color-light-grey inset;
     }
     
     &.active-display .legend-color {
-      border-top: 4px solid #BDBDBD;
-    }
-  }
-    
-  .month-display {
-    width: 40%;
-    float: right;
-    text-align: right;
-    font-size: 2em;
-    line-height: 2em;
-    font-family: $sans-serif-font;
-  }
-  
-  .population-numbers {
-    margin-top: 4em;
-    
-    .population-2010,
-    .population-2000 {
-      font-family: $sans-serif-font;
+      border-top: 4px solid $color-light-grey;
     }
   }
   
-  .stat-value {
-    font-size: 3em;
-    font-family: $sans-serif-font;
-  }
-  
-  .stat-rate-month,
-  .stat-rate-city {
-    display: inline;
-  }
-  
-  .stat-rate-city {
-    color: #BCBCBC;
-    font-size: 2em;
-    margin-left: 1em;
+  .mc-totals {
+    text-align: center;
     
     .stat-value {
-      font-size: 1em;
+      font-size: 2.5em;
+      line-height: 1.25em;
     }
   }
   
@@ -186,22 +166,18 @@
     text-align: center;
     
     .stat-label {
-      min-height: 3em;
+      height: 3em;
+      position: relative;
     }
     .stat-incidents {
-      font-size: 1.5em;
-      line-height: 1.15em;
-    }
-    .stat-change {
-      font-size: .75em;
-      line-height: 1.15em;
+      font-size: 1.75em;
+      line-height: 1.25em;
     }
   }
     
   .chart {
     height: 225px;
     width: 100%;
-    font-family: $sans-serif-font;
   }
   
   .mc-city-container {
