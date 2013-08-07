@@ -72,7 +72,7 @@
   line-height: 1.15em;
   font-weight: bold;
   color: #363636;
-  margin-bottom: 1em;
+  margin-bottom: .5em;
 }
 .minnpost-application-container .placeholder {
   border: 1px solid #363636;
@@ -176,6 +176,8 @@
 .minnpost-application-container .mc-totals .stat-value {
   font-size: 2.5em;
   line-height: 1.25em;
+  min-height: 1.25em;
+  display: block;
 }
 .minnpost-application-container .category-stats .category-stat {
   text-align: center;
@@ -187,6 +189,8 @@
 .minnpost-application-container .category-stats .category-stat .stat-incidents {
   font-size: 1.75em;
   line-height: 1.25em;
+  min-height: 1.25em;
+  display: block;
 }
 .minnpost-application-container .chart {
   height: 225px;

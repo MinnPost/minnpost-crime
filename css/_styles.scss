@@ -59,7 +59,7 @@
     line-height: 1.15em;
     font-weight: bold;
     color: $color-dark-grey;
-    margin-bottom: 1em;
+    margin-bottom: .5em;
   }
   
   .placeholder {
@@ -179,6 +179,8 @@
     .stat-value {
       font-size: 2.5em;
       line-height: 1.25em;
+      min-height: 1.25em;
+      display: block;
     }
   }
   
@@ -192,6 +194,8 @@
     .stat-incidents {
       font-size: 1.75em;
       line-height: 1.25em;
+      min-height: 1.25em;
+      display: block;
     }
   }
     
