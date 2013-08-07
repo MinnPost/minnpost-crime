@@ -71,8 +71,17 @@
       <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span>
       <em><span class="category-title"></span></em> rate by neighborhood
     </h2>
+    
+    <form class="location-search-form note bottom-space">
+      <p>
+        To see detailed neighborhood information, click on the map 
+        <% if (_.isObject(window.navigator) && _.isObject(window.navigator.geolocation)) { %>
+          or <a href="#" class="location-geolocate">use your current location</a>
+        <% } %>
+      </p>
       
-    <p class="note bottom-space">Click on a neighborhood.</p>
+      <input type="text" class="address-search" value="Find neighborhood by address" /> <input type="submit" value="GO" />
+    </form>
     
     <div id="city-map">
     </div>
@@ -85,10 +94,10 @@
   <div class="grid-100 bottom-space">
     <h2>
       <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span>
-      <em><span class="category-title"></span></em> incidents long term trend
+      <em><span class="category-title"></span></em> incidents trend over twelve month periods
     </h2>
 
-    <p class="note">As crime rates vary significantly each month, this chart shows the rate (incidents per 1,000 residents) for 12 month intervals ending with the current month.</p>
+    <p class="note">As crime rates vary significantly each month, this chart shows the rate (incidents per 1,000 residents) for 12 month periods ending with the current month.</p>
     
     <div id="chart-city-incidents-12-month-history" class="chart"></div>
   </div>

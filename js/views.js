@@ -35,14 +35,6 @@
       this.options.app.neighborhoodView.render();
       this.options.app.neighborhoodMapView.render();
       
-      // Render location search
-      app.getTemplate('template-location-search', function(template) {
-        this.templates['template-location-search'] = template;
-        $(this.el).find('.location-search-container').html(template({
-          geolocation: (_.isObject(window.navigator) && _.isObject(window.navigator.geolocation))
-        }));
-      }, this);
-      
       // Render category select
       app.getTemplate('template-category-select', function(template) {
         this.templates['template-category-select'] = template;

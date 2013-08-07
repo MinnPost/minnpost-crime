@@ -59,6 +59,7 @@
     line-height: 1.15em;
     font-weight: bold;
     color: $color-dark-grey;
+    margin-bottom: 1em;
   }
   
   .placeholder {
@@ -69,6 +70,7 @@
   
   .note {
     font-size: .85em;
+    line-height: 1.25em;
     color: $color-medium-grey;
   }
   
@@ -80,16 +82,6 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-  }
-  
-  .location-search-container {
-    width: 50%;
-    text-align: center;
-    margin: 0 auto 1.5em auto;
-    
-    a {
-      font-weight: bold;
-    }
   }
   
   .category-select-container {
@@ -127,11 +119,39 @@
     }
   }
   
+  .location-search-form {
+    p {
+      margin-bottom: 1em;
+    }
+    
+    input {
+      font-size: .85em;
+      line-height: 1.25em;
+      padding: .25em .5em;
+      border: 1px solid $color-light-grey;
+      color: $color-light-grey;
+      background-color: $color-white;
+      width: 65%;
+    }
+    input[type=submit] {
+      padding: .25em 1em;
+      color: $color-medium-grey;
+      -moz-border-radius: 4px;
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      width: auto;
+    }
+    input[type=submit]:hover {
+      background-color: $color-light-grey;
+    }
+  }
+  
   .map-legend .legend-item {
     float: left;
-    font-size: .75em;
+    font-size: .65em;
     width: 20%;
     margin-bottom: .5em;
+    color: $color-medium-grey;
     
     .legend-value {
       width: auto;
