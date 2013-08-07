@@ -705,7 +705,7 @@
     renderMap: function(fitGroup) {
       fitGroup = (!_.isUndefined(fitGroup)) ? fitGroup : true;
       var thisView = this;
-      var baseLayer = new L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png');
+      var baseLayer = new L.tileLayer('//{s}.tiles.mapbox.com/v3/minnpost.map-wi88b700/{z}/{x}/{y}.png');
       
       if (_.isUndefined(this.el)) {
         this.setElement(this.$el.selector);
