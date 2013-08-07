@@ -102,16 +102,16 @@ module.exports = function(grunt) {
       // JS libs
       libs: {
         src: [
-          'components/jquery/jquery.min.js', 
-          'components/jquery-jsonp/src/jquery.jsonp.js', 
-          'components/underscore/underscore-min.js', 
-          'components/backbone/backbone-min.js', 
-          'components/backbone.stickit/backbone.stickit.js', 
-          'components/topojson/topojson.js', 
-          'components/moment/min/moment.min.js',
-          'components/leaflet/dist/leaflet.js', 
-          'components/chroma-js/chroma.min.js',
-          'components/highcharts/highcharts.js'
+          'bower_components/jquery/jquery.min.js', 
+          'bower_components/jquery-jsonp/src/jquery.jsonp.js', 
+          'bower_components/underscore/underscore-min.js', 
+          'bower_components/backbone/backbone-min.js', 
+          'bower_components/backbone.stickit/backbone.stickit.js', 
+          'bower_components/topojson/topojson.js', 
+          'bower_components/moment/min/moment.min.js',
+          'bower_components/leaflet/dist/leaflet.js', 
+          'bower_components/chroma-js/chroma.min.js',
+          'bower_components/highcharts/highcharts.js'
         ],
         dest: 'dist/<%= pkg.name %>.libs.js',
         options: {
@@ -121,13 +121,13 @@ module.exports = function(grunt) {
       // CSS libs
       libs_css: {
         src: [
-          'components/flurid/dist/flurid.min.css', 
-          'components/leaflet/dist/leaflet.css'
+          'bower_components/unsemantic/assets/stylesheets/unsemantic-grid-responsive-tablet.css',
+          'bower_components/leaflet/dist/leaflet.css'
         ], 
         dest: 'dist/<%= pkg.name %>.libs.css'
       },
       libs_css_ie: {
-        src: ['components/leaflet/dist/leaflet.ie.css'],
+        src: ['bower_components/leaflet/dist/leaflet.ie.css'],
         dest: 'dist/<%= pkg.name %>.libs.ie.css'
       }
     },

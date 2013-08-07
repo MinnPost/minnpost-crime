@@ -114,7 +114,7 @@
     
     // Display loading specifically in the header
     renderGeneralLoading: function() {
-      this.renderLoading('.messaging-container .column');
+      this.renderLoading('.messaging-container');
       return this;
     },
     
