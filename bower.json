@@ -7,7 +7,7 @@
     "topojson": "~1.1.4",
     "moment": "~2.0.0",
     "flurid": "https://github.com/kflorence/flurid.git",
-    "backbone.stickit": "https://github.com/zzolo/backbone.stickit.git#0.6.3-alpha",
+    "backbone.stickit": "https://github.com/NYTimes/backbone.stickit.git#659792fe881875561d1796f4b0ce834bd4b764fe",
     "backbone": "~1.0.0",
     "jquery-jsonp": "~2.4.0",
     "underscore": "~1.4.4",
