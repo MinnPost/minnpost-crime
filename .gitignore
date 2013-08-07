@@ -4,5 +4,6 @@ dist/templates.js
 dist/data.js
 node_modules
 components
+bower_components
 ENV
 .sass-cache
