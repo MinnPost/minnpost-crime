@@ -308,7 +308,7 @@
           argument: 0
         }
       },
-      '.stat-rate-month .stat-value': {
+      '.stat-rate-month > .stat-value': {
         observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
         options: { 
@@ -343,14 +343,19 @@
       if (_.isNumber(val)) {
       
         // Determine number and formatting
-        var number = (_.isNaN(parseInt($el.text(), 10))) ? 0 : 
-          (parseInt($el.text(), 10) / 100);
+        var parsed = parseFloat(_.stripNumber($el.text()));
+        var number = (_.isNaN(parsed)) ? 0 : parsed;
         var formatOption = (_.isObject(options.options) && options.options.formatter) ? 
           options.options.formatter : 'formatPercentChange';
         var formatArgument = (_.isObject(options.options)) ? options.options.argument : undefined;
         var formatter = (_.isFunction(formatOption)) ? formatOption :
           ((_.isFunction(_[formatOption])) ? _[formatOption] : function(v) { return v; } );
         var interval, intervalID, greaterThan;
+        
+        // Hackery for percents
+        if (formatOption.indexOf('Percent') > 0) {
+          number = number / 100;
+        }
         
         // If different, start counting
         if (_.isNumber(val) && val != number) {

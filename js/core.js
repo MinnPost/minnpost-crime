@@ -46,6 +46,13 @@ _.mixin({
    */
   formatPercentChange: function(num) {
     return ((num > 0) ? '+' : '') + _.formatPercent(num);
+  },
+  
+  /**
+   * Strips formatting from number
+   */
+  stripNumber: function(text) {
+    return text.replace(/[^0-9\.]+/g, '');  
   }
 });
   
