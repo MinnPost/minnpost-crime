@@ -1,7 +1,7 @@
 <div class="mc-city-container">
 
-  <div class="grid-66 grid-parent bottom-space">
-    <div class="grid-100 mobile-grid-100 tablet-grid-100 bottom-space mc-title">
+  <div class="mc-left-column grid-66 grid-parent bottom-space">
+    <div class="bottom-space mc-title">
       <h2>
         <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span>
         <em><span class="category-title"></span></em> incidents for 
@@ -13,31 +13,31 @@
     </div>
     
     <div class="grid-100 mobile-grid-100 tablet-grid-100 grid-parent bottom-space mc-totals">
-      <div class="grid-33 mobile-grid-50 tablet-grid-50 bottom-space stat-incidents-month">
+      <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-incidents-month">
         <span class="stat-value"></span>
         <span class="stat-symbol"></span>
         <p class="note">Total incidents</p>
       </div>
       
-      <div class="grid-33 mobile-grid-50 tablet-grid-50 bottom-space stat-change-last-month">
+      <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-change-last-month">
         <span class="stat-value"></span>
         <span class="stat-symbol"></span>
         <p class="note">Change from last month</p>
       </div>
       
-      <div class="grid-33 mobile-grid-50 tablet-grid-50 bottom-space stat-change-month-last-year">
+      <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-change-month-last-year">
         <span class="stat-value"></span>
         <span class="stat-symbol"></span>
-        <p class="note">Change from same month last year</p>
+        <p class="note">Change from same <br /> month last year</p>
       </div>
       
-      <div class="grid-33 mobile-grid-50 tablet-grid-50 bottom-space stat-rate-month">
+      <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-rate-month">
         <span class="stat-value"></span>
         <span class="stat-symbol"></span>
         <p class="note">Incident rate per 1,000 residents</p>
       </div>
       
-      <div class="grid-33 mobile-grid-50 tablet-grid-50 bottom-space population-numbers">
+      <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space population-numbers">
         <span class="stat-value population-2010"></span>
         <p class="note">2010 census population</p>
       </div>
@@ -53,7 +53,7 @@
 
       <% if (typeof categories != 'undefined') { %>
         <% _.each(categories, function(cat, c) { if (c !== 'total') { %>
-          <div data-category="<%= c %>" class="category-stat category-stat-<%= c %> grid-20 mobile-grid-33 tablet-grid-25">
+          <div data-category="<%= c %>" class="category-stat category-stat-<%= c %> grid-20 mobile-grid-33 tablet-grid-20">
             <div class="stat-label">
               <div class="force-bottom"><%= cat.title %></div>
             </div>
@@ -66,7 +66,7 @@
     
   </div>
   
-  <div class="grid-33 bottom-space">
+  <div class="mc-right-column grid-33 grid-parent bottom-space">
     <h2>
       <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span>
       <em><span class="category-title"></span></em> rate by neighborhood
@@ -90,15 +90,16 @@
     </div>
   </div>
 
-
-  <div class="grid-100 mobile-grid-100 tablet-grid-100 bottom-space">
+  <div class="mc-charts">
     <h2>
       <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span>
       <em><span class="category-title"></span></em> incidents trend over twelve month periods
     </h2>
 
     <p class="note">As crime rates vary significantly each month, this chart shows the rate (incidents per 1,000 residents) for 12 month periods ending with the current month.</p>
-    
-    <div id="chart-city-incidents-12-month-history" class="chart"></div>
+      
+    <div class="grid-100 mobile-grid-100 tablet-grid-100 bottom-space">
+      <div id="chart-city-incidents-12-month-history" class="chart"></div>
+    </div>
   </div>
 </div>

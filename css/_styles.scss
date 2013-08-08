@@ -84,6 +84,18 @@
     width: 100%;
   }
   
+  .mc-application-container {
+    margin-top: 1em;
+  }
+  
+  .mc-right-column {
+    padding-left: 10px;
+  }
+  
+  .mc-left-column {
+    padding-right: 10px;
+  }
+  
   .category-select-container {
     width: 50%;
     text-align: center;
@@ -218,9 +230,13 @@
     width: 100%;
   }
   
-  .mc-city-container {
-  }
   
-  .mc-neighborhood-container {
+  @media screen and (max-width: 1024px) {
+    .mc-right-column {
+      padding-left: 0;
+    }
+    .mc-left-column {
+      padding-left: 0;
+    }
   }
 }
