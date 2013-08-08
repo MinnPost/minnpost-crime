@@ -197,6 +197,20 @@
       min-height: 1.25em;
       display: block;
     }
+    
+    &:hover {
+      cursor: pointer;
+      
+      .stat-label {
+        font-weight: bold;
+      }
+    }
+    
+    &.not-selected {
+      * {
+        color: $color-light-grey;
+      }
+    }
   }
     
   .chart {

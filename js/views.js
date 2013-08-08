@@ -14,7 +14,8 @@
     events: {
       'click .location-geolocate': 'handleGeolocate',
       'submit .location-search-form': 'handleAddressSearch',
-      'change #category-select': 'handleCategoryChange'
+      'change #category-select': 'handleCategoryChange',
+      'click .category-stat': 'handleCategoryChoice'
     },
     
     // Main template render
@@ -122,13 +123,45 @@
     // a two way connection between the select and the category
     // value
     updateCategory: function(category) {
+      var $catFound = $('div.category-stat[data-category=' + category + ']');
+      
+      // Update dropdown
       this.$el.find('#category-select').val(category);
+      
+      // Update category stats.  If the category is total or
+      // otherwise not in the list, then reset, otherwise,
+      // highlight the right one
+      if ($catFound.size() > 0) {
+        $('.category-stat').each(function() {
+          var $this = $(this);
+          
+          if ($this.data('category') === category) {
+            $this.removeClass('not-selected');
+          }
+          else {
+            $this.addClass('not-selected');
+          }
+        });
+      }
+      else {
+        $('.category-stat').removeClass('not-selected');
+      }
     },
     
     // Handle if category select changes
     handleCategoryChange: function(e) {
       e.preventDefault();
-      var category = $(e.currentTarget).val();
+      this.changeCategory($(e.currentTarget).val());
+    },
+    
+    // Handle choosing category
+    handleCategoryChoice: function(e) {
+      e.preventDefault();
+      this.changeCategory($(e.currentTarget).data('category'));
+    },
+    
+    // Change category
+    changeCategory: function(category) {
       var prefix = (Backbone.history) ? Backbone.history.fragment : false;
       var model = this.options.app.currentModel;
       

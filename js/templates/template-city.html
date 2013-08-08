@@ -49,18 +49,18 @@
         incidents by category
       </h2>
       
-      <p class="note bottom-space">Click on any category to specific metrics for that category and to update the map.</p>
-    
+      <p class="note bottom-space">Click on any category to specific metrics for that category and to update the map.  <a href="#" class="category-stat category-stat-total" data-category="total">See total</a>.</p>
+
       <% if (typeof categories != 'undefined') { %>
-        <% _.each(categories, function(cat, c) { %>
-          <div class="category-stat category-stat-<%= c %> grid-20 mobile-grid-33 tablet-grid-25">
+        <% _.each(categories, function(cat, c) { if (c !== 'total') { %>
+          <div data-category="<%= c %>" class="category-stat category-stat-<%= c %> grid-20 mobile-grid-33 tablet-grid-25">
             <div class="stat-label">
               <div class="force-bottom"><%= cat.title %></div>
             </div>
             <div class="stat-value stat-incidents"></div>
             <div class="stat-value stat-change note"></div>
           </div>
-        <% }) %>
+        <% } }) %>
       <% } %>
     </div>
     
