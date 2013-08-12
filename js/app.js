@@ -44,6 +44,19 @@
       });
     },
     
+    // General error handler
+    appError: function(message) {
+      var thisRouter = this;
+      
+      return function(error) {
+        if (_.isObject(console) && _.isFunction(console.log)) {
+          console.log(error);
+        }
+        
+        thisRouter.applicationView.renderErrorMessage(message);
+      };
+    },
+    
     // Get initial data
     fetchData: function(done) {
       var thisRouter = this;
@@ -53,14 +66,18 @@
         thisRouter.fetchRecentMonth(function(year, month) {
           app.options.currentYear = year;
           app.options.currentMonth = month;
-        }).done(done);
-      });
+        })
+        .done(done)
+        .fail(thisRouter.appError('Issue retrieving current year and month data.'));
+      })
+      .fail(thisRouter.appError('Issue retrieving base data.'));
     },
     
     // Get most recent month and year as this will
     // be used throught the application
     fetchRecentMonth: function(done, context) {
       context = context || this;
+      var thisRouter = this;
       var dataCrimeQueryBase = 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&query=[[[QUERY]]]';
 
       var query = "SELECT month, year FROM swdata ORDER BY year || '-' || month DESC LIMIT 1";
@@ -68,8 +85,13 @@
       
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
+          if (_.isObject(data) && !_.isUndefined(data.error)) {
+            thisRouter.appError('Issue retrieving current year and month data.')();
+          }
+          
           done.apply(context, [data[0].year, data[0].month]);
-        });
+        })
+        .fail(thisRouter.appError('Issue retrieving current year and month data.'));
       }
       return defer;
     },
@@ -242,13 +264,14 @@
     routeGeolocate: function(done, context) {
       var thisRouter = this;
     
+      this.applicationView.renderGeneralLoading();
       navigator.geolocation.getCurrentPosition(function(position) {
         if (_.isObject(position.coords)) {
           thisRouter.routeGeoCoordinate([position.coords.longitude, position.coords.latitude], 
             done, context);
         }
       }, function(err) {
-        // Handle error
+        thisRouter.appError('Issue retrieving current position.')(err);
       });
     },
     
@@ -259,15 +282,18 @@
       var url = app.options.mapQuestQuery.replace('[[[KEY]]]', app.options.mapQuestKey)
         .replace('[[[ADDRESS]]]', encodeURI(address));
         
-      $.getJSON(url, function(response) {
-        latlng = response.results[0].locations[0].latLng;
-        if (latlng) {
-          thisRouter.routeGeoCoordinate([latlng.lng, latlng.lat], done, context);
-        }
-        else {
-          // Handle error
-        }
-      });
+      this.applicationView.renderGeneralLoading();
+      $.jsonp({ url: url })
+        .done(function(response) {
+          latlng = response.results[0].locations[0].latLng;
+          if (latlng) {
+            thisRouter.routeGeoCoordinate([latlng.lng, latlng.lat], done, context);
+          }
+          else {
+            thisRouter.appError('Issue retrieving position from address.')(response);
+          }
+        })
+        .fail(thisRouter.appError('Issue retrieving position from address.'));
     },
     
     // Route based on geo point
@@ -288,6 +314,9 @@
         if (found) {
           this.navigate('/neighborhood/' + found.id + 
             '/' + this.category, { trigger: true });
+        }
+        else {
+          this.appError('Could not find your location on the map.')(found);
         }
       }
     }

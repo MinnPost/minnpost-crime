@@ -29,6 +29,16 @@
     left: 0;
     right: 0;
     z-index: 9999999;
+    text-align: center;
+  }
+    
+  .application-error {
+    background-color: #D70F16;
+    border-bottom: 1px solid #A70C11;
+    border-right: 1px solid #A70C11;
+    border-left: 1px solid #A70C11;
+    color: $color-white;
+    padding: .5em;
   }
   
   .loading {

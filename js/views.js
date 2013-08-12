@@ -119,6 +119,19 @@
       return this;
     },
     
+    // General message
+    renderMessage: function(message) {
+      this.$el.find('.messaging-container').html(message).fadeIn();
+      return this;
+    },
+    
+    // General message
+    renderErrorMessage: function(message) {
+      message = '<div class="application-error">' + message + '</span>';
+      this.renderMessage(message);
+      return this;
+    },
+    
     // Update category change.  This is needed as we don't have
     // a two way connection between the select and the category
     // value
