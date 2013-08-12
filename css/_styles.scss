@@ -239,6 +239,17 @@
       }
     }
   }
+  
+  .per-change {
+    &.per-change-positive {
+      color: $color-red;
+    }
+    
+    &.per-change-negative,
+    &.per-change-zero {
+      color: $color-blue;
+    }
+  }
     
   .chart {
     height: 225px;

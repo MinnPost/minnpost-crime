@@ -53,7 +53,7 @@ _.mixin({
    */
   formatPercentChangeStyled: function(num) {
     var cClass = (num === 0) ? 'zero' : ((num > 0) ? 'positive' : 'negative');
-    return '<span class="per-change per-change-' + cClass + '">' + _.formatPercent(num) + '</span>';
+    return '<span class="per-change per-change-' + cClass + '">' + _.formatPercentChange(num) + '</span>';
   },
   
   /**
