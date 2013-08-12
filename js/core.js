@@ -49,6 +49,14 @@ _.mixin({
   },
   
   /**
+   * Formats percent change with HTML
+   */
+  formatPercentChangeStyled: function(num) {
+    var cClass = (num === 0) ? 'zero' : ((num > 0) ? 'positive' : 'negative');
+    return '<span class="per-change per-change-' + cClass + '">' + _.formatPercent(num) + '</span>';
+  },
+  
+  /**
    * Strips formatting from number
    */
   stripNumber: function(text) {

@@ -346,7 +346,7 @@
         var parsed = parseFloat(_.stripNumber($el.text()));
         var number = (_.isNaN(parsed)) ? 0 : parsed;
         var formatOption = (_.isObject(options.options) && options.options.formatter) ? 
-          options.options.formatter : 'formatPercentChange';
+          options.options.formatter : 'formatPercentChangeStyled';
         var formatArgument = (_.isObject(options.options)) ? options.options.argument : undefined;
         var formatter = (_.isFunction(formatOption)) ? formatOption :
           ((_.isFunction(_[formatOption])) ? _[formatOption] : function(v) { return v; } );
