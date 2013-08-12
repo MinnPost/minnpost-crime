@@ -228,6 +228,12 @@
     &:hover {
       cursor: pointer;
       
+      * {
+        opacity: 1;
+        -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+        filter: alpha(opacity=100);
+      }
+      
       .stat-label {
         font-weight: bold;
       }
@@ -235,7 +241,9 @@
     
     &.not-selected {
       * {
-        color: $color-light-grey;
+        opacity: 0.60;
+        -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+        filter: alpha(opacity=60);
       }
     }
   }
