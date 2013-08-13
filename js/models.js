@@ -338,7 +338,7 @@
         rate = rate / count;
         dS = moment(cDate).subtract('months', iS);
         dE = moment(cDate).subtract('months', iE);
-        x = '' + dS.year() + '/' + (dS.month() + 1) + '-' + dE.year() + '/' + (dE.month() + 1);
+        x = '' + (dS.month() + 1) + '/' + dS.format('YY') + '-' + (dE.month() + 1) + '/' + dE.format('YY');
         data.push([x, rate]);
       }
       

@@ -272,7 +272,9 @@
         style: {},
         useHTML: true,
         formatter: function() {
-          return '<strong>' + this.series.name +'</strong><br/>' + _.formatNumber(this.y, 2);
+          return '<strong>' + this.series.name + '</strong><br />' + 
+            _.formatNumber(this.y, 2) + ' incidents per 1,000 residents<br /><br />' + 
+            '<em>For months ' + this.key + '</em>';
         }
       }
     },
