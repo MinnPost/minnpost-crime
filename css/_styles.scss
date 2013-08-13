@@ -267,6 +267,27 @@
       color: $color-blue;
     }
   }
+  
+  .diff-compare {
+    &.diff-compare-more {
+      color: $color-red;
+    }
+    &.diff-compare-none,
+    &.diff-compare-less {
+      color: $color-blue;
+    }
+    
+    .diff-symbol {
+      font-size: .75em;
+      width: 1em;
+      position: relative;
+      top: -.25em;
+      display:-moz-inline-stack;
+      display:inline-block;
+      zoom:1;
+      *display:inline;
+    }
+  }
     
   .chart {
     height: 225px;

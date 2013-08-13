@@ -57,6 +57,16 @@ _.mixin({
   },
   
   /**
+   * Format value given difference from another value
+   */
+  formatDifferenceStyled: function(num, compare) {
+    var cClass = (num === compare) ? 'none' : ((num > compare) ? 'more' : 'less');
+    var symbol = (num === compare) ? '' : ((num > compare) ? '&uarr;' : '&darr;');
+    symbol = '<span class="diff-symbol">' + symbol + '</span>';
+    return '<span class="diff-compare diff-compare-' + cClass + '">' + symbol + _.formatNumber(num) + '</span>';
+  },
+  
+  /**
    * Strips formatting from number
    */
   stripNumber: function(text) {

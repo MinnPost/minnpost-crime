@@ -347,11 +347,7 @@
       },
       '.stat-rate-month > .stat-value': {
         observe: ['stats', 'appCategory'], 
-        update: 'bindUpdateStat',
-        options: { 
-          stat: 'rateMonth',
-          formatter: 'formatNumber'
-        }
+        update: 'bindUpdateIncidentRate'
       },
       '.stat-change-last-month .stat-value': {
         observe: ['stats', 'appCategory'], 
@@ -476,6 +472,34 @@
       
       if (stat && stats && _.isNumber(stats[model.get('appCategory')][stat])) {
         this.bindUpdateCount($el, stats[model.get('appCategory')][stat], model, options);
+      }
+    },
+    
+    // Update neighborhood incident rate value
+    bindUpdateIncidentRate: function($el, val, model, options) {
+      var stat = 'rateMonth';
+      var city = model.get('city');
+      var stats = model.get('stats');
+      var cityStat;
+      
+      // If a neighborhood, then format differently
+      if (!_.isUndefined(city)) {
+        if (stats && _.isNumber(stats[model.get('appCategory')][stat]) &&
+          _.isNumber(stats[model.get('appCategory')].rateCity)) {
+          options.options = {
+            stat: stat,
+            formatter: 'formatDifferenceStyled',
+            argument: stats[model.get('appCategory')].rateCity
+          };
+          this.bindUpdateStat($el, val, model, options);
+        }
+      }
+      else {
+        options.options = {
+          stat: stat,
+          formatter: 'formatNumber'
+        };
+        this.bindUpdateStat($el, val, model, options);
       }
     },
     
@@ -664,7 +688,7 @@
       '.stat-rate-city .stat-value': {
         observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
-        options: { 
+        options: {
           stat: 'rateCity',
           formatter: 'formatNumber'
         }
