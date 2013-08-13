@@ -685,6 +685,10 @@
         observe: 'city', 
         update: 'bindUpdateCityLink'
       },
+      '.city-name': {
+        observe: 'city', 
+        update: 'bindUpdateCityName'
+      },
       '.stat-rate-city .stat-value': {
         observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
@@ -718,6 +722,14 @@
     },
     
     bindUpdateCityLink: function($el, val, model, options) {
+      var city = this.options.app.cities.get(val);
+      if (_.isObject(city)) {
+        $el.attr('href', '#city/' + city.id);
+        this.bindUpdateFade($el, 'Back to <em>' + city.get('title') + '</em> overview &crarr;', model, options);
+      }
+    },
+    
+    bindUpdateCityName: function($el, val, model, options) {
       var city = this.options.app.cities.get(val);
       if (_.isObject(city)) {
         $el.attr('href', '#city/' + city.id);

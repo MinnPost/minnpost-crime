@@ -9,9 +9,11 @@
           <span class="current-month"></span> <span class="current-year"></span>
         </h2>
         
-        <a href="#city/<%= (typeof city != 'undefined') ? city : '' %>" class="city-link">
-          <%= (typeof city != 'undefined') ? city : '' %>
-        </a>
+        <p class="note">
+          <a href="#city/<%= (typeof city != 'undefined') ? city : '' %>" class="city-link">
+            <%= (typeof city != 'undefined') ? city : '' %>
+          </a>
+        </p>
         
         <!-- placeholder for changing document title -->
         <span class="document-title"></span>
@@ -39,7 +41,7 @@
         <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-rate-month">
           <span class="stat-value"></span>
           <span class="stat-symbol"></span>
-          <p class="note">Incident rate per 1,000 residents <br /> (compared to <span class="city-link"></span> rate of <span class="stat-rate-city"><span class="stat-value"></span></span>)</p>
+          <p class="note">Incident rate per 1,000 residents <br /> (compared to <span class="city-name"></span> rate of <span class="stat-rate-city"><span class="stat-value"></span></span>)</p>
         </div>
         
         <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space population-numbers">
@@ -75,10 +77,12 @@
         <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span>
         <em><span class="category-title"></span></em> rate by neighborhood
       </h2>
-        
-      <a href="#city/<%= (typeof city != 'undefined') ? city : '' %>" class="city-link">
-        <%= (typeof city != 'undefined') ? city : '' %>
-      </a>
+    
+      <p class="note">
+        <a href="#city/<%= (typeof city != 'undefined') ? city : '' %>" class="city-link">
+          <%= (typeof city != 'undefined') ? city : '' %>
+        </a>
+      </p>
       
       <div id="neighborhood-map">
       </div>
