@@ -215,7 +215,7 @@
           color: '#BCBCBC'
         }
       },
-      colors: ['#225ea8', '#BCBCBC'],
+      colors: ['#2C39A0', '#BCBCBC'],
       credits: {
         enabled: false
       },
@@ -472,7 +472,7 @@
       var data2 = model.getLastYearData(model.get('appCategory'), 2);
       var chartOptions = _.clone(this.chartOptions);
       
-      chartOptions.seriesColors = ['#BCBCBC', '#10517F'];
+      chartOptions.seriesColors = ['#BCBCBC', '#2C39A0'];
       this.drawGraph($el.attr('id'), [data2, data1], chartOptions);
     },
     
@@ -822,7 +822,8 @@
       
       // Create color scale.  k-means minus exceptions seems to be the best
       // visual
-      colorScale = chroma.scale('YlGnBu')  //['#107F3E', '#B61673'] ['#107F3E', '#76107F']
+      // 'YlGnBu', ['#107F3E', '#B61673'] ['#107F3E', '#76107F']
+      colorScale = chroma.scale(['#E0E0E0', '#86090D'])  
         .domain(data, 9, 'k-means')
         .mode('lab');
       
