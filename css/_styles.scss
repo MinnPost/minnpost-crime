@@ -213,8 +213,10 @@
   
   .category-stats .category-stat {
     text-align: center;
+    margin-bottom: 1em;
     
     .stat-label {
+      font-size: .75em;
       height: 3em;
       position: relative;
     }
@@ -225,7 +227,8 @@
       display: block;
     }
     
-    &:hover {
+    &:hover,
+    &.not-selected:hover {
       cursor: pointer;
       
       * {
@@ -235,7 +238,6 @@
       }
       
       .stat-label {
-        font-weight: bold;
       }
     }
     

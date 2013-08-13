@@ -428,7 +428,7 @@
       if (!_.isUndefined(model.get('crimesByMonth'))) {
         var incidentOptions = _.extend(_.clone(options), 
           { options: { formatter: 'formatNumber', argument: 0 }});
-          
+        
         _.each(model.get('categories'), function(cat, c) {
           var stat, $statEl;
           
@@ -522,7 +522,7 @@
       mapView = mapView || 'cityMapView';
       category = this.model.getCategory();
       categoryObject = this.model.get('categories')[category];
-    
+
       // Since we use the same neighborhood models
       // for city view and individual eighborhood view,
       // we don't want to step on toes and set

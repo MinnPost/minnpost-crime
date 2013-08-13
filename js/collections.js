@@ -54,6 +54,7 @@
                 }
               });
               
+              crimesByMonth = m.setCombined(crimesByMonth);
               m.set('crimesByMonth', crimesByMonth);
             });
             // Some stats are relative to the whole

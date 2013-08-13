@@ -34,6 +34,32 @@
       this.options.app.on('change:category', function() {
         thisModel.set('appCategory', thisModel.options.app.category);
       });
+      
+      // If crimes per month change, update the combined categories
+      this.on('crimesByMonth', function(e) {
+        thisModel.setCombined();
+      });
+    },
+    
+    // Set combined categories
+    setCombined: function(data ) {
+      data = data || _.clone(this.get('crimesByMonth'));
+      var categories = this.get('categories');
+      
+      _.each(data, function(year, y) {
+        _.each(year, function(month, m) {
+          _.each(categories, function(cat, c) {
+            if (_.isArray(cat.combine) && _.isUndefined(month[c])) {
+              data[y][m][c] = _.reduce(cat.combine, function(total, combine) {
+                return total + month[combine];
+              }, 0);
+            }
+          });
+        });
+      });
+      
+      this.set('crimesByMonth', data);
+      return data;
     },
     
     // Get category from argument or from app
@@ -353,6 +379,7 @@
             data[r.year][r.month] = r;
           });
           
+          thisModel.setCombined(data);
           thisModel.set('crimesByMonth', data);
           thisModel.set('fetched', true);
           thisModel.trigger('fetched');
@@ -372,7 +399,9 @@
       
       query.push("SELECT year, month");
       _.each(this.get('categories'), function(category, c) {
-        query.push(", SUM(" + c + ") AS " + c);
+        if (!_.isArray(category.combine)) {
+          query.push(", SUM(" + c + ") AS " + c);
+        }
       });
       query.push(" FROM swdata WHERE " + this.dataCrimeQueryWhere);
       query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
@@ -394,7 +423,9 @@
       
       query.push("SELECT year, month");
       _.each(this.get('categories'), function(category, c) {
-        query.push(", SUM(" + c + ") AS " + c);
+        if (!_.isArray(category.combine)) {
+          query.push(", SUM(" + c + ") AS " + c);
+        }
       });
       query.push(" FROM swdata WHERE " + this.dataCrimeQueryWhere);
       query.push(" AND ((year = " + year + " AND month <= " + month + ") ");
@@ -447,6 +478,7 @@
             data[r.year][r.month] = r;
           });
           
+          thisModel.setCombined(data);
           thisModel.set('crimesByMonth', data);
           thisModel.set('fetched', true);
           thisModel.trigger('fetched');
