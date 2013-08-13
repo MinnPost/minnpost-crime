@@ -781,7 +781,9 @@
       // Only render the map once
       if (this.mapRendered === false) {
         this.map = new L.Map(this.el, {
-          scrollWheelZoom: false
+          scrollWheelZoom: false,
+          minZoom: 10,
+          maxZoom: 17
         });
         this.map.setView([44.9800, -93.2636], 12);
         this.map.addLayer(baseLayer);
