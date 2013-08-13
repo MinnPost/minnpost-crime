@@ -215,7 +215,7 @@
           color: '#BCBCBC'
         }
       },
-      colors: ['#2C39A0', '#BCBCBC'],
+      colors: ['#094C86', '#BCBCBC'],
       credits: {
         enabled: false
       },
@@ -472,7 +472,7 @@
       var data2 = model.getLastYearData(model.get('appCategory'), 2);
       var chartOptions = _.clone(this.chartOptions);
       
-      chartOptions.seriesColors = ['#BCBCBC', '#2C39A0'];
+      chartOptions.seriesColors = ['#BCBCBC', '#094C86'];
       this.drawGraph($el.attr('id'), [data2, data1], chartOptions);
     },
     
