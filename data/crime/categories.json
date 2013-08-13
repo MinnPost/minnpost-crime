@@ -1,6 +1,6 @@
 {
   "total": {
-    "title": "Total"
+    "title": "Total (combined)"
   }, 
   "homicide": {
     "title": "Homcide"
@@ -13,6 +13,10 @@
   }, 
   "agg_assault": {
     "title": "Aggrevated Assault"
+  },
+  "violent": {
+    "title": "Violent Crimes (combined)",
+    "combine": ["homicide", "rape", "robbery", "agg_assault"]
   }, 
   "burglary": {
     "title": "Burglary"
@@ -25,5 +29,9 @@
   }, 
   "arson": {
     "title": "Arson"
+  },
+  "property": {
+    "title": "Property Crimes (combined)",
+    "combine": ["burglary", "larceny", "auto_theft", "arson"]
   }
 }
