@@ -15,7 +15,9 @@
       'click .location-geolocate': 'handleGeolocate',
       'submit .location-search-form': 'handleAddressSearch',
       'change #category-select': 'handleCategoryChange',
-      'click .category-stat': 'handleCategoryChoice'
+      'click .category-stat': 'handleCategoryChoice',
+      'focus .address-search': 'handleAddressInputFocus',
+      'blur .address-search': 'handleAddressInputBlur'
     },
     
     // Main template render
@@ -197,6 +199,26 @@
       
       if (val) {
         this.options.app.routeAddress(val);
+      }
+    },
+    
+    // Handle focus on address earch bar
+    handleAddressInputFocus: function(e) {
+      var $target = $(e.currentTarget);
+      
+      $target.addClass('selected');
+      if ($target.val() === $target.data('default')) {
+        $target.val('');
+      }
+    },
+    
+    // Handle blur on address earch bar
+    handleAddressInputBlur: function(e) {
+      var $target = $(e.currentTarget);
+      
+      $target.removeClass('selected');
+      if ($target.val() === '') {
+        $target.val($target.data('default'));
       }
     }
   });
