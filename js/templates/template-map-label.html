@@ -3,4 +3,10 @@
   <% if (typeof label != 'undefined' && typeof property != 'undefined') { %>
     <%= label %>: <%= (typeof formatter != 'undefined') ? formatter(property) : property %>
   <% } %>
+  
+  <% if (typeof n.mapCategory != 'undefined') { %>
+    <em><%= n.mapCategory %></em> <br />
+    Incidents: <%= _.formatNumber(n.mapIncidents, 0) %> <br />
+    Incident rate: <%= _.formatNumber(n.mapRate) %> per 1,000 residents
+  <% } %>
 </div>

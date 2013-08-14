@@ -576,10 +576,11 @@
       // we don't want to step on toes and set
       // the category, unnecessarily
       this.options.app.neighborhoods.each(function(n) {
-        n.set('cityMapValue', n.getCrimeRateByMonth(category));
+        n.set('mapRate', n.getCrimeRateByMonth(category));
+        n.set('mapIncidents', n.getCrimeByMonth(category));
+        n.set('mapCategory', categoryObject.title);
       });
-      this.options.app[mapView].mapVisualizeNeighborhoods(
-        'cityMapValue', categoryObject.title + ' incident rate');
+      this.options.app[mapView].mapVisualizeNeighborhoods('mapRate');
       
       return this;
     },
@@ -863,11 +864,10 @@
     },
     
     // Render/visualize neighborhoods based on a property
-    mapVisualizeNeighborhoods: function(property, label, formatter, exceptions) {
+    mapVisualizeNeighborhoods: function(property, formatter, exceptions) {
       var thisView = this;
       exceptions = exceptions || ['northeast_park', 'mid_city_industrial', 'camden_industrial', 'humboldt_industrial_area', 'downtown_west'];
       this.visualProperty = property || 'statRateMonth';
-      this.visualLabel = label || 'Incident rate';
       this.visualFormatter = formatter || _.formatNumber;
       var legend = [];
       var data, colorScale, currentValue;
@@ -964,7 +964,8 @@
           title: neighborhood.get('title'),
           property: neighborhood.get(this.visualProperty),
           label: this.visualLabel,
-          formatter: this.visualFormatter
+          formatter: this.visualFormatter,
+          n: neighborhood.toJSON()
         })
       ).show();
     },
