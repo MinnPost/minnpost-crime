@@ -2,13 +2,21 @@
  * General variables
  */
 
+// Spacing
 $space: 1em;
+
+// Images
 $loader-image: 'https://s3.amazonaws.com/data.minnpost/projects/2012-mn-election-results/images/ajax-loader.gif';
+$location-7-image-base-64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAMCAYAAACulacQAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAACsQAAArEBUjaMygAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAADSSURBVBiVTY8xSgRBAASrB4PN7hUnBoLBBb5idvzOgVzkC4TTP2wgzuImGuwLRAMRhUsEg0tlU8c2GXE76a7uqGWblFJr+xw4At4kXeSce8UYE3AL/AAvwDEQgLMAbACXUlZ935+UUlaAgU0AlsBuGIZngOo74DAAr8AypdRKUkqpBZaS3g+AR+DUdo4xftleANh+CsA9/1rM8kNomuYO+JiVSPqcpukmdF1XJF3NR9vbcRy/Q+VrYF/zXtKWepac8wSs67iuDLaxDaAY4yWgv+4XE1hfAJBSEzAAAAAASUVORK5CYII=';
+
+// Fonts
 $sans-serif-font: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, "Century Gothic", "CenturyGothic", "Arial Narrow", Arial, "Lucida Grande", sans-serif;
 
+// Colors
 $color-white: #FFFFFF;
 $color-red: #9E0B0F;
 $color-blue: #2C739F;
 $color-dark-grey: #363636;
 $color-medium-grey: #777777;
 $color-light-grey: #BCBCBC;
+

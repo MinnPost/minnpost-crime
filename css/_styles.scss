@@ -173,8 +173,14 @@
       border-radius: 4px;
       width: auto;
     }
+    
     input[type=submit]:hover {
       background-color: $color-light-grey;
+    }
+    
+    .location-geolocate {
+      padding-right: 15px;
+      background: transparent url($location-7-image-base-64) center right no-repeat;
     }
   }
   
