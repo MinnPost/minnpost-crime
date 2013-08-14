@@ -119,6 +119,10 @@
       font-family: inherit;
     }
   }
+  
+  h2 .category-title {
+    text-transform: lowercase;
+  }
     
   #neighborhood-map,
   #city-map {
