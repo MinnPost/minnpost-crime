@@ -1,5 +1,6 @@
 <div class="map-label-inner-container">
   <h4><%= title %></h4>
+  
   <% if (typeof label != 'undefined' && typeof property != 'undefined') { %>
     <%= label %>: <%= (typeof formatter != 'undefined') ? formatter(property) : property %>
   <% } %>

@@ -726,7 +726,7 @@
       var city = this.options.app.cities.get(val);
       if (_.isObject(city)) {
         $el.attr('href', '#city/' + city.id);
-        this.bindUpdateFade($el, 'Back to <em>' + city.get('title') + '</em> overview &crarr;', model, options);
+        this.bindUpdateFade($el, 'Back to ' + city.get('title') + ' overview &crarr;', model, options);
       }
     },
     
