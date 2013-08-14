@@ -15,6 +15,7 @@
       'click .location-geolocate': 'handleGeolocate',
       'submit .location-search-form': 'handleAddressSearch',
       'change #category-select': 'handleCategoryChange',
+      'change .neighborhood-choice': 'handleNeighborhoodChoiceChange',
       'click .category-stat': 'handleCategoryChoice',
       'focus .address-search': 'handleAddressInputFocus',
       'blur .address-search': 'handleAddressInputBlur'
@@ -175,6 +176,16 @@
       this.changeCategory($(e.currentTarget).data('category'));
     },
     
+    // Handle neighborhood change dropdown
+    handleNeighborhoodChoiceChange: function(e) {
+      var $target = $(e.currentTarget);
+      e.preventDefault();
+      
+      if (!_.isUndefined($target.val()) && $target.val() !== '') {
+        this.changeNeighborhood($target.val());
+      }
+    },
+    
     // Change category
     changeCategory: function(category) {
       var prefix = (Backbone.history) ? Backbone.history.fragment : false;
@@ -183,6 +194,17 @@
       if (category && prefix && model) {
         this.options.app.navigate(prefix.split('/')[0] + '/' + 
           model.id + '/' + category, { trigger: true });
+      }
+    },
+    
+    // Change neighborhood
+    changeNeighborhood: function(neighborhood) {
+      var model = this.options.app.currentModel;
+      var category = model.get('appCategory');
+      
+      if (category) {
+        this.options.app.navigate('neighborhood' + '/' + 
+          neighborhood + '/' + category, { trigger: true });
       }
     },
     
@@ -602,6 +624,17 @@
         options.series = data;
         $('#' + id).highcharts(options);
       }
+    },
+    
+    // Fill neighborhood select
+    fillNeighborhoodChoices: function() {
+      var $select = $('.neighborhood-choice');
+
+      if ($select.size() > 0) {
+        this.options.app.neighborhoods.each(function(n) {
+          $select.append('<option value="' + n.id + '">' + n.get('title') + '</option>');
+        });
+      }
     }
   });
 
@@ -654,6 +687,7 @@
     
       app.getTemplate('template-city', function(template) {
         this.$el.html(template(data));
+        this.fillNeighborhoodChoices();
       }, this);
       return this;
     },
