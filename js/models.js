@@ -173,10 +173,9 @@
       var crime2 = this.getCrimeByMonth(category, year2, month2);
       
       // Can't divide by zero, so percentage difference from
-      // zero is actually subject, we choose a value so that a 1
+      // zero is actually subjective, we choose a value so that a 1
       // change would be 100%
-      // (1 - x) / x = 1
-      return (crime2 - crime1) / ((crime1 === 0) ? 0.5 : crime1);
+      return (crime2 - crime1) / ((crime1 === 0) ? 1 : crime1);
     },
     
     // Get crime inciendents for a specific month and year
