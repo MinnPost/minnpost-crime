@@ -978,7 +978,8 @@
         }
       });
 
-      this.map.addControl(new this.LabelControl());
+      this.mapLabelControl = new this.LabelControl();
+      this.map.addControl(this.mapLabelControl);
       this.$el.find('.map-label-container').hide();
       return this;
     },
@@ -989,6 +990,19 @@
       var layer = e.layer._layers[e.layer._leaflet_id - 1];
       var options = layer.options;
       var neighborhood = this.collection.get(layer.feature.id);
+      var posY = e.containerPoint.y;
+      var mapY = this.map._container.clientHeight;
+      
+      // Move position of control.  If the mouse is more than
+      // halfway above viewport, move the label control
+      if (posY < (mapY / 2)) {
+        this.mapLabelControl.setPosition('bottomright');
+      }
+      else {
+        this.mapLabelControl.setPosition('topright');
+      }
+      
+      // Set style options
       options.fillOpacity = options.fillOpacity * 4;
       layer.setStyle(options);
       
