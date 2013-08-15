@@ -17,7 +17,7 @@ _.mixin({
    * Formats number 
    */
   formatNumber: function(num, decimals) {
-    decimals = (_.isUndefined(decimals)) ? 2 : 0;
+    decimals = (_.isUndefined(decimals)) ? 2 : decimals;
     var rgx = (/(\d+)(\d{3})/);
     split = num.toFixed(decimals).toString().split('.');
     
@@ -46,6 +46,31 @@ _.mixin({
    */
   formatPercentChange: function(num) {
     return ((num > 0) ? '+' : '') + _.formatPercent(num);
+  },
+  
+  /**
+   * Formats percent change with HTML
+   */
+  formatPercentChangeStyled: function(num) {
+    var cClass = (num === 0) ? 'zero' : ((num > 0) ? 'positive' : 'negative');
+    return '<span class="per-change per-change-' + cClass + '">' + _.formatPercentChange(num) + '</span>';
+  },
+  
+  /**
+   * Format value given difference from another value
+   */
+  formatDifferenceStyled: function(num, compare) {
+    var cClass = (num === compare) ? 'none' : ((num > compare) ? 'more' : 'less');
+    var symbol = (num === compare) ? '' : ((num > compare) ? '&uarr;' : '&darr;');
+    symbol = '<span class="diff-symbol">' + symbol + '</span>';
+    return '<span class="diff-compare diff-compare-' + cClass + '">' + symbol + _.formatNumber(num) + '</span>';
+  },
+  
+  /**
+   * Strips formatting from number
+   */
+  stripNumber: function(text) {
+    return text.replace(/[^0-9\.]+/g, '');  
   }
 });
   
@@ -149,6 +174,25 @@ if (_.isFunction(Backbone.$.jsonp)) {
   };
   
   /**
+   * Get remote data.  Provides a wrapper around
+   * getting a remote data source, to use a proxy
+   * if needed, such as using a cache.
+   */
+  app.getRemoteData = function(options) {
+    if (app.options.remoteProxy) {
+      options.url = options.url + '&callback=proxied_jqjsp';
+      options.url = app.options.remoteProxy + encodeURIComponent(options.url);
+      options.callback = 'proxied_jqjsp';
+      options.cache = true;
+    }
+    else {
+      options.url = options.url + '&callback=?';
+    }
+    
+    return $.jsonp(options);
+  };
+  
+  /**
    * Point in polygon search from
    * https://github.com/substack/point-in-polygon
    */
@@ -178,7 +222,7 @@ mpApp["minnpost-crime"].data["neighborhoods/minneapolis.topo"] = {"type":"Topolo
 
 mpApp["minnpost-crime"].data["cities/cities"] = {"minneapolis":{"title":"Minneapolis","population":{"2000":382618,"2010":382578}}}; 
 
-mpApp["minnpost-crime"].data["crime/categories"] = {"total":{"title":"Total"},"homicide":{"title":"Homcide"},"rape":{"title":"Rape"},"robbery":{"title":"Robbery"},"agg_assault":{"title":"Aggrevated Assault"},"burglary":{"title":"Burglary"},"larceny":{"title":"Larceny"},"auto_theft":{"title":"Auto Theft"},"arson":{"title":"Arson"}}; 
+mpApp["minnpost-crime"].data["crime/categories"] = {"total":{"title":"Total"},"homicide":{"title":"Homcide"},"rape":{"title":"Rape"},"robbery":{"title":"Robbery"},"agg_assault":{"title":"Aggrevated Assault"},"violent":{"title":"Violent Crimes (combined)","combine":["homicide","rape","robbery","agg_assault"]},"burglary":{"title":"Burglary"},"larceny":{"title":"Larceny"},"auto_theft":{"title":"Auto Theft"},"arson":{"title":"Arson"},"property":{"title":"Property Crimes (combined)","combine":["burglary","larceny","auto_theft","arson"]}}; 
 
 
 
@@ -190,7 +234,7 @@ this["mpApp"]["minnpost-crime"]["templates"]["js/templates/template-application-
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="mc-application-container">\n    \n  <div class="flurid mc-header">\n    <div class="row messaging-container">\n      <div class="column width_1/1">\n      \n      </div>\n    </div>\n    \n    <div class="row">\n      <div class="column width_1/1">\n        <div class="location-search-container">\n          \n        </div>\n        <div class="category-select-container">\n        \n        </div>\n      </div>\n    </div>\n  </div>\n  \n  <div class="mc-content">\n    <div class="mc-city-view-container">\n    \n    </div>\n    <div class="mc-neighborhood-view-container">\n    \n    </div>\n  </div>\n    \n  <div class="flurid mc-footer">\n    <div class="row">\n      <div class="column width_1/1">\n        \n      </div>\n    </div>\n  </div>\n</div>';
+__p += '<div class="mc-application-container grid-container grid-parent">\n\n  <div class="grid-100 messaging-container">\n  </div>\n  \n  <div class="grid-100 grid-parent mc-content">\n    <div class="mc-city-view-container">\n    </div>\n    \n    <div class="mc-neighborhood-view-container">\n    </div>\n  </div>\n    \n  <div class="grid-100 mc-footer">\n  </div>\n</div>';
 
 }
 return __p
@@ -230,23 +274,39 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="mc-city-container">\n  <div class="flurid">\n    <div class="row row-space">\n      <div class="column width_1/1">\n        <div class="month-display">\n          <span class="current-month"></span>, <span class="current-year"></span>\n        </div>\n      \n        <h2 class="section-title">' +
+__p += '<div class="mc-city-container">\n\n\n  <div class="grid-100 grid-parent mc-location-services hide-on-desktop hide-on-tablet">\n    <h2>Find a neighborhood in <span class="section-title">' +
 ((__t = ( (typeof title != 'undefined') ? title : '' )) == null ? '' : __t) +
-'</h2>\n        <span class="document-title"></span>\n      </div>\n    </div>\n  \n    <div class="row row-space">\n      <div class="column width_1/2">\n        <div class="inner-column-left">\n          <p>Select a neighborhood from the map to see details.</p>\n          <div id="city-map">\n          </div>\n          \n          <div class="map-legend">\n          </div>\n        </div>\n      </div>\n      \n      <div class="column width_1/2 last">\n        <h3><span class="category-title"></span> incidents</h3>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-incidents-month">\n              <p>Incidents this month</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n      \n        <div class="column width_1/2">\n          <div class="">\n            <div class="stat-rate-month">\n              <p>Incident rate (per 1,000 people)</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-change-last-month">\n              <p>Change from last month</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n      \n        <div class="column width_1/2">\n          <div class="">\n            <div class="stat-change-month-last-year">\n              <p>Change from last year this month</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n      \n        <div class="column width_1/1">\n          <div class="population-numbers">\n            Population | 2010: \n              <span class="population-2010"></span>\n            | 2000:\n              <span class="population-2000"></span>\n          </div>\n        </div>\n        \n      </div>\n    </div>\n    \n    <div class="row row-space category-stats">\n      <h4>Incidents this month per category</h4>\n      <p class="note">The following are incident totals per category for the given month, below each number is the percent change from the prior month.</p>\n      ';
- if (typeof categories != 'undefined') { ;
-__p += '\n        ';
- _.each(categories, function(cat, c) { ;
-__p += '\n          <div class="category-stat category-stat-' +
-((__t = ( c )) == null ? '' : __t) +
-' column width_1/' +
-((__t = ( _.size(categories) )) == null ? '' : __t) +
-'">\n            <div class="stat-label">' +
-((__t = ( cat.title )) == null ? '' : __t) +
-'</div>\n            <div class="stat-value stat-incidents"></div>\n            <div class="stat-value stat-change"></div>\n          </div>\n        ';
- }) ;
-__p += '\n      ';
+'</span></h2>\n    ';
+ if (_.isObject(window.navigator) && _.isObject(window.navigator.geolocation)) { ;
+__p += '\n      <p><a href="#" class="location-geolocate">Use your current location</a></p>\n    ';
  } ;
-__p += '\n    </div>\n    \n    <div class="row row-space">\n      <div class="column width_1/1 last">\n        <h4><span class="category-title"></span> incidents each year up to <span class="current-month"></span></h4>\n        <p class="note">As crime rates vary significantly each month, this chart shows the total number of incidents of a particular category of crime up to the current month for each year.</p>\n        <div id="chart-city-incidents-this-year-history" class="chart"></div>\n      </div>\n    </div>\n    \n    <div class="row row-space">\n      <div class="column width_1/1 last">\n        <h4><span class="category-title"></span> incident rate each year</h4>\n        <p class="note">This chart shows the rate of incidents (per 1,000 residents) of a particular category of crime for each full year.</p>\n        <div id="chart-city-incident-rate-per-year" class="chart"></div>\n      </div>\n    </div>\n    \n    <div class="row">\n      <div class="column width_1/1 last">\n        <h4><span class="category-title"></span> incidents over the past 12 months (compared to 12 months prior)</h4>\n        <p class="note">This chart shows the total number of incidents of a particular category of crime for each month for the past 12 months, compared to the same time period the year prior.</p>\n        <div id="chart-city-last-year" class="chart"></div>\n      </div>\n    </div>\n  </div>\n</div>';
+__p += '\n      \n    <form class="neighborhood-choice-form note bottom-space">\n      <select class="neighborhood-choice">\n        <option value="">-- choose neighborhood --</option>\n      </select>\n    </form>\n      \n    <form class="location-search-form bottom-space">\n      <input type="text" class="address-search" value="Find neighborhood by address" data-default="Find neighborhood by address" />\n      <input type="submit" value="GO" />\n    </form>\n  </div>\n\n  <div class="grid-100 bottom-space grid-parent">\n    <div class="mc-left-column grid-60 grid-parent">\n      <div class="bottom-space mc-title">\n        <h2>\n          <span class="section-title">' +
+((__t = ( (typeof title != 'undefined') ? title : '' )) == null ? '' : __t) +
+'</span>\n          <em><span class="category-title"></span></em> incidents for \n          <span class="current-month"></span> <span class="current-year"></span>\n        </h2>\n        \n        <!-- placeholder for changing document title -->\n        <span class="document-title"></span>\n      </div>\n      \n      <div class="grid-100 mobile-grid-100 tablet-grid-100 grid-parent bottom-space mc-totals">\n        <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-incidents-month">\n          <span class="stat-value"></span>\n          <span class="stat-symbol"></span>\n          <p class="note">Total incidents</p>\n        </div>\n        \n        <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-change-last-month">\n          <span class="stat-value"></span>\n          <span class="stat-symbol"></span>\n          <p class="note">Change from last month (<span class="stat-incidents-last-month"><span class="stat-value"></span></span> incidents)</p>\n        </div>\n        \n        <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-change-month-last-year">\n          <span class="stat-value"></span>\n          <span class="stat-symbol"></span>\n          <p class="note">Change from same month last year (<span class="stat-incidents-last-year-month"><span class="stat-value"></span></span> incidents)</p>\n        </div>\n        \n        <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-rate-month">\n          <span class="stat-value"></span>\n          <span class="stat-symbol"></span>\n          <p class="note">Incident rate per 1,000 residents</p>\n        </div>\n        \n        <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space population-numbers">\n          <span class="stat-value population-2010"></span>\n          <p class="note">2010 census population</p>\n        </div>\n      </div>\n      \n      <div class="grid-100 mobile-grid-100 tablet-grid-100 bottom-space grid-parent category-stats">\n        <h2>\n          <span class="section-title">' +
+((__t = ( (typeof title != 'undefined') ? title : '' )) == null ? '' : __t) +
+'</span>\n          incidents by category\n        </h2>\n        \n        <p class="note bottom-space">Click on any category to see specific metrics and to update the map.  <a href="#" class="category-stat category-stat-total" data-category="total">Show all</a>.</p>\n  \n        ';
+ if (typeof categories != 'undefined') { ;
+__p += '\n          ';
+ _.each(categories, function(cat, c) { if (c !== 'total') { ;
+__p += '\n            <div data-category="' +
+((__t = ( c )) == null ? '' : __t) +
+'" class="category-stat category-stat-' +
+((__t = ( c )) == null ? '' : __t) +
+' grid-20 mobile-grid-33 tablet-grid-20">\n              <div class="stat-label">\n                <div class="force-bottom">' +
+((__t = ( cat.title )) == null ? '' : __t) +
+'</div>\n              </div>\n              <div class="stat-value stat-incidents"></div>\n              <div class="stat-value stat-change note"></div>\n            </div>\n          ';
+ } }) ;
+__p += '\n        ';
+ } ;
+__p += '\n      </div>\n    </div>\n    \n    <div class="mc-spacer grid-5 grid-parent"> &nbsp; </div>\n    \n    <div class="mc-right-column grid-35 grid-parent">\n      <h2>\n        <span class="section-title">' +
+((__t = ( (typeof title != 'undefined') ? title : '' )) == null ? '' : __t) +
+'</span>\n        <em><span class="category-title"></span></em> rate by neighborhood\n      </h2>\n      \n      <form class="location-search-form note bottom-space hide-on-mobile">\n        <p>\n          To see detailed neighborhood information, click on the map \n          ';
+ if (_.isObject(window.navigator) && _.isObject(window.navigator.geolocation)) { ;
+__p += '\n            or <a href="#" class="location-geolocate">use your current location</a>\n          ';
+ } ;
+__p += '\n        </p>\n        \n        <input type="text" class="address-search" value="Find neighborhood by address" data-default="Find neighborhood by address" /> <input type="submit" value="GO" />\n      </form>\n      \n      <div id="city-map">\n      </div>\n      \n      <div class="note">Crime rate per 1,000 residents.</div>\n      <div class="map-legend">\n      </div>\n    </div>\n  </div>\n\n  <div class="mc-charts">\n    <h2>\n      <span class="section-title">' +
+((__t = ( (typeof title != 'undefined') ? title : '' )) == null ? '' : __t) +
+'</span>\n      <em><span class="category-title"></span></em> incident rate trend over 12-month periods\n    </h2>\n\n    <p class="note">Because crime rates vary significantly each month, this yearly chart shows the rate (incidents per 1,000 residents) for 12-month periods ending with the current month.</p>\n      \n    <div class="grid-100 mobile-grid-100 tablet-grid-100 bottom-space">\n      <div id="chart-city-incidents-12-month-history" class="chart"></div>\n    </div>\n  </div>\n</div>';
 
 }
 return __p
@@ -284,13 +344,23 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div class="map-label-inner-container">\n  <h4>' +
 ((__t = ( title )) == null ? '' : __t) +
-'</h4>\n  ';
+'</h4>\n  \n  ';
  if (typeof label != 'undefined' && typeof property != 'undefined') { ;
 __p += '\n    ' +
 ((__t = ( label )) == null ? '' : __t) +
 ': ' +
 ((__t = ( (typeof formatter != 'undefined') ? formatter(property) : property )) == null ? '' : __t) +
 '\n  ';
+ } ;
+__p += '\n  \n  ';
+ if (typeof n.mapCategory != 'undefined') { ;
+__p += '\n    <em>' +
+((__t = ( n.mapCategory )) == null ? '' : __t) +
+'</em> <br />\n    Incidents: ' +
+((__t = ( _.formatNumber(n.mapIncidents, 0) )) == null ? '' : __t) +
+' <br />\n    Incident rate: ' +
+((__t = ( _.formatNumber(n.mapRate) )) == null ? '' : __t) +
+' per 1,000 residents\n  ';
  } ;
 __p += '\n</div>';
 
@@ -305,7 +375,11 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div class="map-legend-inner clearfix">\n  ';
  _.each(legend, function(l, i) { ;
-__p += '\n    <div class="legend-item" style="width: ' +
+__p += '\n    <div class="legend-item';
+ if (l.color === display) { ;
+__p += ' active-display';
+ } ;
+__p += '" style="width: ' +
 ((__t = ( (100 / _.size(legend)) )) == null ? '' : __t) +
 '%;">\n      <div class="legend-color" style="background-color: ' +
 ((__t = ( l.color )) == null ? '' : __t) +
@@ -324,27 +398,37 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="mc-neighborhood-container">\n  <div class="flurid">\n    <div class="row row-space">\n      <div class="column width_1/1">\n        <div class="month-display">\n          <span class="current-month"></span>, <span class="current-year"></span>\n        </div>\n      \n        <h2 class="section-title">' +
+__p += '<div class="mc-city-container">\n\n  <div class="grid-100 bottom-space grid-parent">\n    <div class="mc-left-column grid-60 grid-parent">\n      <div class="bottom-space mc-title">\n        <h2>\n          <span class="section-title">' +
 ((__t = ( (typeof title != 'undefined') ? title : '' )) == null ? '' : __t) +
-'</h2>\n        <a href="#city/' +
+'</span>\n          <em><span class="category-title"></span></em> incidents for \n          <span class="current-month"></span> <span class="current-year"></span>\n        </h2>\n        \n        <p class="note">\n          <a href="#city/' +
+((__t = ( (typeof city != 'undefined') ? city : '' )) == null ? '' : __t) +
+'" class="city-link">\n            ' +
+((__t = ( (typeof city != 'undefined') ? city : '' )) == null ? '' : __t) +
+'\n          </a>\n        </p>\n        \n        <!-- placeholder for changing document title -->\n        <span class="document-title"></span>\n      </div>\n      \n      <div class="grid-100 mobile-grid-100 tablet-grid-100 grid-parent bottom-space mc-totals">\n        <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-incidents-month">\n          <span class="stat-value"></span>\n          <span class="stat-symbol"></span>\n          <p class="note">Total incidents</p>\n        </div>\n        \n        <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-change-last-month">\n          <span class="stat-value"></span>\n          <span class="stat-symbol"></span>\n          <p class="note">Change from last month (<span class="stat-incidents-last-month"><span class="stat-value"></span></span> incidents)</p>\n        </div>\n        \n        <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-change-month-last-year">\n          <span class="stat-value"></span>\n          <span class="stat-symbol"></span>\n          <p class="note">Change from same month last year (<span class="stat-incidents-last-year-month"><span class="stat-value"></span></span> incidents)</p>\n        </div>\n        \n        <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-rate-month">\n          <span class="stat-value"></span>\n          <span class="stat-symbol"></span>\n          <p class="note">Incident rate per 1,000 residents <br /> (compared to <span class="city-name"></span> rate of <span class="stat-rate-city"><span class="stat-value"></span></span>)</p>\n        </div>\n        \n        <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space population-numbers">\n          <span class="stat-value population-2010"></span>\n          <p class="note">2010 census population</p>\n        </div>\n      </div>\n      \n      <div class="grid-100 mobile-grid-100 tablet-grid-100 bottom-space grid-parent category-stats">\n        <h2>\n          <span class="section-title">' +
+((__t = ( (typeof title != 'undefined') ? title : '' )) == null ? '' : __t) +
+'</span>\n          incidents by category\n        </h2>\n        \n        <p class="note bottom-space">Click on any category to see specific metrics and to update the map.  <a href="#" class="category-stat category-stat-total" data-category="total">Show all</a>.</p>\n  \n        ';
+ if (typeof categories != 'undefined') { ;
+__p += '\n          ';
+ _.each(categories, function(cat, c) { if (c !== 'total') { ;
+__p += '\n            <div data-category="' +
+((__t = ( c )) == null ? '' : __t) +
+'" class="category-stat category-stat-' +
+((__t = ( c )) == null ? '' : __t) +
+' grid-20 mobile-grid-33 tablet-grid-20">\n              <div class="stat-label">\n                <div class="force-bottom">' +
+((__t = ( cat.title )) == null ? '' : __t) +
+'</div>\n              </div>\n              <div class="stat-value stat-incidents"></div>\n              <div class="stat-value stat-change note"></div>\n            </div>\n          ';
+ } }) ;
+__p += '\n        ';
+ } ;
+__p += '\n      </div>\n    </div>\n    \n    <div class="mc-spacer grid-5 grid-parent"> &nbsp; </div>\n    \n    <div class="mc-right-column grid-35 grid-parent">\n      <h2>\n        <span class="section-title">' +
+((__t = ( (typeof title != 'undefined') ? title : '' )) == null ? '' : __t) +
+'</span>\n        <em><span class="category-title"></span></em> rate\n      </h2>\n    \n      <p class="note">\n        <a href="#city/' +
 ((__t = ( (typeof city != 'undefined') ? city : '' )) == null ? '' : __t) +
 '" class="city-link">\n          ' +
 ((__t = ( (typeof city != 'undefined') ? city : '' )) == null ? '' : __t) +
-'\n        </a>\n        <span class="document-title"></span>\n      </div>\n    </div>\n  \n    <div class="row row-space">\n      <div class="column width_1/2">\n        <div class="inner-column-left">\n          <p>Select a neighborhood from the map to see details.</p>\n          <div id="neighborhood-map">\n          </div>\n          \n          <div class="map-legend">\n          </div>\n        </div>\n      </div>\n      \n      <div class="column width_1/2 last">\n        <h3><span class="category-title"></span> incidents</h3>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-incidents-month">\n              <p>Incidents this month</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n      \n        <div class="column width_1/2">\n          <div class="">\n            <div class="stat-rate-month">\n              <p>Incident rate (per 1,000 people)</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n            \n            <div class="stat-rate-month-rank">\n              <span class="stat-value"></span>\n            </div>\n          </div>\n        </div>\n      \n        <div class="column width_1/2">\n          <div class="inner-column-left">\n            <div class="stat-change-last-month">\n              <p>Change from last month</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n      \n        <div class="column width_1/2">\n          <div class="">\n            <div class="stat-change-month-last-year">\n              <p>Change from last year this month</p>\n              <span class="stat-value"></span>\n              <span class="stat-symbol"></span>\n            </div>\n          </div>\n        </div>\n      \n        <div class="column width_1/1">\n          <div class="population-numbers">\n            Population | 2010: \n              <span class="population-2010"></span>\n            | 2000:\n              <span class="population-2000"></span>\n          </div>\n        </div>\n        \n      </div>\n    </div>\n    \n    <div class="row row-space category-stats">\n      <h4>Incidents this month per category</h4>\n      <p class="note">The following are incident totals per category for the given month, below each number is the percent change from the prior month.</p>\n      ';
- if (typeof categories != 'undefined') { ;
-__p += '\n        ';
- _.each(categories, function(cat, c) { ;
-__p += '\n          <div class="category-stat category-stat-' +
-((__t = ( c )) == null ? '' : __t) +
-' column width_1/' +
-((__t = ( _.size(categories) )) == null ? '' : __t) +
-'">\n            <div class="stat-label">' +
-((__t = ( cat.title )) == null ? '' : __t) +
-'</div>\n            <div class="stat-value stat-incidents"></div>\n            <div class="stat-value stat-change"></div>\n          </div>\n        ';
- }) ;
-__p += '\n      ';
- } ;
-__p += '\n    </div>\n    \n    <div class="row row-space">\n      <div class="column width_1/1 last">\n        <h4><span class="category-title"></span> incidents each year up to <span class="current-month"></span></h4>\n        <p class="note">As crime rates vary significantly each month, this chart shows the total number of incidents of a particular category of crime up to the current month for each year.</p>\n        <div id="chart-neighborhood-incidents-this-year-history" class="chart"></div>\n      </div>\n    </div>\n    \n    <div class="row row-space">\n      <div class="column width_1/1 last">\n        <h4><span class="category-title"></span> incident rate each year</h4>\n        <p class="note">This chart shows the rate of incidents (per 1,000 residents) of a particular category of crime for each full year.</p>\n        <div id="chart-neighborhood-incident-rate-per-year" class="chart"></div>\n      </div>\n    </div>\n    \n    <div class="row">\n      <div class="column width_1/1 last">\n        <h4><span class="category-title"></span> incidents over the past 12 months (compared to 12 months prior)</h4>\n        <p class="note">This chart shows the total number of incidents of a particular category of crime for each month for the past 12 months, compared to the same time period the year prior.</p>\n        <div id="chart-neighborhood-last-year" class="chart"></div>\n      </div>\n    </div>\n  </div>\n</div>';
+'\n        </a>\n      </p>\n      \n      <div id="neighborhood-map">\n      </div>\n      \n      <div class="note">Crime rate per 1,000 residents.</div>\n      <div class="map-legend">\n      </div>\n    </div>\n  </div>\n\n  <div class="mc-charts">\n    <h2>\n      <span class="section-title">' +
+((__t = ( (typeof title != 'undefined') ? title : '' )) == null ? '' : __t) +
+'</span>\n      <em><span class="category-title"></span></em> incident rate trend over 12-month periods\n    </h2>\n\n    <p class="note">Because crime rates vary significantly each month, this yearly chart shows the rate (incidents per 1,000 residents) for 12-month periods ending with the current month.</p>\n      \n    <div class="grid-100 mobile-grid-100 tablet-grid-100 bottom-space">\n      <div id="chart-neighborhood-incidents-12-month-history" class="chart"></div>\n    </div>\n  </div>\n</div>\n';
 
 }
 return __p
@@ -396,6 +480,19 @@ return __p
       });
     },
     
+    // General error handler
+    appError: function(message) {
+      var thisRouter = this;
+      
+      return function(error) {
+        if (_.isObject(console) && _.isFunction(console.log)) {
+          console.log(error);
+        }
+        
+        thisRouter.applicationView.renderErrorMessage(message);
+      };
+    },
+    
     // Get initial data
     fetchData: function(done) {
       var thisRouter = this;
@@ -405,23 +502,32 @@ return __p
         thisRouter.fetchRecentMonth(function(year, month) {
           app.options.currentYear = year;
           app.options.currentMonth = month;
-        }).done(done);
-      });
+        })
+        .done(done)
+        .fail(thisRouter.appError('Issue retrieving current year and month data.'));
+      })
+      .fail(thisRouter.appError('Issue retrieving base data.'));
     },
     
     // Get most recent month and year as this will
     // be used throught the application
     fetchRecentMonth: function(done, context) {
       context = context || this;
-      var dataCrimeQueryBase = 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]';
+      var thisRouter = this;
+      var dataCrimeQueryBase = 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&query=[[[QUERY]]]';
 
       var query = "SELECT month, year FROM swdata ORDER BY year || '-' || month DESC LIMIT 1";
-      var defer = $.jsonp({ url: dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
+      var defer = app.getRemoteData({ url: dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
       
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
+          if (_.isObject(data) && !_.isUndefined(data.error)) {
+            thisRouter.appError('Issue retrieving current year and month data.')();
+          }
+          
           done.apply(context, [data[0].year, data[0].month]);
-        });
+        })
+        .fail(thisRouter.appError('Issue retrieving current year and month data.'));
       }
       return defer;
     },
@@ -594,13 +700,14 @@ return __p
     routeGeolocate: function(done, context) {
       var thisRouter = this;
     
+      this.applicationView.renderGeneralLoading();
       navigator.geolocation.getCurrentPosition(function(position) {
         if (_.isObject(position.coords)) {
           thisRouter.routeGeoCoordinate([position.coords.longitude, position.coords.latitude], 
             done, context);
         }
       }, function(err) {
-        // Handle error
+        thisRouter.appError('Issue retrieving current position.')(err);
       });
     },
     
@@ -611,15 +718,18 @@ return __p
       var url = app.options.mapQuestQuery.replace('[[[KEY]]]', app.options.mapQuestKey)
         .replace('[[[ADDRESS]]]', encodeURI(address));
         
-      $.getJSON(url, function(response) {
-        latlng = response.results[0].locations[0].latLng;
-        if (latlng) {
-          thisRouter.routeGeoCoordinate([latlng.lng, latlng.lat], done, context);
-        }
-        else {
-          // Handle error
-        }
-      });
+      this.applicationView.renderGeneralLoading();
+      $.jsonp({ url: url })
+        .done(function(response) {
+          latlng = response.results[0].locations[0].latLng;
+          if (latlng) {
+            thisRouter.routeGeoCoordinate([latlng.lng, latlng.lat], done, context);
+          }
+          else {
+            thisRouter.appError('Issue retrieving position from address.')(response);
+          }
+        })
+        .fail(thisRouter.appError('Issue retrieving position from address.'));
     },
     
     // Route based on geo point
@@ -641,6 +751,9 @@ return __p
           this.navigate('/neighborhood/' + found.id + 
             '/' + this.category, { trigger: true });
         }
+        else {
+          this.appError('Could not find your location on the map.')(found);
+        }
       }
     }
   });
@@ -661,7 +774,7 @@ return __p
    * Basic model for other crime models
    */
   app.ModelCrimeArea = Backbone.Model.extend({
-    dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&callback=?&query=[[[QUERY]]]',
+    dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&query=[[[QUERY]]]',
     // See scraper for why this is needed
     dataCrimeQueryWhere: "notes NOT LIKE 'Added to%'",
     
@@ -688,6 +801,32 @@ return __p
       this.options.app.on('change:category', function() {
         thisModel.set('appCategory', thisModel.options.app.category);
       });
+      
+      // If crimes per month change, update the combined categories
+      this.on('crimesByMonth', function(e) {
+        thisModel.setCombined();
+      });
+    },
+    
+    // Set combined categories
+    setCombined: function(data ) {
+      data = data || _.clone(this.get('crimesByMonth'));
+      var categories = this.get('categories');
+      
+      _.each(data, function(year, y) {
+        _.each(year, function(month, m) {
+          _.each(categories, function(cat, c) {
+            if (_.isArray(cat.combine) && _.isUndefined(month[c])) {
+              data[y][m][c] = _.reduce(cat.combine, function(total, combine) {
+                return total + month[combine];
+              }, 0);
+            }
+          });
+        });
+      });
+      
+      this.set('crimesByMonth', data);
+      return data;
     },
     
     // Get category from argument or from app
@@ -699,10 +838,11 @@ return __p
     },
     
     // Stats shared across models
+    statsSetGlobal: false,
     setStats: function() {
       var thisModel = this;
-      var data = this.get('crimesByMonth');
-      var stats;
+      var data = _.clone(this.get('crimesByMonth'));
+      var stats, city;
       
       // There's no need to do this more than once
       if (this.get('statsSetGlobal') || !_.isObject(data)) {
@@ -712,6 +852,7 @@ return __p
       // Put stats into object with each category
       stats = _.clone(this.get('stats'));
       stats = stats || {};
+      city = (this.get('city')) ? this.options.app.cities.get(this.get('city')) : null;
       
       // Make stats for each category.
       _.each(this.get('categories'), function(cat, c) {
@@ -719,10 +860,19 @@ return __p
         stats[c].incidentsMonth = thisModel.getCrimeByMonth(c);
         stats[c].rateMonth = thisModel.getCrimeRateByMonth(c);
         
+        stats[c].incidentsLastMonth = thisModel.getCrimeByMonth(c,
+          thisModel.get('lastMonthYear'), thisModel.get('lastMonthMonth'));
+        stats[c].incidentsLastYearMonth = thisModel.getCrimeByMonth(c,
+          thisModel.get('currentYear') - 1, thisModel.get('currentMonth'));
+        
         stats[c].changeLastMonth = thisModel.getMonthChange(c, 
           thisModel.get('lastMonthYear'), thisModel.get('lastMonthMonth'));
         stats[c].changeMonthLastYear = thisModel.getMonthChange(c, 
           thisModel.get('currentYear') - 1, thisModel.get('currentMonth'));
+        
+        if (city) {
+          stats[c].rateCity = city.getCrimeRateByMonth(c);
+        }
       });
       
       this.set('stats', stats);
@@ -795,10 +945,9 @@ return __p
       var crime2 = this.getCrimeByMonth(category, year2, month2);
       
       // Can't divide by zero, so percentage difference from
-      // zero is actually subject, we choose a value so that a 1
+      // zero is actually subjective, we choose a value so that a 1
       // change would be 100%
-      // (1 - x) / x = 1
-      return (crime2 - crime1) / ((crime1 === 0) ? 0.5 : crime1);
+      return (crime2 - crime1) / ((crime1 === 0) ? 1 : crime1);
     },
     
     // Get crime inciendents for a specific month and year
@@ -835,7 +984,7 @@ return __p
       month = month || this.get('currentMonth');
       var population = this.get('population')[year];
       var crimes = this.getCrimeByMonth(category, year, month);
-      population = (!population) ? 1 : population;
+      population = Math.max((!population) ? 0 : population, 500);
       
       return (crimes / (population / 1000));
     },
@@ -914,6 +1063,57 @@ return __p
       });
       
       return data;
+    },
+    
+    // Get dataset of 12 month intervals per years
+    get12MonthIntervalsPerYear: function(category) {
+      var thisModel = this;
+      var data = [];
+      var monthData = _.clone(this.get('crimesByMonth'));
+      var cYear = this.get('currentYear');
+      var cMonth = this.get('currentMonth');
+      var cDate = moment(cYear + '-' + cMonth + '-01', 'YYYY-MM-DD');
+      var months = 0;
+      var intervals = 0;
+      var i, m, iS, iE, rate, date, count, x, dS, dE;
+      
+      // Find number of months in data and get intervals
+      _.each(this.get('crimesByMonth'), function(year, y) {
+        months += _.size(year);
+      });
+      intervals = Math.floor(months / 12);
+      
+      // Make sure there are intervals
+      if (intervals <= 0) {
+        return data;
+      }
+      
+      // Go through intervals.  moment.month is 0 based!!!
+      for (i = intervals; i >= 1; i--) {
+        iS = (i * 12) - 1;
+        iE = (i * 12) - 12;
+        rate = 0;
+        count = 0;
+        
+        // Go through months to get an average
+        for (m = iS; m >= iE; m--) {
+          date = moment(cDate);
+          date.subtract('months', m);
+          
+          // Check if data is there, as there are some holes here and there
+          if (_.isObject(monthData[date.year()]) && !_.isUndefined(monthData[date.year()][date.month() + 1])) {
+            rate += this.getCrimeRateByMonth(category, date.year(), date.month() + 1);
+            count++;
+          }
+        }
+        rate = rate / count;
+        dS = moment(cDate).subtract('months', iS);
+        dE = moment(cDate).subtract('months', iE);
+        x = '' + (dS.month() + 1) + '/' + dS.format('YY') + '-' + (dE.month() + 1) + '/' + dE.format('YY');
+        data.push([x, rate]);
+      }
+      
+      return data;
     }
   });
 
@@ -950,6 +1150,7 @@ return __p
             data[r.year][r.month] = r;
           });
           
+          thisModel.setCombined(data);
           thisModel.set('crimesByMonth', data);
           thisModel.set('fetched', true);
           thisModel.trigger('fetched');
@@ -969,12 +1170,14 @@ return __p
       
       query.push("SELECT year, month");
       _.each(this.get('categories'), function(category, c) {
-        query.push(", SUM(" + c + ") AS " + c);
+        if (!_.isArray(category.combine)) {
+          query.push(", SUM(" + c + ") AS " + c);
+        }
       });
       query.push(" FROM swdata WHERE " + this.dataCrimeQueryWhere);
       query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
       
-      var defer = $.jsonp({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = app.getRemoteData({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
@@ -991,7 +1194,9 @@ return __p
       
       query.push("SELECT year, month");
       _.each(this.get('categories'), function(category, c) {
-        query.push(", SUM(" + c + ") AS " + c);
+        if (!_.isArray(category.combine)) {
+          query.push(", SUM(" + c + ") AS " + c);
+        }
       });
       query.push(" FROM swdata WHERE " + this.dataCrimeQueryWhere);
       query.push(" AND ((year = " + year + " AND month <= " + month + ") ");
@@ -1001,7 +1206,7 @@ return __p
       query.push(" OR (year = " + (year - years) + " AND month >= " + month + "))");
       query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
       
-      var defer = $.jsonp({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = app.getRemoteData({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
@@ -1022,6 +1227,7 @@ return __p
     },
   
     // Set stats values
+    statsSet: false,
     setStats: function() {
       app.ModelCity.__super__.setStats.apply(this, arguments);
       return this;
@@ -1043,6 +1249,7 @@ return __p
             data[r.year][r.month] = r;
           });
           
+          thisModel.setCombined(data);
           thisModel.set('crimesByMonth', data);
           thisModel.set('fetched', true);
           thisModel.trigger('fetched');
@@ -1064,7 +1271,7 @@ return __p
       query.push(" AND neighborhood_key = '" + this.get('key') + "' ");
       query.push(" ORDER BY year DESC, month DESC");
       
-      var defer = $.jsonp({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = app.getRemoteData({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
@@ -1120,13 +1327,13 @@ return __p
         query.push(" OR (year = " + model.get('lastMonthYear') + "");
         query.push(" AND month = " + model.get('lastMonthMonth') + "))");
         query.push(" ORDER BY year DESC, month DESC");
-        defer = $.jsonp({ url: model.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+        defer = app.getRemoteData({ url: model.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
     
         if (_.isFunction(done)) {
           $.when(defer).done(function(data) {
             // Put data into the models
             thisCollection.each(function(m) {
-              var crimesByMonth = m.get('crimesByMonth') || {};
+              var crimesByMonth = _.clone(m.get('crimesByMonth')) || {};
               _.each(data, function(d) {
                 if (d.neighborhood_key === m.get('key')) {
                   crimesByMonth[d.year] = crimesByMonth[d.year] || {};
@@ -1134,8 +1341,15 @@ return __p
                 }
               });
               
+              crimesByMonth = m.setCombined(crimesByMonth);
               m.set('crimesByMonth', crimesByMonth);
             });
+            // Some stats are relative to the whole
+            /*
+            thisCollection.each(function(m) {
+              m.setStats();
+            });
+            */
             
             if (_.isFunction(done)) {
               done.apply(context, [data[0]]);
@@ -1174,7 +1388,11 @@ return __p
     events: {
       'click .location-geolocate': 'handleGeolocate',
       'submit .location-search-form': 'handleAddressSearch',
-      'change #category-select': 'handleCategoryChange'
+      'change #category-select': 'handleCategoryChange',
+      'change .neighborhood-choice': 'handleNeighborhoodChoiceChange',
+      'click .category-stat': 'handleCategoryChoice',
+      'focus .address-search': 'handleAddressInputFocus',
+      'blur .address-search': 'handleAddressInputBlur'
     },
     
     // Main template render
@@ -1194,14 +1412,6 @@ return __p
       this.options.app.cityMapView.render();
       this.options.app.neighborhoodView.render();
       this.options.app.neighborhoodMapView.render();
-      
-      // Render location search
-      app.getTemplate('template-location-search', function(template) {
-        this.templates['template-location-search'] = template;
-        $(this.el).find('.location-search-container').html(template({
-          geolocation: (_.isObject(window.navigator) && _.isObject(window.navigator.geolocation))
-        }));
-      }, this);
       
       // Render category select
       app.getTemplate('template-category-select', function(template) {
@@ -1274,7 +1484,7 @@ return __p
     
     // Display loading specifically in the header
     renderGeneralLoading: function() {
-      this.renderLoading('.messaging-container .column');
+      this.renderLoading('.messaging-container');
       return this;
     },
     
@@ -1286,23 +1496,89 @@ return __p
       return this;
     },
     
+    // General message
+    renderMessage: function(message) {
+      this.$el.find('.messaging-container').html(message).fadeIn();
+      return this;
+    },
+    
+    // General message
+    renderErrorMessage: function(message) {
+      message = '<div class="application-error">' + message + '</span>';
+      this.renderMessage(message);
+      return this;
+    },
+    
     // Update category change.  This is needed as we don't have
     // a two way connection between the select and the category
     // value
     updateCategory: function(category) {
+      var $catFound = $('div.category-stat[data-category=' + category + ']');
+      
+      // Update dropdown
       this.$el.find('#category-select').val(category);
+      
+      // Update category stats.  If the category is total or
+      // otherwise not in the list, then reset, otherwise,
+      // highlight the right one
+      if ($catFound.size() > 0) {
+        $('.category-stat').each(function() {
+          var $this = $(this);
+          
+          if ($this.data('category') === category) {
+            $this.removeClass('not-selected');
+          }
+          else {
+            $this.addClass('not-selected');
+          }
+        });
+      }
+      else {
+        $('.category-stat').removeClass('not-selected');
+      }
     },
     
     // Handle if category select changes
     handleCategoryChange: function(e) {
       e.preventDefault();
-      var category = $(e.currentTarget).val();
+      this.changeCategory($(e.currentTarget).val());
+    },
+    
+    // Handle choosing category
+    handleCategoryChoice: function(e) {
+      e.preventDefault();
+      this.changeCategory($(e.currentTarget).data('category'));
+    },
+    
+    // Handle neighborhood change dropdown
+    handleNeighborhoodChoiceChange: function(e) {
+      var $target = $(e.currentTarget);
+      e.preventDefault();
+      
+      if (!_.isUndefined($target.val()) && $target.val() !== '') {
+        this.changeNeighborhood($target.val());
+      }
+    },
+    
+    // Change category
+    changeCategory: function(category) {
       var prefix = (Backbone.history) ? Backbone.history.fragment : false;
       var model = this.options.app.currentModel;
       
       if (category && prefix && model) {
         this.options.app.navigate(prefix.split('/')[0] + '/' + 
           model.id + '/' + category, { trigger: true });
+      }
+    },
+    
+    // Change neighborhood
+    changeNeighborhood: function(neighborhood) {
+      var model = this.options.app.currentModel;
+      var category = model.get('appCategory');
+      
+      if (category) {
+        this.options.app.navigate('neighborhood' + '/' + 
+          neighborhood + '/' + category, { trigger: true });
       }
     },
     
@@ -1320,6 +1596,26 @@ return __p
       if (val) {
         this.options.app.routeAddress(val);
       }
+    },
+    
+    // Handle focus on address earch bar
+    handleAddressInputFocus: function(e) {
+      var $target = $(e.currentTarget);
+      
+      $target.addClass('selected');
+      if ($target.val() === $target.data('default')) {
+        $target.val('');
+      }
+    },
+    
+    // Handle blur on address earch bar
+    handleAddressInputBlur: function(e) {
+      var $target = $(e.currentTarget);
+      
+      $target.removeClass('selected');
+      if ($target.val() === '') {
+        $target.val($target.data('default'));
+      }
     }
   });
 
@@ -1329,40 +1625,75 @@ return __p
   app.ViewBinding = Backbone.View.extend({
     
     // Default chart options
-    plotOptions: {
-      seriesColors: ['#10517F'],
-      grid: {
-        drawBorder: false,
-        background: '#fafafa',
-        gridLineColor: '#dddddd',
-        shadow: false
-      },
-      seriesDefaults: {
-        shadow: false,
-        markerOptions: {
-          size: 6,
-          shadow: false
-        },
-        rendererOptions: {
-          barPadding: 0,
-          barMargin: 2 
+    chartOptions: {
+      chart: {
+        type: 'line',
+        style: {
+          fontFamily: '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',
+          color: '#BCBCBC'
         }
       },
-      axes: {
-        xaxis: {
-          renderer: $.jqplot.CategoryAxisRenderer
-        },
-        yaxis: {
-          min: 0,
-          tickOptions: {
-            formatter: function(format, value) { return _.formatNumber(value, 0); } 
+      colors: ['#094C86', '#BCBCBC'],
+      credits: {
+        enabled: false
+      },
+      title: {
+        enabled: false,
+        text: ''
+      },
+      legend: {
+        borderWidth: 0
+      },
+      plotOptions: {
+        line: {
+          lineWidth: 4,
+          states: {
+            hover: {
+              lineWidth: 5
+            }
+          },
+          marker: {
+            fillColor: '#ffffff',
+            lineWidth: 2,
+            lineColor: null,
+            symbol: 'circle',
+            enabled: false,
+            states: {
+              hover: {
+                enabled: true
+              }
+            }
           }
         }
       },
-      highlighter: {
-        show: true,
-        sizeAdjust: 7,
-        tooltipAxes: 'y'
+      xAxis: {
+        title: { },
+        type: 'category'
+      },
+      yAxis: {
+        title: {
+          enabled: false,
+          text: 'Incident rate<br />(per 1,000 residents)',
+          margin: 40,
+          style: {
+            color: 'inherit',
+            fontWeight: 'normal'
+          }
+        },
+        min: 0,
+        gridLineColor: '#BCBCBC'
+      },
+      tooltip: {
+        //shadow: false,
+        //borderRadius: 0,
+        //borderWidth: 0,
+        style: {},
+        useHTML: true,
+        formatter: function() {
+          return '<strong>' + this.series.name + '</strong><br />' + 
+            _.formatNumber(this.y, 2) + ' incidents per 1,000 residents<br /><br />' + 
+            '<em>For months ' + this.key + '</em>';
+        }
       }
     },
   
@@ -1410,20 +1741,34 @@ return __p
           argument: 0
         }
       },
-      '.stat-rate-month .stat-value': {
+      '.stat-rate-month > .stat-value': {
+        observe: ['stats', 'appCategory'], 
+        update: 'bindUpdateIncidentRate'
+      },
+      '.stat-incidents-last-month .stat-value': {
         observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
         options: { 
-          stat: 'rateMonth',
-          formatter: 'formatNumber'
+          stat: 'incidentsLastMonth',
+          formatter: 'formatNumber', 
+          argument: 0
         }
       },
-      '.stat-change-last-month .stat-value': {
+      '.stat-incidents-last-year-month .stat-value': {
+        observe: ['stats', 'appCategory'], 
+        update: 'bindUpdateStat',
+        options: { 
+          stat: 'incidentsLastYearMonth',
+          formatter: 'formatNumber', 
+          argument: 0
+        }
+      },
+      '.stat-change-last-month > .stat-value': {
         observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
         options: { stat: 'changeLastMonth' }
       },
-      '.stat-change-month-last-year .stat-value': {
+      '.stat-change-month-last-year > .stat-value': {
         observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
         options: { stat: 'changeMonthLastYear' }
@@ -1445,14 +1790,19 @@ return __p
       if (_.isNumber(val)) {
       
         // Determine number and formatting
-        var number = (_.isNaN(parseInt($el.text(), 10))) ? 0 : 
-          (parseInt($el.text(), 10) / 100);
+        var parsed = parseFloat(_.stripNumber($el.text()));
+        var number = (_.isNaN(parsed)) ? 0 : parsed;
         var formatOption = (_.isObject(options.options) && options.options.formatter) ? 
-          options.options.formatter : 'formatPercentChange';
+          options.options.formatter : 'formatPercentChangeStyled';
         var formatArgument = (_.isObject(options.options)) ? options.options.argument : undefined;
         var formatter = (_.isFunction(formatOption)) ? formatOption :
           ((_.isFunction(_[formatOption])) ? _[formatOption] : function(v) { return v; } );
         var interval, intervalID, greaterThan;
+        
+        // Hackery for percents
+        if (formatOption.indexOf('Percent') > 0) {
+          number = number / 100;
+        }
         
         // If different, start counting
         if (_.isNumber(val) && val != number) {
@@ -1512,7 +1862,7 @@ return __p
       if (!_.isUndefined(model.get('crimesByMonth'))) {
         var incidentOptions = _.extend(_.clone(options), 
           { options: { formatter: 'formatNumber', argument: 0 }});
-          
+        
         _.each(model.get('categories'), function(cat, c) {
           var stat, $statEl;
           
@@ -1539,6 +1889,34 @@ return __p
       }
     },
     
+    // Update neighborhood incident rate value
+    bindUpdateIncidentRate: function($el, val, model, options) {
+      var stat = 'rateMonth';
+      var city = model.get('city');
+      var stats = model.get('stats');
+      var cityStat;
+      
+      // If a neighborhood, then format differently
+      if (!_.isUndefined(city)) {
+        if (stats && _.isNumber(stats[model.get('appCategory')][stat]) &&
+          _.isNumber(stats[model.get('appCategory')].rateCity)) {
+          options.options = {
+            stat: stat,
+            formatter: 'formatDifferenceStyled',
+            argument: stats[model.get('appCategory')].rateCity
+          };
+          this.bindUpdateStat($el, val, model, options);
+        }
+      }
+      else {
+        options.options = {
+          stat: stat,
+          formatter: 'formatNumber'
+        };
+        this.bindUpdateStat($el, val, model, options);
+      }
+    },
+    
     // Update populations numbers
     bindUpdatePopulation: function($el, val, model, options) {
       var population = model.get('population');
@@ -1554,24 +1932,47 @@ return __p
     bindUpdateChartLast12Months: function($el, val, model, options) {
       var data1 = model.getLastYearData(model.get('appCategory'), 1);
       var data2 = model.getLastYearData(model.get('appCategory'), 2);
-      var plotOptions = _.clone(this.plotOptions);
-      var plot;
+      var chartOptions = _.clone(this.chartOptions);
       
-      plotOptions.seriesColors = ['#BCBCBC', '#10517F'];
-      this.drawGraph($el.attr('id'), [data2, data1], plotOptions);
+      chartOptions.seriesColors = ['#BCBCBC', '#094C86'];
+      this.drawGraph($el.attr('id'), [data2, data1], chartOptions);
     },
     
     // Chart to show how many incidents this year with history
     bindUpdateIncidentsThisYearHistory: function($el, val, model, options) {
       var data = model.getIncidentsThisYearHistory();
-      this.drawGraph($el.attr('id'), [data], this.plotOptions);
+      this.drawGraph($el.attr('id'), [data], this.chartOptions);
     },
     
+    // Show incident rate per full year
     bindUpdateChartIncidentRatePerYear: function($el, val, model, options) {
       var data = model.getIncidentRatesPerYear();
-      var plotOptions = _.clone(this.plotOptions);
-      plotOptions.axes.yaxis.tickOptions = {};
-      this.drawGraph($el.attr('id'), [data], plotOptions);
+      var chartOptions = _.clone(this.chartOptions);
+      chartOptions.axes.yaxis.tickOptions = {};
+      this.drawGraph($el.attr('id'), [data], chartOptions);
+    },
+    
+    // Show incident rate for 12 month intervals
+    bindUpdateChart12MonthHistory: function($el, val, model, options) {
+      var series = [{
+        name: model.get('title'),
+        data: model.get12MonthIntervalsPerYear()
+      }];
+      var chartOptions = _.clone(this.chartOptions);
+      var city;
+      
+      // Get city line as well
+      if (model.get('city')) {
+        city = model.options.app.cities.get(model.get('city'));
+        series.push({
+          name: city.get('title'),
+          data: city.get12MonthIntervalsPerYear()
+        });
+      }
+      
+      if (series[0].data && _.size(series[0].data) > 0) {
+        this.drawGraph($el.attr('id'), series, chartOptions);
+      }
     },
     
     // Update the coloring of the map based on category
@@ -1583,16 +1984,17 @@ return __p
       mapView = mapView || 'cityMapView';
       category = this.model.getCategory();
       categoryObject = this.model.get('categories')[category];
-    
+
       // Since we use the same neighborhood models
       // for city view and individual eighborhood view,
       // we don't want to step on toes and set
       // the category, unnecessarily
       this.options.app.neighborhoods.each(function(n) {
-        n.set('cityMapValue', n.getCrimeRateByMonth(category));
+        n.set('mapRate', n.getCrimeRateByMonth(category));
+        n.set('mapIncidents', n.getCrimeByMonth(category));
+        n.set('mapCategory', categoryObject.title);
       });
-      this.options.app[mapView].mapVisualizeNeighborhoods(
-        'cityMapValue', categoryObject.title + ' incident rate');
+      this.options.app[mapView].mapVisualizeNeighborhoods('mapRate');
       
       return this;
     },
@@ -1604,18 +2006,26 @@ return __p
       
       // Check data
       _.each(data, function(dataSet) {
-        if (!_.isArray(dataSet) || dataSet.length <= 0) {
+        if (!_.isObject(dataSet) || !_.isArray(dataSet.data) || dataSet.data.length <= 0) {
           dataPresent = false;
         }
       });
       
       // If data present element exists
       if (dataPresent && $('#' + id).length > 0) {
-        plot = $.jqplot(id, data, options);
-        // Hack to only redraw if worth it
-        if (plot._drawCount) {
-          plot.redraw();
-        }
+        options.series = data;
+        $('#' + id).highcharts(options);
+      }
+    },
+    
+    // Fill neighborhood select
+    fillNeighborhoodChoices: function() {
+      var $select = $('.neighborhood-choice');
+
+      if ($select.size() > 0) {
+        this.options.app.neighborhoods.each(function(n) {
+          $select.append('<option value="' + n.id + '">' + n.get('title') + '</option>');
+        });
       }
     }
   });
@@ -1639,6 +2049,10 @@ return __p
   
     bindings: {
       // Charts
+      '#chart-city-incidents-12-month-history': { 
+        observe: ['crimesByMonth', 'appCategory'], 
+        update: 'bindUpdateChart12MonthHistory'
+      },
       '#chart-city-last-year': { 
         observe: ['crimesByMonth', 'appCategory'], 
         update: 'bindUpdateChartLast12Months'
@@ -1665,6 +2079,7 @@ return __p
     
       app.getTemplate('template-city', function(template) {
         this.$el.html(template(data));
+        this.fillNeighborhoodChoices();
       }, this);
       return this;
     },
@@ -1697,16 +2112,23 @@ return __p
         observe: 'city', 
         update: 'bindUpdateCityLink'
       },
-      '.stat-rate-month-rank .stat-value': {
+      '.city-name': {
+        observe: 'city', 
+        update: 'bindUpdateCityName'
+      },
+      '.stat-rate-city .stat-value': {
         observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
-        options: { 
-          stat: 'rateMonthRank',
-          formatter: 'formatNumber', 
-          argument: 0
+        options: {
+          stat: 'rateCity',
+          formatter: 'formatNumber'
         }
       },
       // Charts
+      '#chart-neighborhood-incidents-12-month-history': { 
+        observe: ['crimesByMonth', 'appCategory'], 
+        update: 'bindUpdateChart12MonthHistory'
+      },
       '#chart-neighborhood-last-year': { 
         observe: ['crimesByMonth', 'appCategory'], 
         update: 'bindUpdateChartLast12Months'
@@ -1727,6 +2149,14 @@ return __p
     },
     
     bindUpdateCityLink: function($el, val, model, options) {
+      var city = this.options.app.cities.get(val);
+      if (_.isObject(city)) {
+        $el.attr('href', '#city/' + city.id);
+        this.bindUpdateFade($el, 'Back to ' + city.get('title') + ' overview &crarr;', model, options);
+      }
+    },
+    
+    bindUpdateCityName: function($el, val, model, options) {
       var city = this.options.app.cities.get(val);
       if (_.isObject(city)) {
         $el.attr('href', '#city/' + city.id);
@@ -1805,7 +2235,7 @@ return __p
     renderMap: function(fitGroup) {
       fitGroup = (!_.isUndefined(fitGroup)) ? fitGroup : true;
       var thisView = this;
-      var baseLayer = new L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png');
+      var baseLayer = new L.tileLayer('//{s}.tiles.mapbox.com/v3/minnpost.map-wi88b700/{z}/{x}/{y}.png');
       
       if (_.isUndefined(this.el)) {
         this.setElement(this.$el.selector);
@@ -1813,7 +2243,11 @@ return __p
       
       // Only render the map once
       if (this.mapRendered === false) {
-        this.map = new L.Map(this.el);
+        this.map = new L.Map(this.el, {
+          scrollWheelZoom: false,
+          minZoom: 10,
+          maxZoom: 17
+        });
         this.map.setView([44.9800, -93.2636], 12);
         this.map.addLayer(baseLayer);
         this.map.attributionControl.setPrefix(false);
@@ -1856,14 +2290,13 @@ return __p
     },
     
     // Render/visualize neighborhoods based on a property
-    mapVisualizeNeighborhoods: function(property, label, formatter, exceptions) {
+    mapVisualizeNeighborhoods: function(property, formatter, exceptions) {
       var thisView = this;
       exceptions = exceptions || ['northeast_park', 'mid_city_industrial', 'camden_industrial', 'humboldt_industrial_area', 'downtown_west'];
       this.visualProperty = property || 'statRateMonth';
-      this.visualLabel = label || 'Incident rate';
       this.visualFormatter = formatter || _.formatNumber;
       var legend = [];
-      var data, colorScale;
+      var data, colorScale, currentValue;
       
       if (_.isUndefined(this.featureGroup)) {
         return;
@@ -1877,15 +2310,23 @@ return __p
       
       // Create color scale.  k-means minus exceptions seems to be the best
       // visual
-      colorScale = chroma.scale('YlGnBu')  //['#107F3E', '#B61673'] ['#107F3E', '#76107F']
+      // 'YlGnBu', ['#107F3E', '#B61673'] ['#107F3E', '#76107F']
+      colorScale = chroma.scale(['#E0E0E0', '#86090D'])  
         .domain(data, 9, 'k-means')
         .mode('lab');
       
-      // Create legend data
-      _.each(chroma.limits(data, 'k-means', 9), function(l) {
-        legend.push({ value: l, color: colorScale(l).hex() });
+      // Create legend data, mark the current part we are looking at
+      currentValue = colorScale(this.model.get(this.visualProperty));
+      _.each(chroma.limits(data, 'k-means', 9), function(l, i) {
+        legend.push({
+          value: l,
+          color: colorScale(l).hex()
+        });
       });
-      this.getLegendEl().html(this.templates['template-map-legend']({ legend: legend }));
+      this.getLegendEl().html(this.templates['template-map-legend']({
+        legend: legend,
+        display: currentValue.hex()
+      }));
       
       // Color each layer
       this.collection.each(function(m) {
@@ -1929,7 +2370,8 @@ return __p
         }
       });
 
-      this.map.addControl(new this.LabelControl());
+      this.mapLabelControl = new this.LabelControl();
+      this.map.addControl(this.mapLabelControl);
       this.$el.find('.map-label-container').hide();
       return this;
     },
@@ -1940,6 +2382,19 @@ return __p
       var layer = e.layer._layers[e.layer._leaflet_id - 1];
       var options = layer.options;
       var neighborhood = this.collection.get(layer.feature.id);
+      var posY = e.containerPoint.y;
+      var mapY = this.map._container.clientHeight;
+      
+      // Move position of control.  If the mouse is more than
+      // halfway above viewport, move the label control
+      if (posY < (mapY / 2)) {
+        this.mapLabelControl.setPosition('bottomright');
+      }
+      else {
+        this.mapLabelControl.setPosition('topright');
+      }
+      
+      // Set style options
       options.fillOpacity = options.fillOpacity * 4;
       layer.setStyle(options);
       
@@ -1949,7 +2404,8 @@ return __p
           title: neighborhood.get('title'),
           property: neighborhood.get(this.visualProperty),
           label: this.visualLabel,
-          formatter: this.visualFormatter
+          formatter: this.visualFormatter,
+          n: neighborhood.toJSON()
         })
       ).show();
     },
