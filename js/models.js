@@ -212,7 +212,7 @@
       month = month || this.get('currentMonth');
       var population = this.get('population')[year];
       var crimes = this.getCrimeByMonth(category, year, month);
-      population = (!population) ? 1 : population;
+      population = Math.max((!population) ? 0 : population, 500);
       
       return (crimes / (population / 1000));
     },
