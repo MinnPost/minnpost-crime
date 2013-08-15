@@ -371,12 +371,30 @@
         observe: ['stats', 'appCategory'], 
         update: 'bindUpdateIncidentRate'
       },
-      '.stat-change-last-month .stat-value': {
+      '.stat-incidents-last-month .stat-value': {
+        observe: ['stats', 'appCategory'], 
+        update: 'bindUpdateStat',
+        options: { 
+          stat: 'incidentsLastMonth',
+          formatter: 'formatNumber', 
+          argument: 0
+        }
+      },
+      '.stat-incidents-last-year-month .stat-value': {
+        observe: ['stats', 'appCategory'], 
+        update: 'bindUpdateStat',
+        options: { 
+          stat: 'incidentsLastYearMonth',
+          formatter: 'formatNumber', 
+          argument: 0
+        }
+      },
+      '.stat-change-last-month > .stat-value': {
         observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
         options: { stat: 'changeLastMonth' }
       },
-      '.stat-change-month-last-year .stat-value': {
+      '.stat-change-month-last-year > .stat-value': {
         observe: ['stats', 'appCategory'], 
         update: 'bindUpdateStat',
         options: { stat: 'changeMonthLastYear' }

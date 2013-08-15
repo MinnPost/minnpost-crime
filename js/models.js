@@ -93,6 +93,11 @@
         stats[c].incidentsMonth = thisModel.getCrimeByMonth(c);
         stats[c].rateMonth = thisModel.getCrimeRateByMonth(c);
         
+        stats[c].incidentsLastMonth = thisModel.getCrimeByMonth(c,
+          thisModel.get('lastMonthYear'), thisModel.get('lastMonthMonth'));
+        stats[c].incidentsLastYearMonth = thisModel.getCrimeByMonth(c,
+          thisModel.get('currentYear') - 1, thisModel.get('currentMonth'));
+        
         stats[c].changeLastMonth = thisModel.getMonthChange(c, 
           thisModel.get('lastMonthYear'), thisModel.get('lastMonthMonth'));
         stats[c].changeMonthLastYear = thisModel.getMonthChange(c, 
