@@ -217,10 +217,10 @@
     // Handle address search event
     handleAddressSearch: function(e) {
       e.preventDefault();
-      var val = this.$el.find('.address-search').val();
+      var $target = $(e.currentTarget).find('.address-search');
       
-      if (val) {
-        this.options.app.routeAddress(val);
+      if ($target.val() && $target.val() !== $target.data('default')) {
+        this.options.app.routeAddress($target.val());
       }
     },
     

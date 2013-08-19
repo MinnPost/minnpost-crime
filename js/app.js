@@ -278,15 +278,17 @@
     // Route based on address
     routeAddress: function(address, done, context) {
       var thisRouter = this;
-      var latlng;
       var url = app.options.mapQuestQuery.replace('[[[KEY]]]', app.options.mapQuestKey)
-        .replace('[[[ADDRESS]]]', encodeURI(address));
+        .replace('[[[ADDRESS]]]', encodeURIComponent(address));
         
       this.applicationView.renderGeneralLoading();
       $.jsonp({ url: url })
         .done(function(response) {
-          latlng = response.results[0].locations[0].latLng;
-          if (latlng) {
+          var latlng;
+          
+          if (_.size(response.results[0].locations) > 0 && 
+            _.isObject(response.results[0].locations[0].latLng)) {
+            latlng = response.results[0].locations[0].latLng;
             thisRouter.routeGeoCoordinate([latlng.lng, latlng.lat], done, context);
           }
           else {
