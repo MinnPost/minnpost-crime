@@ -13,7 +13,8 @@
     "highcharts": "~3.0.1",
     "chroma-js": "~0.4.8",
     "leaflet": "~0.5.1",
-    "unsemantic": "https://github.com/nathansmith/unsemantic.git"
+    "unsemantic": "https://github.com/nathansmith/unsemantic.git",
+    "es5-shim": "~2.1.0"
   },
   "ignore": [
     "**/.*",

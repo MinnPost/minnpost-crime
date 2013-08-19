@@ -118,6 +118,15 @@ module.exports = function(grunt) {
           separator: ';\r\n\r\n'
         }
       },
+      libs_ie: {
+        src: [
+          'bower_components/es5-shim/es5-shim.min.js'
+        ],
+        dest: 'dist/<%= pkg.name %>.libs.ie.js',
+        options: {
+          separator: ';\r\n\r\n'
+        }
+      },
       // CSS libs
       libs_css: {
         src: [
