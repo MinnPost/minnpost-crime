@@ -136,7 +136,10 @@ module.exports = function(grunt) {
         dest: 'dist/<%= pkg.name %>.libs.css'
       },
       libs_css_ie: {
-        src: ['bower_components/leaflet/dist/leaflet.ie.css'],
+        src: [
+          'bower_components/leaflet/dist/leaflet.ie.css',
+          'bower_components/unsemantic/assets/stylesheets/ie.css'
+        ],
         dest: 'dist/<%= pkg.name %>.libs.ie.css'
       }
     },
