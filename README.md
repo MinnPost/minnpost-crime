@@ -11,6 +11,7 @@ An application that explores crime in Minnesota.
 1. Install [Grunt](http://gruntjs.com/): `npm install -g grunt-cli`
 1. Install [Bower](http://bower.io/): `npm install -g bower`
 1. Install [Sass](http://sass-lang.com/): `gem install sass`
+1. Because Leaflet comes unbuilt, we need to build it with Jake: `npm install -g jake`
 
 ### Get the code
 
@@ -21,6 +22,7 @@ An application that explores crime in Minnesota.
 
 1. `npm install`
 1. `bower install`
+1. Because Leaflet comes unbuilt, we need to build it: `cd bower_components/leaflet/ && npm install && jake; cd -;`
 
 ### Run
 

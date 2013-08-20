@@ -893,10 +893,10 @@
           thisView.map.addLayer(layer);
         });
         this.mapRendered = true;
-      }
         
-      if (fitGroup) {
-        this.map.fitBounds(this.featureGroup.getBounds());
+        if (fitGroup) {
+          this.map.fitBounds(this.featureGroup.getBounds());
+        }
       }
       
       return this;
@@ -1005,7 +1005,7 @@
     // How to handle mouseover events
     bindMapFeatureMouseover: function(e) {
       // Is this the best way to get this
-      var layer = e.layer._layers[e.layer._leaflet_id - 1];
+      var layer = e.layer;
       var options = layer.options;
       var neighborhood = this.collection.get(layer.feature.id);
       var posY = e.containerPoint.y;
@@ -1038,7 +1038,7 @@
     
     // How to handle mouseout events
     bindMapFeatureMouseout: function(e) {
-      var layer = e.layer._layers[e.layer._leaflet_id - 1];
+      var layer = e.layer;
       var options = layer.options;
       options.fillOpacity = options.fillOpacity / 4;
       layer.setStyle(options);
@@ -1049,7 +1049,7 @@
     
     // How to handle click events
     bindMapFeatureClick: function(e) {
-      var layer = e.layer._layers[e.layer._leaflet_id - 1];
+      var layer = e.layer;
       this.options.app.navigate('/neighborhood/' + layer.feature.id, { trigger: true });
     },
     
