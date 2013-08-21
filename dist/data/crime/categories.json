@@ -3,7 +3,7 @@
     "title": "Total"
   }, 
   "homicide": {
-    "title": "Homcide"
+    "title": "Homicide"
   }, 
   "rape": {
     "title": "Rape"
@@ -12,7 +12,7 @@
     "title": "Robbery"
   }, 
   "agg_assault": {
-    "title": "Aggrevated Assault"
+    "title": "Aggravated Assault"
   },
   "violent": {
     "title": "Violent Crimes (combined)",
