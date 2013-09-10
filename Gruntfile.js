@@ -218,6 +218,10 @@ module.exports = function(grunt) {
           {
             src: 'data/crime/mpls-monthly-reports/*',
             dest: 'projects/<%= pkg.name %>/data-source/mpls-monthly-reports/'
+          },
+          {
+            src: 'data/crime/mpls-monthly-reports-manual/*',
+            dest: 'projects/<%= pkg.name %>/data-source/mpls-monthly-reports/'
           }
         ]
       }
