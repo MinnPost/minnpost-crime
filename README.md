@@ -50,7 +50,7 @@ An application that explores crime in Minnesota.
 #### Crime
 
 * [Scraper of Minneapolis Monthly Reports](https://scraperwiki.com/scrapers/minneapolis_aggregate_crime_data/).  Original reports can be found on the [MPD stats page](http://www.minneapolismn.gov/police/statistics/crime-statistics_codefor_statistics).  These reports are very similar to the FBI Uniform Crime Reports, except that they use the date of the offense (not reported date) and count each offense of the report (not the worse offense) [see details](http://www.minneapolismn.gov/police/statistics/police_crime-statistics_understanding-codefor).
-    * Due to the fact that the MPD has decided not to release Excel files anymore, a new process will have to be put in place to handle this.
+    * Due to the fact that the MPD has decided not to release Excel files anymore.  This means that PDF's are manually parsed with Tabula and put into the `data/crime/mpls-monthly-reports-manual-folder`.  These are then uploaded to S3 and used in the scraper.
     * Run `node data-processing/download-mpls-monthly-reports.js` to download the existing Excel files locally.  Then do `grunt mp-source-data` to upload these files to S3.
 
 #### Demographics
