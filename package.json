@@ -20,7 +20,9 @@
   "dependencies": {
     "csv": "0.3.x",
     "underscore": "1.4.x",
-    "topojson": "~1.1.4"
+    "topojson": "~1.1.4",
+    "celeri": "~0.3.3",
+    "grunt-s3": "~0.2.0-alpha.2"
   },
   "devDependencies": {
     "grunt": "0.4.x",

@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         '<%= grunt.template.today("yyyy-mm-dd") + "\\n" %>' +
         '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */' + 
+        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */' +
         '<%= "\\n\\n" %>'
     },
     data_embed: {
@@ -74,42 +74,42 @@ module.exports = function(grunt) {
       },
       // JS application
       dist: {
-        src: ['js/core.js', 'dist/data.js', 'dist/templates.js', 
+        src: ['js/core.js', 'dist/data.js', 'dist/templates.js',
           'js/app.js', 'js/models.js', 'js/collections.js', 'js/views.js'],
         dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.js'
       },
       dist_latest: {
-        src: ['<%= concat.dist.src %>'], 
+        src: ['<%= concat.dist.src %>'],
         dest: 'dist/<%= pkg.name %>.latest.js'
       },
       // CSS application
       dist_css: {
-        src: ['css/compiled/main.min.css'], 
+        src: ['css/compiled/main.min.css'],
         dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.css'
       },
       dist_css_latest: {
-        src: ['css/compiled/main.min.css'], 
+        src: ['css/compiled/main.min.css'],
         dest: 'dist/<%= pkg.name %>.latest.css'
       },
       dist_css_ie: {
-        src: ['css/compiled/main.ie.min.css'], 
+        src: ['css/compiled/main.ie.min.css'],
         dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.ie.css'
       },
       dist_css_latest_ie: {
-        src: ['css/compiled/main.ie.min.css'], 
+        src: ['css/compiled/main.ie.min.css'],
         dest: 'dist/<%= pkg.name %>.latest.ie.css'
       },
       // JS libs
       libs: {
         src: [
-          'bower_components/jquery/jquery.min.js', 
-          'bower_components/jquery-jsonp/src/jquery.jsonp.js', 
-          'bower_components/underscore/underscore-min.js', 
-          'bower_components/backbone/backbone-min.js', 
-          'bower_components/backbone.stickit/backbone.stickit.js', 
-          'bower_components/topojson/topojson.js', 
+          'bower_components/jquery/jquery.min.js',
+          'bower_components/jquery-jsonp/src/jquery.jsonp.js',
+          'bower_components/underscore/underscore-min.js',
+          'bower_components/backbone/backbone-min.js',
+          'bower_components/backbone.stickit/backbone.stickit.js',
+          'bower_components/topojson/topojson.js',
           'bower_components/moment/min/moment.min.js',
-          'bower_components/leaflet/dist/leaflet.js', 
+          'bower_components/leaflet/dist/leaflet.js',
           'bower_components/chroma-js/chroma.min.js',
           'bower_components/highcharts/highcharts.js'
         ],
@@ -132,7 +132,7 @@ module.exports = function(grunt) {
         src: [
           'bower_components/unsemantic/assets/stylesheets/unsemantic-grid-responsive-tablet.css',
           'bower_components/leaflet/dist/leaflet.css'
-        ], 
+        ],
         dest: 'dist/<%= pkg.name %>.libs.css'
       },
       libs_css_ie: {
@@ -212,6 +212,14 @@ module.exports = function(grunt) {
             rel: 'dist/images'
           }
         ]
+      },
+      mp_source_data: {
+        upload: [
+          {
+            src: 'data/crime/mpls-monthly-reports/*',
+            dest: 'projects/<%= pkg.name %>/data-source/mpls-monthly-reports/'
+          }
+        ]
       }
     },
     connect: {
@@ -226,7 +234,7 @@ module.exports = function(grunt) {
       tasks: 'lint-watch'
     }
   });
-  
+
   // Load plugin tasks
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -238,7 +246,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-s3');
-  
+
 
   // Custom task to save json data into a JS file for concatentation
   grunt.registerMultiTask('data_embed', 'Make data embeddable', function() {
@@ -246,14 +254,14 @@ module.exports = function(grunt) {
     var config = grunt.config.get();
     var finalOutput = '';
     console.log(options);
-    
+
     this.files.forEach(function(f) {
       var data = grunt.file.readJSON(f.src[0]);
       finalOutput += 'mpApp["' + config.pkg.name + '"].data["' + f.dest + '"] = ' + JSON.stringify(data) + '; \n\n';
       grunt.log.write('Read file: ' + f.src[0] + '...').ok();
-      
+
     });
-    
+
     grunt.file.write(options.output, finalOutput);
     grunt.log.write('Wrote data to: ' + options.output + '...').ok();
   });
@@ -264,8 +272,11 @@ module.exports = function(grunt) {
   // Watch tasks
   grunt.registerTask('lint-watch', ['jshint', 'sass:dev']);
   grunt.registerTask('server-watch', ['connect', 'watch']);
-  
+
   // Deploy tasks
-  grunt.registerTask('mp-deploy', ['s3']);
+  grunt.registerTask('mp-deploy', ['s3:mp_deploy']);
+
+  // Source data upload
+  grunt.registerTask('mp-source-data', ['s3:mp_source_data']);
 
 };
