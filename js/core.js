@@ -92,7 +92,8 @@ if (_.isFunction(Backbone.$.jsonp)) {
     dataPath: './data/',
     // Please don't steal/abuse
     mapQuestKey: 'Fmjtd%7Cluub2d01ng%2C8g%3Do5-9ua20a',
-    mapQuestQuery: 'http://www.mapquestapi.com/geocoding/v1/address?key=[[[KEY]]]&outFormat=json&callback=?&countrycodes=us&maxResults=1&location=[[[ADDRESS]]]'
+    mapQuestQuery: 'http://www.mapquestapi.com/geocoding/v1/address?key=[[[KEY]]]&outFormat=json&callback=?&countrycodes=us&maxResults=1&location=[[[ADDRESS]]]',
+    dataCrimeQueryBase: 'https://premium.scraperwiki.com/gd53wii/b2e504a3d2134de/sql/?q=[[[QUERY]]]'
   };
   
   /**

@@ -40,7 +40,7 @@
         query.push(" OR (year = " + model.get('lastMonthYear') + "");
         query.push(" AND month = " + model.get('lastMonthMonth') + "))");
         query.push(" ORDER BY year DESC, month DESC");
-        defer = app.getRemoteData({ url: model.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+        defer = app.getRemoteData({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
     
         if (_.isFunction(done)) {
           $.when(defer).done(function(data) {

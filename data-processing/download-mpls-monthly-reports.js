@@ -20,6 +20,12 @@ catch (err) {
   // Already there
 }
 
+// Check if done
+function check() {
+  celeri.progress('Downloading files: ',
+    (dataProcessed.length / dataSource.length * 100).toFixed(2));
+}
+
 // Go through data
 check();
 dataSource.forEach(function(o, i) {
@@ -38,9 +44,3 @@ dataSource.forEach(function(o, i) {
     });
   });
 });
-
-// Check if done
-function check() {
-  celeri.progress('Downloading files: ',
-    (dataProcessed.length / dataSource.length * 100).toFixed(2));
-}

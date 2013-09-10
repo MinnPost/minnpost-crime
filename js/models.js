@@ -7,7 +7,6 @@
    * Basic model for other crime models
    */
   app.ModelCrimeArea = Backbone.Model.extend({
-    dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&query=[[[QUERY]]]',
     // See scraper for why this is needed
     dataCrimeQueryWhere: "notes NOT LIKE 'Added to%'",
     
@@ -410,7 +409,7 @@
       query.push(" FROM swdata WHERE " + this.dataCrimeQueryWhere);
       query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
       
-      var defer = app.getRemoteData({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = app.getRemoteData({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
@@ -439,7 +438,7 @@
       query.push(" OR (year = " + (year - years) + " AND month >= " + month + "))");
       query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
       
-      var defer = app.getRemoteData({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = app.getRemoteData({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
@@ -504,7 +503,7 @@
       query.push(" AND neighborhood_key = '" + this.get('key') + "' ");
       query.push(" ORDER BY year DESC, month DESC");
       
-      var defer = app.getRemoteData({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = app.getRemoteData({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
