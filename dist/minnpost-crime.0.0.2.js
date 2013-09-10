@@ -92,7 +92,8 @@ if (_.isFunction(Backbone.$.jsonp)) {
     dataPath: './data/',
     // Please don't steal/abuse
     mapQuestKey: 'Fmjtd%7Cluub2d01ng%2C8g%3Do5-9ua20a',
-    mapQuestQuery: 'http://www.mapquestapi.com/geocoding/v1/address?key=[[[KEY]]]&outFormat=json&callback=?&countrycodes=us&maxResults=1&location=[[[ADDRESS]]]'
+    mapQuestQuery: 'http://www.mapquestapi.com/geocoding/v1/address?key=[[[KEY]]]&outFormat=json&callback=?&countrycodes=us&maxResults=1&location=[[[ADDRESS]]]',
+    dataCrimeQueryBase: 'https://premium.scraperwiki.com/gd53wii/b2e504a3d2134de/sql/?q=[[[QUERY]]]'
   };
   
   /**
@@ -445,28 +446,28 @@ return __p
       'neighborhood/:city/:neighborhood(/:category)': 'routeNeighborhood',
       '*defaultR': 'routeDefault'
     },
-    
+
     defaultData: [
       'neighborhoods/minneapolis.topo',
       'crime/categories',
       'cities/cities'
     ],
-    
+
     // Default category
     defaultCategory: 'total',
-  
+
     initialize: function(options) {
       var thisRouter = this;
       this.category = this.defaultCategory;
-      
+
       // Set app options
       app.options = _.extend(app.defaultOptions, options);
       app.options.originalTitle = document.title;
-      
+
       // Create data structures and views
       this.createDataStructures();
       this.createApplicationView();
-      
+
       // Render applciation view and mark as loading
       this.applicationView.render().renderGeneralLoading();
 
@@ -479,24 +480,24 @@ return __p
         thisRouter.start();
       });
     },
-    
+
     // General error handler
     appError: function(message) {
       var thisRouter = this;
-      
+
       return function(error) {
         if (_.isObject(console) && _.isFunction(console.log)) {
           console.log(error);
         }
-        
+
         thisRouter.applicationView.renderErrorMessage(message);
       };
     },
-    
+
     // Get initial data
     fetchData: function(done) {
       var thisRouter = this;
-    
+
       // Get the compiled data
       app.getLocalData(this.defaultData).done(function() {
         thisRouter.fetchRecentMonth(function(year, month) {
@@ -508,34 +509,33 @@ return __p
       })
       .fail(thisRouter.appError('Issue retrieving base data.'));
     },
-    
+
     // Get most recent month and year as this will
     // be used throught the application
     fetchRecentMonth: function(done, context) {
       context = context || this;
       var thisRouter = this;
-      var dataCrimeQueryBase = 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&query=[[[QUERY]]]';
 
       var query = "SELECT month, year FROM swdata ORDER BY year || '-' || month DESC LIMIT 1";
-      var defer = app.getRemoteData({ url: dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
-      
+      var defer = app.getRemoteData({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
+
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
           if (_.isObject(data) && !_.isUndefined(data.error)) {
             thisRouter.appError('Issue retrieving current year and month data.')();
           }
-          
+
           done.apply(context, [data[0].year, data[0].month]);
         })
         .fail(thisRouter.appError('Issue retrieving current year and month data.'));
       }
       return defer;
     },
-    
+
     // Parse initial data
     parseData: function() {
       var thisRouter = this;
-      
+
       // Add cities to collections
       _.each(app.data['cities/cities'], function(c, id) {
         c.id = id;
@@ -543,30 +543,30 @@ return __p
           app: thisRouter
         }));
       });
-    
+
       // Add neighborhoods to collection
-      _.each(topojson.feature(app.data['neighborhoods/minneapolis.topo'], 
+      _.each(topojson.feature(app.data['neighborhoods/minneapolis.topo'],
         app.data['neighborhoods/minneapolis.topo'].objects.neighborhoods).features,
         function(feature, i) {
           var model = _.clone(feature.properties);
           model.id = model.city + '/' + model.key;
-          
+
           // Take out properties as we will store them in the
           // the model, not in the geoJSON
           delete feature.properties;
           model.geoJSON = feature;
           model.geoJSON.id = model.id;
-          
+
           // Make id based on city as well
           thisRouter.neighborhoods.add(new app.ModelNeighborhood(model, {
             app: thisRouter
           }));
         }
       );
-      
+
       return this;
     },
-    
+
     // Create data structures
     createDataStructures: function() {
       this.cities = new app.CollectionCities([], {
@@ -576,7 +576,7 @@ return __p
         app: this
       });
     },
-    
+
     // Create main view
     createApplicationView: function() {
       this.applicationView = new app.ViewContainer({
@@ -584,7 +584,7 @@ return __p
         app: this
       });
     },
-    
+
     // Create sub views
     createViews: function() {
       this.cityView = new app.ViewCity({
@@ -609,34 +609,34 @@ return __p
         app: this
       });
     },
-    
+
     // Start application (after data has been loaded),
     // specifically start Backbone history
     start: function() {
       Backbone.history.start();
     },
-    
+
     // Set category
     setCategory: function(category) {
       var oldCat = _.clone(this.category);
       this.category = category;
-      
+
       if (oldCat != category) {
         this.trigger('change:category');
       }
       this.applicationView.updateCategory(category);
     },
-  
+
     // Default route
     routeDefault: function() {
       this.navigate('/city/minneapolis/total', { trigger: true, replace: true });
     },
-  
+
     // City route
     routeCity: function(city, category) {
       category = category || this.category || this.defaultCategory;
       var thisRouter = this;
-      
+
       // Load up city
       this.applicationView.renderGeneralLoading();
       city = this.cities.get(city);
@@ -647,7 +647,7 @@ return __p
         this.city = this.currentModel = city;
         this.setCategory(category);
         this.navigate('/city/' + this.city.id + '/' + this.category, { replace: true });
-        
+
         // Render
         this.applicationView.renderCity(this.city);
         this.city.fetchData(function() {
@@ -658,12 +658,12 @@ return __p
         }, this);
       }
     },
-  
+
     // Neightborhood route
     routeNeighborhood: function(city, neighborhood, category) {
       category = category || this.category || this.defaultCategory;
       var thisRouter = this;
-      
+
       // Load up city
       this.applicationView.renderGeneralLoading();
       city = this.cities.get(city);
@@ -673,7 +673,7 @@ return __p
       else {
         this.city = city;
         this.setCategory(category);
-        
+
         // Load up neighborhood
         neighborhood = this.neighborhoods.get(this.city.id + '/' + neighborhood);
         if (!neighborhood) {
@@ -681,7 +681,7 @@ return __p
         }
         this.neighborhood = this.currentModel = neighborhood;
         this.navigate('/neighborhood/' + this.neighborhood.id + '/' + this.category, { replace: true });
-        
+
         // Render and get both the city and the neighborhood data.
         // The city data will be used for some comparisons
         this.applicationView.renderNeighborhood(this.neighborhood, this.city);
@@ -695,34 +695,34 @@ return __p
         }, this);
       }
     },
-    
+
     // Route based on geolocation
     routeGeolocate: function(done, context) {
       var thisRouter = this;
-    
+
       this.applicationView.renderGeneralLoading();
       navigator.geolocation.getCurrentPosition(function(position) {
         if (_.isObject(position.coords)) {
-          thisRouter.routeGeoCoordinate([position.coords.longitude, position.coords.latitude], 
+          thisRouter.routeGeoCoordinate([position.coords.longitude, position.coords.latitude],
             done, context);
         }
       }, function(err) {
         thisRouter.appError('Issue retrieving current position.')(err);
       });
     },
-    
+
     // Route based on address
     routeAddress: function(address, done, context) {
       var thisRouter = this;
       var url = app.options.mapQuestQuery.replace('[[[KEY]]]', app.options.mapQuestKey)
         .replace('[[[ADDRESS]]]', encodeURIComponent(address));
-        
+
       this.applicationView.renderGeneralLoading();
       $.jsonp({ url: url })
         .done(function(response) {
           var latlng;
-          
-          if (_.size(response.results[0].locations) > 0 && 
+
+          if (_.size(response.results[0].locations) > 0 &&
             _.isObject(response.results[0].locations[0].latLng)) {
             latlng = response.results[0].locations[0].latLng;
             thisRouter.routeGeoCoordinate([latlng.lng, latlng.lat], done, context);
@@ -733,14 +733,14 @@ return __p
         })
         .fail(thisRouter.appError('Issue retrieving position from address.'));
     },
-    
+
     // Route based on geo point
     routeGeoCoordinate: function(lonlat, done, context) {
       if (!_.isArray(lonlat)) {
         return;
       }
       var map, found;
-      
+
       // Not sure which map has rendered, so try both
       view = (!_.isUndefined(this.cityMapView.map)) ? this.cityMapView :
         ((!_.isUndefined(this.neighborhoodMapView.map)) ? this.neighborhoodMapView : false);
@@ -750,7 +750,7 @@ return __p
           return app.pip(lonlat, n.get('geoJSON').geometry.coordinates[0]);
         });
         if (found) {
-          this.navigate('/neighborhood/' + found.id + 
+          this.navigate('/neighborhood/' + found.id +
             '/' + this.category, { trigger: true });
         }
         else {
@@ -759,7 +759,7 @@ return __p
       }
     }
   });
-  
+
   // Wrapper function to start application
   app.start = function(options) {
     app.router = new app.Application(options);
@@ -776,7 +776,6 @@ return __p
    * Basic model for other crime models
    */
   app.ModelCrimeArea = Backbone.Model.extend({
-    dataCrimeQueryBase: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=minneapolis_aggregate_crime_data&query=[[[QUERY]]]',
     // See scraper for why this is needed
     dataCrimeQueryWhere: "notes NOT LIKE 'Added to%'",
     
@@ -1179,7 +1178,7 @@ return __p
       query.push(" FROM swdata WHERE " + this.dataCrimeQueryWhere);
       query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
       
-      var defer = app.getRemoteData({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = app.getRemoteData({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
@@ -1208,7 +1207,7 @@ return __p
       query.push(" OR (year = " + (year - years) + " AND month >= " + month + "))");
       query.push(" GROUP BY year, month ORDER BY year DESC, month DESC");
       
-      var defer = app.getRemoteData({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = app.getRemoteData({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
@@ -1273,7 +1272,7 @@ return __p
       query.push(" AND neighborhood_key = '" + this.get('key') + "' ");
       query.push(" ORDER BY year DESC, month DESC");
       
-      var defer = app.getRemoteData({ url: this.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+      var defer = app.getRemoteData({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
   
       if (_.isFunction(done)) {
         $.when(defer).done(function(data) {
@@ -1329,7 +1328,7 @@ return __p
         query.push(" OR (year = " + model.get('lastMonthYear') + "");
         query.push(" AND month = " + model.get('lastMonthMonth') + "))");
         query.push(" ORDER BY year DESC, month DESC");
-        defer = app.getRemoteData({ url: model.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
+        defer = app.getRemoteData({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
     
         if (_.isFunction(done)) {
           $.when(defer).done(function(data) {
