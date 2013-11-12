@@ -79,7 +79,7 @@
       context = context || this;
       var thisRouter = this;
 
-      var query = "SELECT month, year FROM swdata ORDER BY year || '-' || month DESC LIMIT 1";
+      var query = "SELECT month, year FROM swdata ORDER BY year DESC, month DESC LIMIT 1";
       var defer = app.getRemoteData({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
 
       if (_.isFunction(done)) {
