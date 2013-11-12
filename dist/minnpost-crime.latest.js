@@ -14,40 +14,40 @@ mpApp['minnpost-crime'] = mpApp['minnpost-crime'] || {};
  */
 _.mixin({
   /**
-   * Formats number 
+   * Formats number
    */
   formatNumber: function(num, decimals) {
     decimals = (_.isUndefined(decimals)) ? 2 : decimals;
     var rgx = (/(\d+)(\d{3})/);
     split = num.toFixed(decimals).toString().split('.');
-    
+
     while (rgx.test(split[0])) {
       split[0] = split[0].replace(rgx, '$1' + ',' + '$2');
     }
     return (decimals) ? split[0] + '.' + split[1] : split[0];
   },
-  
+
   /**
    * Formats number into currency
    */
   formatCurrency: function(num) {
     return '$' + _.formatNumber(num, 2);
   },
-  
+
   /**
    * Formats percentage
    */
   formatPercent: function(num) {
     return _.formatNumber(num * 100, 1) + '%';
   },
-  
+
   /**
    * Formats percent change
    */
   formatPercentChange: function(num) {
     return ((num > 0) ? '+' : '') + _.formatPercent(num);
   },
-  
+
   /**
    * Formats percent change with HTML
    */
@@ -55,7 +55,7 @@ _.mixin({
     var cClass = (num === 0) ? 'zero' : ((num > 0) ? 'positive' : 'negative');
     return '<span class="per-change per-change-' + cClass + '">' + _.formatPercentChange(num) + '</span>';
   },
-  
+
   /**
    * Format value given difference from another value
    */
@@ -65,15 +65,15 @@ _.mixin({
     symbol = '<span class="diff-symbol">' + symbol + '</span>';
     return '<span class="diff-compare diff-compare-' + cClass + '">' + symbol + _.formatNumber(num) + '</span>';
   },
-  
+
   /**
    * Strips formatting from number
    */
   stripNumber: function(text) {
-    return text.replace(/[^0-9\.]+/g, '');  
+    return text.replace(/[^0-9\.]+/g, '');
   }
 });
-  
+
 /**
  * Override Backbone's ajax function to use $.jsonp as it handles
  * errors for JSONP requests
@@ -93,9 +93,9 @@ if (_.isFunction(Backbone.$.jsonp)) {
     // Please don't steal/abuse
     mapQuestKey: 'Fmjtd%7Cluub2d01ng%2C8g%3Do5-9ua20a',
     mapQuestQuery: 'http://www.mapquestapi.com/geocoding/v1/address?key=[[[KEY]]]&outFormat=json&callback=?&countrycodes=us&maxResults=1&location=[[[ADDRESS]]]',
-    dataCrimeQueryBase: 'https://premium.scraperwiki.com/gd53wii/b2e504a3d2134de/sql/?q=[[[QUERY]]]'
+    dataCrimeQueryBase: 'https://premium.scraperwiki.com/bf2dlli/6e0c2a86888d427/sql/?q=[[[QUERY]]]'
   };
-  
+
   /**
    * Template handling.  For development, we want to use
    * the template files directly, but for build, they should be
@@ -110,7 +110,7 @@ if (_.isFunction(Backbone.$.jsonp)) {
   app.getTemplate = function(name, callback, context) {
     var templatePath = 'js/templates/' + name + '.html';
     context = context || app;
-    
+
     if (!_.isUndefined(app.templates[templatePath])) {
       callback.apply(context, [ app.templates[templatePath] ]);
     }
@@ -127,7 +127,7 @@ if (_.isFunction(Backbone.$.jsonp)) {
       });
     }
   };
-  
+
   /**
    * Data source handling.  For development, we can call
    * the data directly from the JSON file, but for production
@@ -142,19 +142,19 @@ if (_.isFunction(Backbone.$.jsonp)) {
     var proxyPrefix = 'http://mp-jsonproxy.herokuapp.com/proxy?callback=?&url=';
     var useJSONP = false;
     var defers = [];
-    
+
     name = (_.isArray(name)) ? name : [ name ];
-    
+
     // If the data path is not relative, then use JSONP
     if (app.options && app.options.dataPath.indexOf('http') === 0) {
       useJSONP = true;
     }
-    
+
     // Go through each file and add to defers
     _.each(name, function(d) {
       var defer;
       if (_.isUndefined(app.data[d])) {
-        
+
         if (useJSONP) {
           defer = $.jsonp({
             url: proxyPrefix + encodeURI(app.options.dataPath + d + '.json')
@@ -163,17 +163,17 @@ if (_.isFunction(Backbone.$.jsonp)) {
         else {
           defer = $.getJSON(app.options.dataPath + d + '.json');
         }
-        
+
         $.when(defer).done(function(data) {
           app.data[d] = data;
         });
         defers.push(defer);
       }
     });
-    
+
     return $.when.apply($, defers);
   };
-  
+
   /**
    * Get remote data.  Provides a wrapper around
    * getting a remote data source, to use a proxy
@@ -189,10 +189,10 @@ if (_.isFunction(Backbone.$.jsonp)) {
     else {
       options.url = options.url + '&callback=?';
     }
-    
+
     return $.jsonp(options);
   };
-  
+
   /**
    * Point in polygon search from
    * https://github.com/substack/point-in-polygon
@@ -200,21 +200,21 @@ if (_.isFunction(Backbone.$.jsonp)) {
   app.pip = function(point, vs) {
     // ray-casting algorithm based on
     // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-    
+
     var x = point[0], y = point[1];
-    
+
     var inside = false;
     for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
       var xi = vs[i][0], yi = vs[i][1];
       var xj = vs[j][0], yj = vs[j][1];
-      
-      var intersect = ((yi > y) != (yj > y)) && 
+
+      var intersect = ((yi > y) != (yj > y)) &&
         (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
       if (intersect) {
         inside = !inside;
       }
     }
-    
+
     return inside;
   };
 })(mpApp['minnpost-crime'], jQuery);
@@ -516,7 +516,7 @@ return __p
       context = context || this;
       var thisRouter = this;
 
-      var query = "SELECT month, year FROM swdata ORDER BY year || '-' || month DESC LIMIT 1";
+      var query = "SELECT month, year FROM swdata ORDER BY year DESC, month DESC LIMIT 1";
       var defer = app.getRemoteData({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
 
       if (_.isFunction(done)) {
