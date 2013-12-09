@@ -935,8 +935,10 @@
       data = _.map(data, function(e) { return e.get(thisView.visualProperty); });
       
       // Create color scale.  k-means minus exceptions seems to be the best
-      // visual
+      // visual.  We also add a .5 as a minimum rate to ensure that there is
+      // a visual difference for really low numbers like homicide rates
       // 'YlGnBu', ['#107F3E', '#B61673'] ['#107F3E', '#76107F']
+      data.push(0.2);
       colorScale = chroma.scale(['#E0E0E0', '#86090D'])  
         .domain(data, 9, 'k-means')
         .mode('lab');
