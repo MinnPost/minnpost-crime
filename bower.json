@@ -4,8 +4,8 @@
   "main": "index.html",
   "dependencies": {
     "jquery": "1.11",
-    "topojson": "~1.1.4",
-    "moment": "~2.0.0",
+    "topojson": "~1.6.18",
+    "moment": "~2.9.0",
     "backbone.stickit": "https://github.com/NYTimes/backbone.stickit.git#659792fe881875561d1796f4b0ce834bd4b764fe",
     "backbone": "1.0.0",
     "jquery-jsonp": "~2.4.0",
