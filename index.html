@@ -7,14 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
 
   <!-- Used to help in aid a similar environment to MinnPost site -->
-  <link type="text/css" rel="stylesheet" media="all" href="http://www.minnpost.com/sites/default/files/css/css_fc50c14e86efd87b76baaf2233879097.css" />
-  <link type="text/css" rel="stylesheet" media="screen" href="http://www.minnpost.com/sites/default/files/css/css_78b4e4a6581d7fc0f06fcccfee77596b.css" />
-  <link type="text/css" rel="stylesheet" media="print" href="http://www.minnpost.com/sites/default/files/css/css_1ce2ca323437b360615a9c3ffade834b.css" />
+  <link type="text/css" rel="stylesheet" media="all" href="http://www.minnpost.com/sites/default/files/css/css_ba39adbd34c923ced5249336e819b994.css" />
+<link type="text/css" rel="stylesheet" media="screen" href="http://www.minnpost.com/sites/default/files/css/css_48ba1abf99d39131a63bf3567de0caea.css" />
+<link type="text/css" rel="stylesheet" media="print" href="http://www.minnpost.com/sites/default/files/css/css_0edbb2ed619015560d20bf2977629f75.css" />
   <!--[if IE]>
     <link rel="stylesheet" href="/sites/default/themes/derma/inc/css/ie.css?y" type="text/css">
   <![endif]-->
-  
-  <script type="text/javascript" src="http://www.minnpost.com/sites/default/files/js/js_e67177207c50d149d3a9e9c69d9265ac.js"></script>
+
+  <script type="text/javascript" src="http://www.minnpost.com/sites/default/files/js/js_a0ce3f94c65ae23637107ad284a1f121.js"></script>
   <script type="text/javascript">
   <!--//--><![CDATA[//><!--
   jQuery.extend(Drupal.settings, {"basePath":"\/","combineBlocks":[["#block-views-most_viewed_by_taxonomy-block","#block-views-most_commented_articles-block_1"],["#block-views-most_viewed_by_node_type-block","#block-views-most_commented_blogs-block_1"],["#block-views-most_viewed_by_node_type-block","#block-views-most_commented_articles-block_1"]],"chartbeat":{"uid":27923,"domain":"minnpost.com","authors":"Tom Nehil,Alan Palazzolo","sections":"Data \u0026 Maps","title":"Build your own sales tax policy for Dayton\u0026#039;s new budget"},"googleanalytics":{"trackOutgoing":1,"trackMailto":1,"trackDownload":1,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls|xml|z|zip"},"addthis":{"config_default":{"services_toolbox":"facebook_like_counter, tweet, print, email","services_compact":"","services_expanded":"","ui_cobrand":"","ui_header_color":"#000000","ui_header_background":"#FFFFFF","ui_click":true,"ui_delay":"","ui_use_addressbook":0,"pubid":"xa-4e2cfd1147868c4e","data_track_clickback":0,"data_ga_tracker":0,"ui_use_css":true,"data_use_cookies":true,"ui_language":"en","data_use_flash":true},"share_default":{"templates":{"twitter":""}}}});
@@ -29,19 +29,19 @@
 
   <!-- Used to help better standardize styles in MinnPost site -->
   <div class="node-body fieldlayout node-field-body">
-    
+
     <!-- Example specific CSS -->
     <style type="text/css">
       /* Override so that it is easier to review interactive pieces. */
       body .node-unpublished {
         background-repeat: no-repeat;
       }
-    
+
       .minnpost-application-container {
         max-width: 960px;
         margin: 0 auto;
       }
-      
+
       .footnote {
         font-size: .75em;
         font-style: italic;
@@ -65,21 +65,21 @@
         @import url('./css/compiled/main.ie.css');
       </style>
     <![endif]-->
-    
-    
+
+
     <!-- Example HTML -->
     <div class="minnpost-application-container">
       <noscript>
         <p>This application requires Javascript which is used to make your web browser more interactive.  If this message does not go away, please consider enabling Javascript.  Here are <a href="http://www.enable-javascript.com/" target="_blank">instructions on how to enable JavaScript in your web browser</a>.</p>
       </noscript>
-      
+
       <!--[if lte IE 7]>
         <div class="ie-upgrade-note">
           <h4>Consider upgrading your browser</h4>
           <p>Your <strong>Internet Browser</strong> is the application you use to navigate webpages on the internet.  You are currently using an older version of Internet Explorer.  This application may not be full-featured because you are using such an old browser.</p>
-          
+
           <p><a href="http://browsehappy.com/" target="_blank">Click here to find out about upgrading to a newer browsers</a>.</p>
-        
+
           <p>If you cannot install new applications on your computer (because it is not allowed at work, for example), consider using <a href="http://www.google.com/chromeframe" target="_blank">Google's Chrome Frame</a> for Internet Explorer.</p>
         </div>
       <![endif]-->
@@ -88,10 +88,10 @@
       <!-- Application HTML -->
       <div id="minnpost-crime-application">
       </div>
-  
+
       <p class="footnote">The map coloring is automated using a version of <a href="http://en.wikipedia.org/wiki/K-means_clustering" target="_blank">k-means clustering</a>.  Some map data &copy; OpenStreetMap contributors; licensed under the <a href="http://www.openstreetmap.org/copyright" target="_blank">Open Data Commons Open Database License</a>.  Some map design &copy; MapBox; licensed according to the <a href="http://mapbox.com/tos/" target="_blank">MapBox Terms of Service</a>.  Some data, techniques, and code can be found on <a href="https://github.com/MinnPost/minnpost-crime" target="_blank">Github</a>.</p>
     </div>
-        
+
     <script type="text/javascript">
       // Hack around existing jQuery
       if (typeof jQuery != 'undefined') {
@@ -99,13 +99,13 @@
         window._$ = window.$;
       }
     </script>
-    
+
     <!-- Application libraries and JS -->
-    
+
     <!--[if lte IE 8]>
       <script type="text/javascript" src="./bower_components/es5-shim/es5-shim.min.js"></script>
     <![endif]-->
-    <script type="text/javascript" src="./bower_components/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="./bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="./bower_components/jquery-jsonp/src/jquery.jsonp.js"></script>
     <script type="text/javascript" src="./bower_components/underscore/underscore-min.js"></script>
     <script type="text/javascript" src="./bower_components/backbone/backbone-min.js"></script>
@@ -122,7 +122,7 @@
     <script type="text/javascript" src="./js/models.js"></script>
     <script type="text/javascript" src="./js/collections.js"></script>
     <script type="text/javascript" src="./js/views.js"></script>
-    
+
     <script type="text/javascript">
       (function(app, $, undefined) {
         $(document).ready(function() {
@@ -131,10 +131,10 @@
             remoteProxy: 'http://all-good-proxy.herokuapp.com/?url='
           }));
         });
-    
+
       })(mpApp['minnpost-crime'], jQuery);
     </script>
-    
+
     <script type="text/javascript">
       // Hack back in the original jQuery
       if (typeof window._jQuery != 'undefined') {

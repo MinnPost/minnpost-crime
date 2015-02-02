@@ -102,7 +102,7 @@ module.exports = function(grunt) {
       // JS libs
       libs: {
         src: [
-          'bower_components/jquery/jquery.min.js',
+          'bower_components/jquery/dist/jquery.min.js',
           'bower_components/jquery-jsonp/src/jquery.jsonp.js',
           'bower_components/underscore/underscore-min.js',
           'bower_components/backbone/backbone-min.js',
