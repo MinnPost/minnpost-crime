@@ -63,9 +63,10 @@
 
       // Get the compiled data
       app.getLocalData(this.defaultData).done(function() {
-        thisRouter.fetchRecentMonth(function(year, month) {
-          app.options.currentYear = year;
-          app.options.currentMonth = month;
+        thisRouter.fetchMonths(function(months) {
+          thisRouter.allMonths = months;
+          thisRouter.currentYear = months[0].year;
+          thisRouter.currentMonth = months[0].month;
         })
         .done(done)
         .fail(thisRouter.appError('Issue retrieving current year and month data.'));
@@ -73,13 +74,12 @@
       .fail(thisRouter.appError('Issue retrieving base data.'));
     },
 
-    // Get most recent month and year as this will
-    // be used throught the application
-    fetchRecentMonth: function(done, context) {
+    // Get all months and years
+    fetchMonths: function(done, context) {
       context = context || this;
       var thisRouter = this;
 
-      var query = "SELECT month, year FROM swdata ORDER BY year DESC, month DESC LIMIT 1";
+      var query = "SELECT DISTINCT month, year FROM swdata ORDER BY year DESC, month DESC";
       var defer = app.getRemoteData({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query)) });
 
       if (_.isFunction(done)) {
@@ -88,7 +88,7 @@
             thisRouter.appError('Issue retrieving current year and month data.')();
           }
 
-          done.apply(context, [data[0].year, data[0].month]);
+          done.apply(context, [data]);
         })
         .fail(thisRouter.appError('Issue retrieving current year and month data.'));
       }
@@ -188,6 +188,29 @@
         this.trigger('change:category');
       }
       this.applicationView.updateCategory(category);
+    },
+
+    // Set month
+    setMonth: function(part, val) {
+      if (this[part] != val) {
+        this[part] = val;
+
+        if (this.currentModel) {
+          this.currentModel.resetFetch();
+        }
+        if (this.neighborhoods) {
+          this.neighborhoods.resetFetch();
+        }
+
+        this.trigger('change:month');
+        this.applicationView.renderGeneralLoading();
+        this.city.fetchData(function() {
+          this.neighborhoods.fetchRecentData(function() {
+            this.applicationView.renderStopGeneralLoading();
+            this.cityView.stickit();
+          }, this);
+        }, this);
+      }
     },
 
     // Default route

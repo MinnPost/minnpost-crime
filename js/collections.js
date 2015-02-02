@@ -8,7 +8,7 @@
    */
   app.CollectionCities = Backbone.Collection.extend({
     model: app.ModelCity
-    
+
   });
 
   /**
@@ -17,11 +17,16 @@
   app.CollectionNeighborhoods = Backbone.Collection.extend({
     model: app.ModelNeighborhood,
     comparator: 'id',
-    
+
     initialize: function() {
+      this.resetFetch();
+    },
+
+    // Reset fetched markers
+    resetFetch: function() {
       this.fetchedRecentData = false;
     },
-    
+
     // Get data for all neighorhoods for the last two months
     fetchRecentData: function(done, context) {
       var thisCollection = this;
@@ -30,7 +35,7 @@
       var defer;
       var year = model.get('currentYear');
       var month = model.get('currentMonth');
-      
+
       // Only do this once
       if (!this.fetchedRecentData) {
         query.push("SELECT * ");
@@ -41,7 +46,7 @@
         query.push(" AND month = " + model.get('lastMonthMonth') + "))");
         query.push(" ORDER BY year DESC, month DESC");
         defer = app.getRemoteData({ url: app.options.dataCrimeQueryBase.replace('[[[QUERY]]]', encodeURI(query.join(''))) });
-    
+
         if (_.isFunction(done)) {
           $.when(defer).done(function(data) {
             // Put data into the models
@@ -53,7 +58,7 @@
                   crimesByMonth[d.year][d.month] = d;
                 }
               });
-              
+
               crimesByMonth = m.setCombined(crimesByMonth);
               m.set('crimesByMonth', crimesByMonth);
             });
@@ -63,7 +68,7 @@
               m.setStats();
             });
             */
-            
+
             if (_.isFunction(done)) {
               done.apply(context, [data[0]]);
             }

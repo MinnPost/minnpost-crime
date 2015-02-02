@@ -1,18 +1,29 @@
 <div class="mc-city-container">
 
+  <div class="grid-100 grid-parent">
+    <form class="month-choice-form note bottom-space">
+      <p>Use the following to see past months</p>
+
+      <label>Year</label>
+      <select class="year-choice"></select>
+
+      <label>Month</label>
+      <select class="month-choice"></select>
+    </form>
+  </div>
 
   <div class="grid-100 grid-parent mc-location-services hide-on-desktop hide-on-tablet">
     <h2>Find a neighborhood in <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span></h2>
     <% if (_.isObject(window.navigator) && _.isObject(window.navigator.geolocation)) { %>
       <p><a href="#" class="location-geolocate">Use your current location</a></p>
     <% } %>
-      
+
     <form class="neighborhood-choice-form note bottom-space">
       <select class="neighborhood-choice">
         <option value="">-- choose neighborhood --</option>
       </select>
     </form>
-      
+
     <form class="location-search-form bottom-space">
       <input type="text" class="address-search" value="Find neighborhood by address" data-default="Find neighborhood by address" />
       <input type="submit" value="GO" />
@@ -24,53 +35,53 @@
       <div class="bottom-space mc-title">
         <h2>
           <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span>
-          <em><span class="category-title"></span></em> incidents for 
+          <em><span class="category-title"></span></em> incidents for
           <span class="current-month"></span> <span class="current-year"></span>
         </h2>
-        
+
         <!-- placeholder for changing document title -->
         <span class="document-title"></span>
       </div>
-      
+
       <div class="grid-100 mobile-grid-100 tablet-grid-100 grid-parent bottom-space mc-totals">
         <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-incidents-month">
           <span class="stat-value"></span>
           <span class="stat-symbol"></span>
           <p class="note">Total incidents</p>
         </div>
-        
+
         <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-change-last-month">
           <span class="stat-value"></span>
           <span class="stat-symbol"></span>
           <p class="note">Change from last month (<span class="stat-incidents-last-month"><span class="stat-value"></span></span> incidents)</p>
         </div>
-        
+
         <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-change-month-last-year">
           <span class="stat-value"></span>
           <span class="stat-symbol"></span>
           <p class="note">Change from same month last year (<span class="stat-incidents-last-year-month"><span class="stat-value"></span></span> incidents)</p>
         </div>
-        
+
         <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-rate-month">
           <span class="stat-value"></span>
           <span class="stat-symbol"></span>
           <p class="note">Incident rate per 1,000 residents</p>
         </div>
-        
+
         <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space population-numbers">
           <span class="stat-value population-2010"></span>
           <p class="note">2010 census population</p>
         </div>
       </div>
-      
+
       <div class="grid-100 mobile-grid-100 tablet-grid-100 bottom-space grid-parent category-stats">
         <h2>
           <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span>
           incidents by category
         </h2>
-        
+
         <p class="note bottom-space">Click on any category to see specific metrics and to update the map.  Percent change is calculated based on the previous month.  <a href="#" class="category-stat category-stat-total" data-category="total">Show all</a>.</p>
-  
+
         <% if (typeof categories != 'undefined') { %>
           <% _.each(categories, function(cat, c) { if (c !== 'total') { %>
             <div data-category="<%= c %>" class="category-stat category-stat-<%= c %> grid-20 mobile-grid-33 tablet-grid-20">
@@ -84,29 +95,29 @@
         <% } %>
       </div>
     </div>
-    
+
     <div class="mc-spacer grid-5 grid-parent"> &nbsp; </div>
-    
+
     <div class="mc-right-column grid-35 grid-parent">
       <h2>
         <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span>
         <em><span class="category-title"></span></em> rate by neighborhood
       </h2>
-      
+
       <form class="location-search-form note bottom-space hide-on-mobile">
         <p>
-          To see detailed neighborhood information, click on the map 
+          To see detailed neighborhood information, click on the map
           <% if (_.isObject(window.navigator) && _.isObject(window.navigator.geolocation)) { %>
             or <a href="#" class="location-geolocate">use your current location</a>
           <% } %>
         </p>
-        
+
         <input type="text" class="address-search" value="Find neighborhood by address" data-default="Find neighborhood by address" /> <input type="submit" value="GO" />
       </form>
-      
+
       <div id="city-map">
       </div>
-      
+
       <div class="note">Crime rate per 1,000 residents.</div>
       <div class="map-legend">
       </div>
@@ -120,7 +131,7 @@
     </h2>
 
     <p class="note">Because crime rates vary significantly each month, this yearly chart shows the rate (incidents per 1,000 residents) for 12-month periods ending with the current month.</p>
-      
+
     <div class="grid-100 mobile-grid-100 tablet-grid-100 bottom-space">
       <div id="chart-city-incidents-12-month-history" class="chart"></div>
     </div>
