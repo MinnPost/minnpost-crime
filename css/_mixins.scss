@@ -2,6 +2,13 @@
  * General mixins
  */
 
+@mixin inline-block() {
+  display:-moz-inline-stack;
+  display:inline-block;
+  zoom:1;
+  *display:inline;
+}
+
 /**
  * Mixin handling breakpoints for media queries
  * Source: http://css-tricks.com/media-queries-sass-3-2-and-codekit/
@@ -25,7 +32,7 @@
   text-align: $opposite;
   float: $direction;
   margin: 0 0 $space 0;
-  margin-#{$opposite}: $space;  
+  margin-#{$opposite}: $space;
   border-#{$opposite}: 6px solid $pink;
   padding-#{$opposite}: $space;
 }

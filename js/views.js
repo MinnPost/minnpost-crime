@@ -363,7 +363,7 @@
             return _.map(_.uniq(_.pluck(this.options.app.allMonths, 'month')), function(m, mi) {
               return {
                 value: m,
-                label: moment().month(m - 1).format('MMM')
+                label: moment().month(m - 1).format('MMMM')
               };
             });
           }

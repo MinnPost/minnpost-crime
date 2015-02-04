@@ -86,6 +86,19 @@
   color: #363636;
   margin-bottom: .5em;
 }
+.minnpost-application-container h2 form {
+  display: -moz-inline-stack;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+}
+.minnpost-application-container h2 form select {
+  margin-left: 0.5em;
+  display: -moz-inline-stack;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+}
 .minnpost-application-container .placeholder {
   border: 1px solid #363636;
   background-color: #bcbcbc;

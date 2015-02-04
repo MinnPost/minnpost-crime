@@ -22,7 +22,7 @@
     border-top: 1px solid $color-light-grey;
     padding-top: 1em;
   }
-  
+
   .messaging-container {
     position: fixed;
     top: 0;
@@ -31,7 +31,7 @@
     z-index: 9999999;
     text-align: center;
   }
-    
+
   .application-error {
     background-color: #D70F16;
     border-bottom: 1px solid #A70C11;
@@ -40,7 +40,7 @@
     color: $color-white;
     padding: .5em;
   }
-  
+
   .loading {
     width: 20%;
     margin: 0 auto;
@@ -63,73 +63,82 @@
       line-height: 100%;
     }
   }
-  
+
   a {
     font-weight: bold;
   }
-  
+
   h2 {
     font-size: 1em;
     line-height: 1.15em;
     font-weight: bold;
     color: $color-dark-grey;
     margin-bottom: .5em;
+
+    form {
+      @include inline-block();
+
+      select {
+        margin-left: 0.5em;
+        @include inline-block();
+      }
+    }
   }
-  
+
   .placeholder {
     border: 1px solid $color-dark-grey;
-    background-color: $color-light-grey; 
-    width: 100%;   
+    background-color: $color-light-grey;
+    width: 100%;
   }
-  
+
   .note {
     font-size: .85em;
     line-height: 1.25em;
     color: $color-medium-grey;
   }
-  
+
   .bottom-space {
     margin-bottom: 1em;
   }
-  
+
   .force-bottom {
     position: absolute;
     bottom: 0;
     width: 100%;
   }
-  
+
   .mc-application-container {
     margin-top: 1em;
   }
-  
+
   .mc-right-column {
     padding-left: 10px;
   }
-  
+
   .mc-left-column {
     padding-right: 10px;
   }
-  
+
   .category-select-container {
     width: 50%;
     text-align: center;
     margin: 0 auto 1.5em auto;
-    
+
     label {
       font-family: inherit;
     }
   }
-  
+
   h2 .category-title {
     text-transform: lowercase;
   }
-    
+
   #neighborhood-map,
   #city-map {
     height: 350px;
     width: 100%;
     margin-bottom: 1em;
-    
+
     .map-label-container {
       min-width: 10em;
       max-width: 18em;
@@ -142,18 +151,18 @@
       -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
       border: 1px solid #888;
-    
+
       .map-label-inner-container {
         padding: .5em;
       }
     }
   }
-  
+
   .location-search-form {
     p {
       margin-bottom: 1em;
     }
-    
+
     input {
       font-size: .85em;
       line-height: 1.25em;
@@ -163,12 +172,12 @@
       background-color: $color-white;
       width: 65%;
     }
-    
+
     input.selected {
       border: 1px solid $color-dark-grey;
       color: $color-dark-grey;
     }
-    
+
     input[type=submit] {
       padding: .25em 1em;
       color: $color-medium-grey;
@@ -177,30 +186,30 @@
       border-radius: 4px;
       width: auto;
     }
-    
+
     input[type=submit]:hover {
       background-color: $color-light-grey;
     }
   }
-    
+
   .location-geolocate {
     padding-right: 15px;
     background: transparent url($location-7-image-base-64) center right no-repeat;
   }
-  
+
   .map-legend .legend-item {
     float: left;
     font-size: .65em;
     width: 20%;
     margin-bottom: .5em;
     color: $color-medium-grey;
-    
+
     .legend-value {
       width: auto;
       border-left: 1px solid $color-light-grey;
       padding: .5em .25em .25em .25em;
     }
-    
+
     .legend-color {
       width: 100%;
       height: 25px;
@@ -209,32 +218,32 @@
       -webkit-box-shadow: 2px 0 0 -1px $color-light-grey inset;
       box-shadow: 2px 0 0 -1px $color-light-grey inset;
     }
-    
+
     &.active-display .legend-color {
       border-top: 4px solid $color-light-grey;
     }
   }
-  
+
   .mc-totals {
     text-align: center;
-    
+
     .stat-value {
       font-size: 2.5em;
       line-height: 1.25em;
       min-height: 1.25em;
       display: block;
     }
-    
+
     .note .stat-value {
       font-size: 1em;
       display: inline;
     }
   }
-  
+
   .category-stats .category-stat {
     text-align: center;
     margin-bottom: 1em;
-    
+
     .stat-label {
       font-size: .75em;
       line-height: 1.25em;
@@ -247,22 +256,22 @@
       min-height: 1.25em;
       display: block;
     }
-    
+
     &:hover,
     &.not-selected:hover {
       cursor: pointer;
-      
+
       * {
         opacity: 1;
         -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
         filter: alpha(opacity=100);
         font-weight: bold;
       }
-      
+
       .stat-label {
       }
     }
-    
+
     &.not-selected {
       * {
         opacity: 0.60;
@@ -271,18 +280,18 @@
       }
     }
   }
-  
+
   .per-change {
     &.per-change-positive {
       color: $color-red;
     }
-    
+
     &.per-change-negative,
     &.per-change-zero {
       color: $color-blue;
     }
   }
-  
+
   .diff-compare {
     &.diff-compare-more {
       color: $color-red;
@@ -291,25 +300,22 @@
     &.diff-compare-less {
       color: $color-blue;
     }
-    
+
     .diff-symbol {
       font-size: .75em;
       width: 1em;
       position: relative;
       top: -.25em;
-      display:-moz-inline-stack;
-      display:inline-block;
-      zoom:1;
-      *display:inline;
+      @include inline-block();
     }
   }
-    
+
   .chart {
     height: 225px;
     width: 100%;
   }
-  
-  
+
+
   @media screen and (max-width: 1024px) {
     .mc-right-column {
       padding-left: 0;

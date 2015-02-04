@@ -1,17 +1,5 @@
 <div class="mc-city-container">
 
-  <div class="grid-100 grid-parent">
-    <form class="month-choice-form note bottom-space">
-      <p>Use the following to see past months</p>
-
-      <label>Year</label>
-      <select class="year-choice"></select>
-
-      <label>Month</label>
-      <select class="month-choice"></select>
-    </form>
-  </div>
-
   <div class="grid-100 grid-parent mc-location-services hide-on-desktop hide-on-tablet">
     <h2>Find a neighborhood in <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span></h2>
     <% if (_.isObject(window.navigator) && _.isObject(window.navigator.geolocation)) { %>
@@ -32,12 +20,19 @@
 
   <div class="grid-100 bottom-space grid-parent">
     <div class="mc-left-column grid-60 grid-parent">
-      <div class="bottom-space mc-title">
+      <div class="mc-title">
         <h2>
           <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span>
-          <em><span class="category-title"></span></em> incidents for
-          <span class="current-month"></span> <span class="current-year"></span>
+          <em><span class="category-title"></span></em>
+          incidents for
+
+          <form class="month-choice-form">
+            <select class="month-choice"></select>
+            <select class="year-choice"></select>
+          </form>
         </h2>
+
+        <p class="note bottom-space">Select the Month and Year to see historical values.</p>
 
         <!-- placeholder for changing document title -->
         <span class="document-title"></span>
