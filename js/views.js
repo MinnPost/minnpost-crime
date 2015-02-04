@@ -438,7 +438,31 @@
 
     // Input year or month changes
     bindSetMonth: function(val, options) {
-      this.options.app.setMonth(options.observe, val);
+      var app = this.options.app;
+      var part = options.observe;
+      var test, found;
+
+      // Validate here so we can try to avoid updating everything.
+      // This is pretty stupid
+      test = {
+        currentMonth: app.currentMonth,
+        currentYear: app.currentYear
+      };
+      test[part] = val;
+      found = _.find(app.allMonths, function(m, mi) {
+        return _.isEqual(m, {
+          month: test.currentMonth,
+          year: test.currentYear
+        });
+      });
+      if (!found) {
+        // Not sure how to use stickit to do this in more sane way
+        this.$('select.year-month').val(app.currentMonth);
+        this.$('select.year-choice').val(app.currentYear);
+        return;
+      }
+
+      app.setMonth(part, val);
       return val;
     },
 
@@ -724,7 +748,7 @@
       },
       // Map
       '#city-map': {
-        observe: ['appCategory', 'currentMonth', 'currentYear'],
+        observe: ['appCategory', 'crimesByMonth'],
         update: 'bindUpdateMapVisualization'
       }
     },
@@ -800,7 +824,7 @@
       },
       // Map
       '#neighborhood-map': {
-        observe: ['appCategory', 'currentYear', 'currentMonth'],
+        observe: ['appCategory', 'crimesByMonth'],
         update: 'bindUpdateMapVisualization'
       }
     },

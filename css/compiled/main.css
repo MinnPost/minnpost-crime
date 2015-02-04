@@ -87,6 +87,7 @@
   margin-bottom: .5em;
 }
 .minnpost-application-container h2 form {
+  padding-top: 0.5em;
   display: -moz-inline-stack;
   display: inline-block;
   zoom: 1;

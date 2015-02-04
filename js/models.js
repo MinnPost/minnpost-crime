@@ -33,6 +33,7 @@
       this.options.app.on('change:month', function() {
         thisModel.set('currentYear', thisModel.options.app.currentYear);
         thisModel.set('currentMonth', thisModel.options.app.currentMonth);
+        thisModel.setLastMonth();
       });
 
       // If the app level category changes, update

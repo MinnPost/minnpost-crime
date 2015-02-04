@@ -190,26 +190,21 @@
       this.applicationView.updateCategory(category);
     },
 
-    // Set month
+    // Set month.  This was added much later and is a pretty hackish
+    // way to make this work.
     setMonth: function(part, val) {
+      var test, found;
+
       if (this[part] != val) {
         this[part] = val;
 
-        if (this.currentModel) {
-          this.currentModel.resetFetch();
-        }
-        if (this.neighborhoods) {
-          this.neighborhoods.resetFetch();
-        }
-
         this.trigger('change:month');
-        this.applicationView.renderGeneralLoading();
-        this.city.fetchData(function() {
-          this.neighborhoods.fetchRecentData(function() {
-            this.applicationView.renderStopGeneralLoading();
-            this.cityView.stickit();
-          }, this);
-        }, this);
+        if (this.neighborhood && this.neighborhood.cid == this.currentModel.cid) {
+          this.updateNeighborhoodView(true);
+        }
+        else {
+          this.updateCityView(true);
+        }
       }
     },
 
@@ -224,7 +219,6 @@
       var thisRouter = this;
 
       // Load up city
-      this.applicationView.renderGeneralLoading();
       city = this.cities.get(city);
       if (_.isUndefined(city)) {
         this.routeDefault();
@@ -236,13 +230,26 @@
 
         // Render
         this.applicationView.renderCity(this.city);
-        this.city.fetchData(function() {
-          // We also need to get recent neighborhood data
-          this.neighborhoods.fetchRecentData(function() {
-            this.applicationView.renderStopGeneralLoading();
-          }, this);
-        }, this);
+        this.updateCityView();
       }
+    },
+
+    // Update city view
+    updateCityView: function(reset) {
+      reset = reset || false;
+      this.applicationView.renderGeneralLoading();
+
+      if (reset) {
+        this.city.resetFetch();
+        this.neighborhoods.resetFetch();
+      }
+
+      this.city.fetchData(function() {
+        this.neighborhoods.fetchRecentData(function() {
+          this.applicationView.renderStopGeneralLoading();
+          this.cityView.stickit();
+        }, this);
+      }, this);
     },
 
     // Neightborhood route
@@ -251,7 +258,6 @@
       var thisRouter = this;
 
       // Load up city
-      this.applicationView.renderGeneralLoading();
       city = this.cities.get(city);
       if (_.isUndefined(city)) {
         this.routeDefault();
@@ -271,15 +277,29 @@
         // Render and get both the city and the neighborhood data.
         // The city data will be used for some comparisons
         this.applicationView.renderNeighborhood(this.neighborhood, this.city);
-        this.city.fetchData(function() {
-          this.neighborhood.fetchData(function() {
-            // We also need to get recent neighborhood data
-            this.neighborhoods.fetchRecentData(function() {
-              this.applicationView.renderStopGeneralLoading();
-            }, this);
+        this.updateNeighborhoodView();
+      }
+    },
+
+    // Update neighborhood view
+    updateNeighborhoodView: function(reset) {
+      reset = reset || false;
+      this.applicationView.renderGeneralLoading();
+
+      if (reset) {
+        this.city.resetFetch();
+        this.neighborhood.resetFetch();
+        this.neighborhoods.resetFetch();
+      }
+
+      this.city.fetchData(function() {
+        this.neighborhood.fetchData(function() {
+          this.neighborhoods.fetchRecentData(function() {
+            this.applicationView.renderStopGeneralLoading();
+            this.neighborhoodView.stickit();
           }, this);
         }, this);
-      }
+      }, this);
     },
 
     // Route based on geolocation

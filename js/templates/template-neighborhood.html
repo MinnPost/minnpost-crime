@@ -5,59 +5,63 @@
       <div class="bottom-space mc-title">
         <h2>
           <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span>
-          <em><span class="category-title"></span></em> incidents for 
-          <span class="current-month"></span> <span class="current-year"></span>
+          <em><span class="category-title"></span></em> incidents for
+
+          <form class="month-choice-form">
+            <select class="month-choice"></select>
+            <select class="year-choice"></select>
+          </form>
         </h2>
-        
+
         <p class="note">
           <a href="#city/<%= (typeof city != 'undefined') ? city : '' %>" class="city-link">
             <%= (typeof city != 'undefined') ? city : '' %>
           </a>
         </p>
-        
+
         <!-- placeholder for changing document title -->
         <span class="document-title"></span>
       </div>
-      
+
       <div class="grid-100 mobile-grid-100 tablet-grid-100 grid-parent bottom-space mc-totals">
         <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-incidents-month">
           <span class="stat-value"></span>
           <span class="stat-symbol"></span>
           <p class="note">Total incidents</p>
         </div>
-        
+
         <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-change-last-month">
           <span class="stat-value"></span>
           <span class="stat-symbol"></span>
           <p class="note">Change from last month (<span class="stat-incidents-last-month"><span class="stat-value"></span></span> incidents)</p>
         </div>
-        
+
         <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-change-month-last-year">
           <span class="stat-value"></span>
           <span class="stat-symbol"></span>
           <p class="note">Change from same month last year (<span class="stat-incidents-last-year-month"><span class="stat-value"></span></span> incidents)</p>
         </div>
-        
+
         <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space stat-rate-month">
           <span class="stat-value"></span>
           <span class="stat-symbol"></span>
           <p class="note">Incident rate per 1,000 residents <br /> (compared to <span class="city-name"></span> rate of <span class="stat-rate-city"><span class="stat-value"></span></span>)</p>
         </div>
-        
+
         <div class="grid-33 mobile-grid-50 tablet-grid-33 bottom-space population-numbers">
           <span class="stat-value population-2010"></span>
           <p class="note">2010 census population</p>
         </div>
       </div>
-      
+
       <div class="grid-100 mobile-grid-100 tablet-grid-100 bottom-space grid-parent category-stats">
         <h2>
           <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span>
           incidents by category
         </h2>
-        
+
         <p class="note bottom-space">Click on any category to see specific metrics and to update the map.  Percent change is calculated based on the previous month.  <a href="#" class="category-stat category-stat-total" data-category="total">Show all</a>.</p>
-  
+
         <% if (typeof categories != 'undefined') { %>
           <% _.each(categories, function(cat, c) { if (c !== 'total') { %>
             <div data-category="<%= c %>" class="category-stat category-stat-<%= c %> grid-20 mobile-grid-33 tablet-grid-20">
@@ -71,24 +75,24 @@
         <% } %>
       </div>
     </div>
-    
+
     <div class="mc-spacer grid-5 grid-parent"> &nbsp; </div>
-    
+
     <div class="mc-right-column grid-35 grid-parent">
       <h2>
         <span class="section-title"><%= (typeof title != 'undefined') ? title : '' %></span>
         <em><span class="category-title"></span></em> rate
       </h2>
-    
+
       <p class="note">
         <a href="#city/<%= (typeof city != 'undefined') ? city : '' %>" class="city-link">
           <%= (typeof city != 'undefined') ? city : '' %>
         </a>
       </p>
-      
+
       <div id="neighborhood-map">
       </div>
-      
+
       <div class="note">Crime rate per 1,000 residents.</div>
       <div class="map-legend">
       </div>
@@ -102,7 +106,7 @@
     </h2>
 
     <p class="note">Because crime rates vary significantly each month, this yearly chart shows the rate (incidents per 1,000 residents) for 12-month periods ending with the current month.</p>
-      
+
     <div class="grid-100 mobile-grid-100 tablet-grid-100 bottom-space">
       <div id="chart-neighborhood-incidents-12-month-history" class="chart"></div>
     </div>
