@@ -36,7 +36,7 @@
   font-style: italic;
   color: #414141;
   margin-top: 3em;
-  border-top: 1px solid #bcbcbc;
+  border-top: 1px solid #BCBCBC;
   padding-top: 1em;
 }
 .minnpost-application-container .messaging-container {
@@ -52,7 +52,7 @@
   border-bottom: 1px solid #A70C11;
   border-right: 1px solid #A70C11;
   border-left: 1px solid #A70C11;
-  color: white;
+  color: #FFFFFF;
   padding: .5em;
 }
 .minnpost-application-container .loading {
@@ -65,9 +65,9 @@
   height: 1em;
   line-height: 1.5em;
   background-color: #FFFFFF;
-  border-bottom: 1px solid #bcbcbc;
-  border-right: 1px solid #bcbcbc;
-  border-left: 1px solid #bcbcbc;
+  border-bottom: 1px solid #BCBCBC;
+  border-right: 1px solid #BCBCBC;
+  border-left: 1px solid #BCBCBC;
 }
 .minnpost-application-container .loading span {
   padding: 10px 5px 10px 40px;
@@ -102,7 +102,7 @@
 }
 .minnpost-application-container .placeholder {
   border: 1px solid #363636;
-  background-color: #bcbcbc;
+  background-color: #BCBCBC;
   width: 100%;
 }
 .minnpost-application-container .note {
@@ -169,9 +169,9 @@
   font-size: .85em;
   line-height: 1.25em;
   padding: .25em .5em;
-  border: 1px solid #bcbcbc;
-  color: #bcbcbc;
-  background-color: white;
+  border: 1px solid #BCBCBC;
+  color: #BCBCBC;
+  background-color: #FFFFFF;
   width: 65%;
 }
 .minnpost-application-container .location-search-form input.selected {
@@ -187,7 +187,7 @@
   width: auto;
 }
 .minnpost-application-container .location-search-form input[type=submit]:hover {
-  background-color: #bcbcbc;
+  background-color: #BCBCBC;
 }
 .minnpost-application-container .location-geolocate {
   padding-right: 15px;
@@ -202,19 +202,19 @@
 }
 .minnpost-application-container .map-legend .legend-item .legend-value {
   width: auto;
-  border-left: 1px solid #bcbcbc;
+  border-left: 1px solid #BCBCBC;
   padding: .5em .25em .25em .25em;
 }
 .minnpost-application-container .map-legend .legend-item .legend-color {
   width: 100%;
   height: 25px;
-  border-top: 4px solid white;
-  -moz-box-shadow: 2px 0 0 -1px #bcbcbc inset;
-  -webkit-box-shadow: 2px 0 0 -1px #bcbcbc inset;
-  box-shadow: 2px 0 0 -1px #bcbcbc inset;
+  border-top: 4px solid #FFFFFF;
+  -moz-box-shadow: 2px 0 0 -1px #BCBCBC inset;
+  -webkit-box-shadow: 2px 0 0 -1px #BCBCBC inset;
+  box-shadow: 2px 0 0 -1px #BCBCBC inset;
 }
 .minnpost-application-container .map-legend .legend-item.active-display .legend-color {
-  border-top: 4px solid #bcbcbc;
+  border-top: 4px solid #BCBCBC;
 }
 .minnpost-application-container .mc-totals {
   text-align: center;
@@ -260,16 +260,16 @@
   filter: alpha(opacity=60);
 }
 .minnpost-application-container .per-change.per-change-positive {
-  color: #9e0b0f;
+  color: #9E0B0F;
 }
 .minnpost-application-container .per-change.per-change-negative, .minnpost-application-container .per-change.per-change-zero {
-  color: #2c739f;
+  color: #2C739F;
 }
 .minnpost-application-container .diff-compare.diff-compare-more {
-  color: #9e0b0f;
+  color: #9E0B0F;
 }
 .minnpost-application-container .diff-compare.diff-compare-none, .minnpost-application-container .diff-compare.diff-compare-less {
-  color: #2c739f;
+  color: #2C739F;
 }
 .minnpost-application-container .diff-compare .diff-symbol {
   font-size: .75em;
@@ -293,3 +293,5 @@
     padding-left: 0;
   }
 }
+
+/*# sourceMappingURL=main.css.map */
